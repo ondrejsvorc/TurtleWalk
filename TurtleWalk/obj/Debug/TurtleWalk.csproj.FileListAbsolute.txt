@@ -13,3 +13,9 @@ D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.GenerateRes
 D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CoreCompileInputs.cache
 D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe
 D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.pdb
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk_Content.g.cs
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\App.baml
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.dll
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.pdb
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.xml
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CopyComplete

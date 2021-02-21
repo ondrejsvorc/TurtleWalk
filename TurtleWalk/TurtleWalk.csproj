@@ -49,6 +49,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc, processorArchitecture=MSIL">
+      <HintPath>packages\WpfAnimatedGif.2.0.0\lib\net40\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -63,6 +66,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\CollisionElement.cs" />
+    <Compile Include="Classes\Ground.cs" />
+    <Compile Include="Classes\LavaDrop.cs" />
+    <Compile Include="Classes\Leaf.cs" />
+    <Compile Include="Classes\Piston.cs" />
+    <Compile Include="Classes\SavingPlatform.cs" />
+    <Compile Include="Classes\SettingsManager.cs" />
+    <Compile Include="Classes\Sign.cs" />
+    <Compile Include="Classes\Turtle.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -86,6 +98,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -95,18 +108,53 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Images\Languages\" />
-    <Folder Include="Resources\Images\Levels\" />
-    <Folder Include="Resources\Images\Points\" />
-    <Folder Include="Resources\Images\Turtle\" />
-    <Folder Include="Resources\Levels\Level01\" />
-    <Folder Include="Resources\Levels\Level02\" />
-    <Folder Include="Resources\Music\" />
-    <Folder Include="Resources\Turtle\" />
+    <Folder Include="Resources\Levels\Level02\Music\" />
+    <Folder Include="Resources\Menu\Music\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Cursors\cursorGrabbed.cur" />
     <Resource Include="Resources\Images\Cursors\cursorHand.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Deadly-Entities\lava_drop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Languages\cs.png" />
+    <Resource Include="Resources\Images\Languages\en.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Points\leaf.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Other\finish.png" />
+    <Resource Include="Resources\Images\Other\piston.gif" />
+    <Resource Include="Resources\Images\Other\splashscreen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Turtle\turtle.ico" />
+    <Resource Include="Resources\Images\Turtle\turtleStopped_direction_backwards.gif" />
+    <Resource Include="Resources\Images\Turtle\turtleStopped_direction_forward.gif" />
+    <Resource Include="Resources\Images\Turtle\turtle_direction_backwards.gif" />
+    <Resource Include="Resources\Images\Turtle\turtle_direction_forward.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Levels\Level01\Background\background_lvl01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Levels\Level01\Platforms\ice_platform_1.png" />
+    <Resource Include="Resources\Levels\Level01\Platforms\ice_platform_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Levels\Level02\Background\background_lvl02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Levels\Level02\Platforms\dirt_platform_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Menu\Background\background_menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Levels\Level01\Music\music_level01.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

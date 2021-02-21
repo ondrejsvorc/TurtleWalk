@@ -8,7 +8,7 @@
     Title="TurtleWalk"
     Width="{x:Static SystemParameters.PrimaryScreenWidth}"
     Height="{x:Static SystemParameters.PrimaryScreenHeight}"
-    Cursor="./Resources/Images/Cursors/handCursor.cur"
+    Cursor="./Resources/Images/Cursors/cursorHand.cur"
     ResizeMode="NoResize"
     WindowState="Maximized"
     WindowStyle="None"

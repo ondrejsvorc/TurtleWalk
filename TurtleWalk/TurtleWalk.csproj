@@ -94,5 +94,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images\Languages\" />
+    <Folder Include="Resources\Images\Levels\" />
+    <Folder Include="Resources\Images\Points\" />
+    <Folder Include="Resources\Images\Turtle\" />
+    <Folder Include="Resources\Levels\Level01\" />
+    <Folder Include="Resources\Levels\Level02\" />
+    <Folder Include="Resources\Music\" />
+    <Folder Include="Resources\Turtle\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Cursors\cursorGrabbed.cur" />
+    <Resource Include="Resources\Images\Cursors\cursorHand.cur" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

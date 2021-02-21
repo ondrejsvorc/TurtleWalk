@@ -16,7 +16,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid x:Name="gridMenu" Visibility="Visible">
+        <Grid x:Name="gridMenu" Visibility="Hidden">
             <Image
                 x:Name="backgroundPic"
                 Source="/Resources/Menu/Background/background_menu.png"
@@ -276,7 +276,7 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="gridLvl" Visibility="Hidden">
+        <Grid x:Name="gridLvl" Visibility="Visible">
             <ToggleButton
                 x:Name="btnSound"
                 Width="100"

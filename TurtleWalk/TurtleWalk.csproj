@@ -156,7 +156,9 @@
   <ItemGroup>
     <Resource Include="Resources\Levels\Level02\Start\start_lvl02.txt" />
     <Resource Include="Resources\Levels\Level01\Start\start_lvl01.txt" />
-    <Resource Include="Resources\Levels\Available\available-levels.txt" />
+    <Resource Include="Resources\Levels\Available\available_levels.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\Levels\Level01\Music\music_level01.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

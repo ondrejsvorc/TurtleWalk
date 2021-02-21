@@ -15,17 +15,21 @@ namespace TurtleWalk
 {
     public partial class MainWindow : Window
     {
+        private Turtle turtle;
 
-        private Image imgTurtle;
-
-        StreamReader streamReader;
-        StreamWriter streamWriter;
+        private StreamReader reader;
+        private StreamWriter writer;
 
         private BitmapImage bitmapImgTurtle;
 
         private string lvlNum;
         private string[] rows;
-        int rowsCount;
+        private int rowCount;
+
+        private string levelInProgress;
+
+        private Cursor cursorHand;
+        private Cursor cursorGrabbed;
 
         private const string PATH_DIRECTION_FORWARD = "./Resources/Images/Turtle/turtle_direction_forward.gif";
         private const string PATH_DIRECTION_BACKWARDS = "./Resources/Images/Turtle/turtle_direction_backwards.gif";
@@ -36,39 +40,81 @@ namespace TurtleWalk
         public MainWindow()
         {
             InitializeComponent();
-            Start();
+            Setup();
+        }
+
+        private void Setup()
+        {
+            // CHECKS FOR AVAILABLE LEVELS (EXCEPT FOR THE FIRST ONE, WHICH IS ALWAYS AVAILABLE)
+
+            reader = new StreamReader("./Resources/Levels/Available/available_levels.txt");
+
+            string[] availableLevels = reader.ReadLine().Split(' ');
+
+            for (int i = 0; i < availableLevels.Length - 1; i++)
+            {
+                if (availableLevels[i + 1] == "1")
+                {
+                    gridLevels.Children[i + 1].IsEnabled = true; 
+                }
+            }
+
+            reader.Close();
+
+            cursorHand = new Cursor(new MemoryStream(Properties.Resources.cursorHand));
+            cursorGrabbed = new Cursor(new MemoryStream(Properties.Resources.cursorGrabbed));
+
+            levelInProgress = "none";
         }
 
         private void Start()
         {
+            // PROJEDE TEXTOVÝ SOUBOR A DLE TYPU PŘEDÁ INFO PŘÍSLUŠNÉ TŘÍDĚ, KTERÁ SE POSTARÁ O JEJÍ PŘIDÁNÍ NA GRID
 
-            int i = 0;
-            lvlNum = "01";
+            levelInProgress = lvlNum;
 
-            streamReader = new StreamReader($"./Resources/Levels/Level{lvlNum}/Start/start_lvl{lvlNum}.txt");
-            rows = streamReader.ReadLine().Split(' ');
-            streamReader.Close();
+            rowCount = CountRows();
 
-            rowsCount = CountRows();
-
-            // 1 300 250 30 830 0 0
-
-            imgTurtle = new Image
+            for (int i = 0; i < rowCount; i++)
             {
-                Width = Convert.ToDouble(rows[i + 1]),
-                Height = Convert.ToDouble(rows[i + 2]),
-                Margin = new Thickness(Convert.ToDouble(rows[i + 3]), Convert.ToDouble(rows[i + 4]), Convert.ToDouble(rows[i + 5]), Convert.ToDouble(rows[i + 6]))
-            };
+                reader = new StreamReader($"./Resources/Levels/Level{lvlNum}/Start/start_lvl{lvlNum}.txt");
+                rows = reader.ReadLine().Split(' ');
 
-            gridLvl.Children.Add(imgTurtle);
+                switch (rows[0])
+                {
+                    case "Turtle":
+                        Turtle turtle = new Turtle(rows, gridLvl);
+                        break;
 
-            bitmapImgTurtle = new BitmapImage();
-            bitmapImgTurtle.BeginInit();
-            bitmapImgTurtle.UriSource = new Uri(PATH_DIRECTION_FORWARD, UriKind.Relative);
-            bitmapImgTurtle.EndInit();
-            ImageBehavior.SetAnimatedSource(imgTurtle, bitmapImgTurtle);
+                    case "Background":
 
-            AdditionalImageConfig(imgTurtle);
+                        break;
+
+                    case "Ground":
+                        break;
+
+                    case "SavingPlatform":
+                        
+                        break;
+
+                    case "Piston":
+                        
+                        break;
+
+                    case "Leaf":
+                        
+                        break;
+                }
+            }
+
+            reader.Close();
+
+            gridLvl.Visibility = Visibility.Visible;
+        }
+
+        private void Finish()
+        {
+            levelInProgress = string.Empty;
         }
 
         private int CountRows()
@@ -85,12 +131,12 @@ namespace TurtleWalk
             return i;
         }
 
-        private void AdditionalImageConfig(Image img)
-        {
-            img.HorizontalAlignment = HorizontalAlignment.Left;
-            img.VerticalAlignment = VerticalAlignment.Top;
-            img.Stretch = Stretch.UniformToFill;
-        }
+        //public void AdditionalImageConfig(Image img)
+        //{
+        //    img.HorizontalAlignment = HorizontalAlignment.Left;
+        //    img.VerticalAlignment = VerticalAlignment.Top;
+        //    img.Stretch = Stretch.UniformToFill;
+        //}
 
         private void TurtleChangeDirection(object sender, MouseButtonEventArgs e)
         {
@@ -104,47 +150,128 @@ namespace TurtleWalk
 
         private void CursorEnters(object sender, MouseEventArgs e)
         {
+            Button btnSender = (Button)sender;
 
+            btnSender.Cursor = cursorGrabbed;
+            btnSender.Background = new SolidColorBrush(Colors.White);
+            btnSender.Foreground = new SolidColorBrush(Color.FromRgb(69, 189, 120));
+
+            for (int i = 0; i < btnSender.Content.ToString().Length; i++)
+            {
+                if (char.IsDigit(btnSender.Content.ToString()[i]))
+                {
+                    lbHeading.Content = "Level " + btnSender.Content.ToString();
+                    break;
+                }
+                else
+                {
+                    lbHeading.Content = btnSender.Content.ToString();
+                }
+            }
         }
 
         private void CursorLeaves(object sender, MouseEventArgs e)
         {
+            ((Button)sender).Cursor = cursorHand;
+            ((Button)sender).Background = new SolidColorBrush(Color.FromRgb(69, 189, 120));
+            ((Button)sender).Foreground = new SolidColorBrush(Colors.White);
 
+            lbHeading.Content = "TurtleWalk";
         }
 
-        private void BackToMenu(object sender, RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
-
+            gridLevels.Visibility = Visibility.Hidden;
+            gridButtons.Visibility = Visibility.Visible;
         }
 
         private void Exit(object sender, RoutedEventArgs e)
         {
-
+            Application.Current.Shutdown();
         }
 
         private void LanguageChange(object sender, MouseButtonEventArgs e)
         {
+            switch (((Image)sender).Name)
+            {
+                case "Czech":
+                    btnPlay.Content = "Hrát";
+                    btnSettings.Content = "Nastavení";
+                    btnControls.Content = "Ovládaní";
+                    btnExit.Content = "Odejít";
+                    btnBack.Content = "Zpět";
+                    break;
 
+                case "English":
+                    foreach (Button btnMenu in gridButtons.Children)
+                    {
+                       btnMenu.Content = btnMenu.Name.Remove(0, 3);
+                    }
+                    btnBack.Content = btnBack.Name.Remove(0, 3);
+                    break;
+            }
         }
 
         private void FlagColorChange(object sender, MouseEventArgs e)
         {
-
+            ((Image)sender).Opacity = 0.5;
+            ((Image)sender).Cursor = cursorGrabbed;
         }
 
         private void FlagColorBackToNormal(object sender, MouseEventArgs e)
         {
-
+            ((Image)sender).Opacity = 1;
+            ((Image)sender).Cursor = cursorHand;
         }
 
         private void Play(object sender, RoutedEventArgs e)
+        {
+            gridButtons.Visibility = Visibility.Hidden;
+            gridLevels.Visibility = Visibility.Visible;
+        }
+
+        private void ResumeLevel()
         {
 
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)
         {
+            switch (((Button)sender).Content)
+            {
+                case "01":
+                case "02":
+                case "03":
+                case "04":
+                case "05":
+                case "06":
+                case "07":
+                    gridMenu.Visibility = Visibility.Hidden;
+                    lvlNum = ((Button)sender).Content.ToString();
+                    Start();
+                    //if (!levelInProgress)
+                    //{
+                    //    //Start();
+                    //}
+                    //else
+                    //{
+                    //    //ResumeLevel();
+                    //}
+                    break;
+            }
+        }
 
+        private void LevelStop(object sender, KeyEventArgs e)
+        {
+            if (levelInProgress != "none")
+            {
+                if (e.Key == Key.Escape)
+                {
+                    turtle.IsMoving = false;
+                    gridLvl.Visibility = Visibility.Hidden;
+                    gridMenu.Visibility = Visibility.Visible;
+                }
+            }
         }
     }
 }

@@ -15,7 +15,7 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid x:Name="gridMain">
         <Grid x:Name="gridMenu" Visibility="Visible">
             <Image
                 x:Name="backgroundPic"
@@ -282,6 +282,7 @@
                 x:Name="btnSound"
                 Width="100"
                 Margin="18,9,1802,1035"
+                Panel.ZIndex="1"
                 Content="Sound off"
                 Style="{DynamicResource ToggleButtonStyle}" />
 
@@ -289,6 +290,7 @@
                 x:Name="btnRestart"
                 Width="100"
                 Margin="123,9,1697,1035"
+                Panel.ZIndex="1"
                 Content="Restart"
                 Style="{DynamicResource ButtonStyle}" />
 
@@ -296,6 +298,7 @@
                 Width="200"
                 Height="180"
                 Margin="1472,46,248,854"
+                Panel.ZIndex="1"
                 BorderBrush="Black"
                 BorderThickness="2"
                 CornerRadius="100">
@@ -312,6 +315,7 @@
                 Width="200"
                 Height="180"
                 Margin="1677,46,43,854"
+                Panel.ZIndex="1"
                 BorderBrush="Black"
                 BorderThickness="2"
                 CornerRadius="100">
@@ -330,6 +334,7 @@
                 Margin="1522,9,234,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
+                Panel.ZIndex="1"
                 Content="Backwards"
                 FontSize="20" />
 
@@ -339,6 +344,7 @@
                 Margin="1753,9,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Panel.ZIndex="1"
                 Content="Stop"
                 FontSize="20" />
         </Grid>

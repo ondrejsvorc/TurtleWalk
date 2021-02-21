@@ -21,7 +21,7 @@ namespace TurtleWalk
 
         public Turtle(string[] attributes, Grid gridLvl)
         {
-            SeaLevel = 830;
+            SeaLevel = Convert.ToDouble(attributes[5]);
             IsMoving = true;
             IsDirectionForward = true;
             DistanceFromStart = 0;
@@ -41,6 +41,8 @@ namespace TurtleWalk
             bitmapImgTurtle.EndInit();
 
             ImageBehavior.SetAnimatedSource(imgTurtle, bitmapImgTurtle);
+
+            Panel.SetZIndex(imgTurtle, 1);
 
             gridLvl.Children.Add(imgTurtle);
         }

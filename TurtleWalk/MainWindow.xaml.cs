@@ -7,9 +7,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Collections.Generic;
 using System.IO;
 using WpfAnimatedGif;
-using System.Collections.Generic;
 
 namespace TurtleWalk
 {
@@ -19,8 +19,6 @@ namespace TurtleWalk
 
         private StreamReader reader;
         private StreamWriter writer;
-
-        private BitmapImage bitmapImgTurtle;
 
         private string lvlNum;
         private string[] rows;
@@ -36,6 +34,8 @@ namespace TurtleWalk
 
         private const string PATH_DIRECTION_FORWARD_STOPPED = "./Resources/Images/Turtle/turtleStopped_direction_forward.gif";
         private const string PATH_DIRECTION_BACKWARDS_STOPPED = "./Resources/Images/Turtle/turtleStopped_direction_backwards.gif";
+
+        private List<Ground> grounds;
 
         public MainWindow()
         {
@@ -61,6 +61,8 @@ namespace TurtleWalk
 
             reader.Close();
 
+            grounds = new List<Ground>();
+
             cursorHand = new Cursor(new MemoryStream(Properties.Resources.cursorHand));
             cursorGrabbed = new Cursor(new MemoryStream(Properties.Resources.cursorGrabbed));
 
@@ -75,22 +77,54 @@ namespace TurtleWalk
 
             rowCount = CountRows();
 
+            reader = new StreamReader($"./Resources/Levels/Level{lvlNum}/Start/start_lvl{lvlNum}.txt");
+
             for (int i = 0; i < rowCount; i++)
             {
-                reader = new StreamReader($"./Resources/Levels/Level{lvlNum}/Start/start_lvl{lvlNum}.txt");
                 rows = reader.ReadLine().Split(' ');
 
                 switch (rows[0])
                 {
                     case "Turtle":
-                        Turtle turtle = new Turtle(rows, gridLvl);
+                        turtle = new Turtle(rows, gridLvl);
                         break;
 
                     case "Background":
+                        Image imgBackground = new Image
+                        {
+                            Width = gridMain.Width,
+                            Height = gridMain.Height,
+                            Source = new BitmapImage(new Uri($"./Resources/Levels/Level{lvlNum}/Background/background_lvl{lvlNum}.jpg", UriKind.Relative))
+                        };
 
+                        Panel.SetZIndex(imgBackground, 0);
+                        gridLvl.Children.Add(imgBackground);
                         break;
 
                     case "Ground":
+                        Image imgGround = new Image
+                        {
+                            Width = Convert.ToDouble(rows[1]),
+                            Height = Convert.ToDouble(rows[2]),
+                            Margin = new Thickness(Convert.ToDouble(rows[3]), Convert.ToDouble(rows[4]), Convert.ToDouble(rows[5]), Convert.ToDouble(rows[6])),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top
+                        };
+
+                        if (imgGround.Width < 1000)
+                        {
+                            imgGround.Source = new BitmapImage(new Uri($"./Resources/Levels/Level{lvlNum}/Platforms/ice_platform_1.png", UriKind.Relative));
+                        }
+                        else
+                        {
+                            imgGround.Source = new BitmapImage(new Uri($"./Resources/Levels/Level{lvlNum}/Platforms/ice_platform_2.png", UriKind.Relative));
+                        }
+
+                        Panel.SetZIndex(imgGround, 1);
+                        gridLvl.Children.Add(imgGround);
+
+                        //Ground ground = new Ground(CollisionElement.SetHitBox(imgGround), 0, 0);
+                        //grounds.Add(ground);
                         break;
 
                     case "SavingPlatform":

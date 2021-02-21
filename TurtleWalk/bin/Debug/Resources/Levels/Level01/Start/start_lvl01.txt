@@ -1,2 +1,4 @@
 ﻿Turtle 300 250 30 830 0 0
-Background 
+Background
+Ground 1030 130 -10 990 0 0
+Ground 1030 130 1000 990 0 0

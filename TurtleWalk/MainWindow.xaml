@@ -5,9 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TurtleWalk"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
-    Width="800"
-    Height="450"
+    Title="TurtleWalk"
+    Width="{x:Static SystemParameters.PrimaryScreenWidth}"
+    Height="{x:Static SystemParameters.PrimaryScreenHeight}"
+    Cursor="./Resources/Images/Cursors/handCursor.cur"
+    ResizeMode="NoResize"
+    WindowState="Maximized"
+    WindowStyle="None"
     mc:Ignorable="d">
     <Grid />
 </Window>

@@ -1,0 +1,15 @@
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe.config
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.pdb
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csprojAssemblyReference.cache
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\MainWindow.g.cs
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\App.g.cs
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk_MarkupCompile.cache
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk_MarkupCompile.lref
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\MainWindow.baml
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.g.resources
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.Properties.Resources.resources
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.GenerateResource.cache
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CoreCompileInputs.cache
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe
+D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.pdb

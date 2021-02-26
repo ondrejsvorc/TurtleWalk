@@ -70,6 +70,7 @@
     <Compile Include="Classes\Ground.cs" />
     <Compile Include="Classes\LavaDrop.cs" />
     <Compile Include="Classes\Leaf.cs" />
+    <Compile Include="Classes\LevelBuilder.cs" />
     <Compile Include="Classes\Piston.cs" />
     <Compile Include="Classes\SavingPlatform.cs" />
     <Compile Include="Classes\SettingsManager.cs" />

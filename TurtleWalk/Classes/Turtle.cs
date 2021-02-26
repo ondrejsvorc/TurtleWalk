@@ -16,35 +16,31 @@ namespace TurtleWalk
         public double DistanceFromStart;
         public double SeaLevel;
 
-        private Image imgTurtle;
-        private BitmapImage bitmapImgTurtle;
+        public Image Body;
+        private BitmapImage bitmapBody;
 
-        public Turtle(string[] attributes, Grid gridLvl)
+        public Turtle()
         {
-            SeaLevel = Convert.ToDouble(attributes[5]);
+            //SeaLevel = Convert.ToDouble(MainWindow.Attributes[4]);
             IsMoving = true;
             IsDirectionForward = true;
             DistanceFromStart = 0;
 
-            imgTurtle = new Image
-            {
-                Width = Convert.ToDouble(attributes[1]),
-                Height = Convert.ToDouble(attributes[2]),
-                Margin = new Thickness(Convert.ToDouble(attributes[3]), Convert.ToDouble(attributes[4]), Convert.ToDouble(attributes[5]), Convert.ToDouble(attributes[6])),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top
-            };
+            //Body = new Image
+            //{
+            //    Width = Convert.ToDouble(MainWindow.Attributes[1]),
+            //    Height = Convert.ToDouble(MainWindow.Attributes[2]),
+            //    Margin = new Thickness(Convert.ToDouble(MainWindow.Attributes[3]), Convert.ToDouble(MainWindow.Attributes[4]), 0, 0),
+            //    HorizontalAlignment = HorizontalAlignment.Left,
+            //    VerticalAlignment = VerticalAlignment.Top
+            //};
 
-            bitmapImgTurtle = new BitmapImage();
-            bitmapImgTurtle.BeginInit();
-            bitmapImgTurtle.UriSource = new Uri("./Resources/Images/Turtle/turtle_direction_forward.gif", UriKind.Relative);
-            bitmapImgTurtle.EndInit();
+            //bitmapBody = new BitmapImage();
+            //bitmapBody.BeginInit();
+            //bitmapBody.UriSource = new Uri("./Resources/Images/Turtle/turtle_direction_forward.gif", UriKind.Relative);
+            //bitmapBody.EndInit();
 
-            ImageBehavior.SetAnimatedSource(imgTurtle, bitmapImgTurtle);
-
-            Panel.SetZIndex(imgTurtle, 1);
-
-            gridLvl.Children.Add(imgTurtle);
+            //ImageBehavior.SetAnimatedSource(Body, bitmapBody);
         }
 
         public static Thickness Move(Image imgTurtle, double x, double y)

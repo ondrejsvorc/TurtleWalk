@@ -1,15 +1,31 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace TurtleWalk
 {
-    public abstract class CollisionElement                                         // třída by měla být abstraktní - nelze si představit, co přesně CollisionElement je
+    public class CollisionElement                                         // třída by měla být abstraktní - nelze si představit, co přesně CollisionElement je
     {
         public Rect HitBox;
+        public Image Body;
 
-        protected CollisionElement(Rect HitBox)
+        public CollisionElement(Uri source)
         {
-            this.HitBox = new Rect(HitBox.X, HitBox.Y, HitBox.Width, HitBox.Height);
+            //Body = new Image
+            //{
+            //    Width = Convert.ToDouble(MainWindow.Attributes[1]),
+            //    Height = Convert.ToDouble(MainWindow.Attributes[2]),
+            //    Margin = new Thickness(Convert.ToDouble(MainWindow.Attributes[3]), Convert.ToDouble(MainWindow.Attributes[4]), Convert.ToDouble(MainWindow.Attributes[5]), Convert.ToDouble(MainWindow.Attributes[6])),
+            //    Source = new BitmapImage(source),
+            //    HorizontalAlignment = HorizontalAlignment.Left,
+            //    VerticalAlignment = VerticalAlignment.Top
+            //};
+
+            this.HitBox = new Rect(Body.Margin.Left, Body.Margin.Top, Body.Width, Body.Height);
+
+            Panel.SetZIndex(Body, 1);                   // pak vyřešit v souboru (ne vždy to bude 1)
+            MainWindow.GridLvl.Children.Add(Body);
         }
 
         public static Thickness GetMargin(Image img)

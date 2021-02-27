@@ -19,3 +19,4 @@ D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.dll
 D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.pdb
 D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.xml
 D:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CopyComplete
+D:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\XamlAnimatedGif.dll

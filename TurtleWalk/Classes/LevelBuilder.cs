@@ -18,23 +18,27 @@ namespace TurtleWalk
 
         private readonly string path;
         private readonly string lvl;
+        private Grid gridLvl;
 
-        public LevelBuilder(string path, string lvl)
+        public List<Image> Images;
+
+        public LevelBuilder(string path, string lvl, Grid gridLvl)
         {
             this.path = path;
             this.lvl = lvl;
+            this.gridLvl = gridLvl;
         }
 
-        public void Start()
+        // Proměnné zaniknou společně s funkcí - nepotřebujeme o nich znát nadále žádné informace
+        public void BuildLevel()
         {
             Image Element;
             BitmapImage bitmapBody;
-            Uri source;
-            int rowCount;
 
-            rowCount = CountRows();
+            int rowCount = CountRows();
+            Uri source = null;
 
-            source = new Uri("");
+            Images = new List<Image>();      
 
             reader = new StreamReader(path);
 
@@ -104,6 +108,8 @@ namespace TurtleWalk
                     ImageBehavior.SetAnimatedSource(Element, bitmapBody);
                 }
 
+                Images.Add(Element);
+
                 if (attributes[0] != "Background" && attributes[0] != "Piston" && attributes[0] != "Sign")
                 {
                     Panel.SetZIndex(Element, 1);
@@ -113,7 +119,7 @@ namespace TurtleWalk
                     Panel.SetZIndex(Element, 0);
                 }
 
-                MainWindow.GridLvl.Children.Add(Element);
+                gridLvl.Children.Add(Element);
             }
 
             reader.Close();
@@ -133,6 +139,11 @@ namespace TurtleWalk
             reader.Close();
 
             return i;
+        }
+
+        private void AnimateTurtle()
+        {
+
         }
     }
 }

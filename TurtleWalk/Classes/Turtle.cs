@@ -17,46 +17,32 @@ namespace TurtleWalk
         public double SeaLevel;
 
         public Image Body;
-        private BitmapImage bitmapBody;
 
-        public Turtle()
+        public Turtle(Rect HitBox)
         {
-            //SeaLevel = Convert.ToDouble(MainWindow.Attributes[4]);
+            // POUZE PRO lvl01
+            SeaLevel = 830;
             IsMoving = true;
             IsDirectionForward = true;
-            DistanceFromStart = 0;
+            DistanceFromStart = 30;
 
-            //Body = new Image
-            //{
-            //    Width = Convert.ToDouble(MainWindow.Attributes[1]),
-            //    Height = Convert.ToDouble(MainWindow.Attributes[2]),
-            //    Margin = new Thickness(Convert.ToDouble(MainWindow.Attributes[3]), Convert.ToDouble(MainWindow.Attributes[4]), 0, 0),
-            //    HorizontalAlignment = HorizontalAlignment.Left,
-            //    VerticalAlignment = VerticalAlignment.Top
-            //};
-
-            //bitmapBody = new BitmapImage();
-            //bitmapBody.BeginInit();
-            //bitmapBody.UriSource = new Uri("./Resources/Images/Turtle/turtle_direction_forward.gif", UriKind.Relative);
-            //bitmapBody.EndInit();
-
-            //ImageBehavior.SetAnimatedSource(Body, bitmapBody);
+            this.HitBox = HitBox;
         }
 
-        public static Thickness Move(Image imgTurtle, double x, double y)
+        public static Thickness Move(Turtle turtle, double x, double y)
         {
-            return imgTurtle.Margin = new Thickness(x, y, 0, 0);
+            return turtle.Body.Margin = new Thickness(x, y, 0, 0);
         }
 
-        public static Thickness DontMove(Image imgTurtle)
+        public static Thickness DontMove(Turtle turtle)
         {
-            return imgTurtle.Margin;
+            return turtle.Body.Margin;
         }
 
-        public static void HitBoxUpdate(Turtle turtle, Image turtleImg)
+        public static void HitBoxUpdate(Turtle turtle)
         {
-            turtle.HitBox = new Rect(turtleImg.Margin.Left, turtleImg.Margin.Top, turtleImg.Width, turtleImg.Height);
-            turtle.HitBox.Inflate(-turtleImg.Width / 3, -15);
+            turtle.HitBox = new Rect(turtle.Body.Margin.Left, turtle.Body.Margin.Top, turtle.Body.Width, turtle.Body.Height);
+            turtle.HitBox.Inflate(-turtle.Body.Width / 3, -15);
         }
     }
 }

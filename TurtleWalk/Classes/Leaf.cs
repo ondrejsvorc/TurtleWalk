@@ -2,10 +2,10 @@
 
 namespace TurtleWalk
 {
-    public sealed class Leaf /*: CollisionElement*/
+    public sealed class Leaf : CollisionElement
     {
-        //public Leaf(Rect leafHitBox) : base(leafHitBox) 
-        //{ 
-        //}
+        public Leaf(Rect leafHitBox) : base(leafHitBox)
+        {
+        }
     }
 }

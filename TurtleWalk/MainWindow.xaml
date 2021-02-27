@@ -349,6 +349,14 @@
                 Panel.ZIndex="1"
                 Content="Stop"
                 FontSize="20" />
+
+            <Label
+                x:Name="lbScore"
+                Margin="1592,231,43,777"
+                Panel.ZIndex="1"
+                Content="Score: 0"
+                FontFamily="Yu Gothic UI Light"
+                FontSize="50" />
         </Grid>
     </Grid>
 </Window>

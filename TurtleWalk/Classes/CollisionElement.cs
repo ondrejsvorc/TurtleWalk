@@ -10,22 +10,9 @@ namespace TurtleWalk
         public Rect HitBox;
         public Image Body;
 
-        public CollisionElement(Uri source)
+        public CollisionElement(Rect HitBox)
         {
-            //Body = new Image
-            //{
-            //    Width = Convert.ToDouble(MainWindow.Attributes[1]),
-            //    Height = Convert.ToDouble(MainWindow.Attributes[2]),
-            //    Margin = new Thickness(Convert.ToDouble(MainWindow.Attributes[3]), Convert.ToDouble(MainWindow.Attributes[4]), Convert.ToDouble(MainWindow.Attributes[5]), Convert.ToDouble(MainWindow.Attributes[6])),
-            //    Source = new BitmapImage(source),
-            //    HorizontalAlignment = HorizontalAlignment.Left,
-            //    VerticalAlignment = VerticalAlignment.Top
-            //};
-
-            this.HitBox = new Rect(Body.Margin.Left, Body.Margin.Top, Body.Width, Body.Height);
-
-            Panel.SetZIndex(Body, 1);                   // pak vyřešit v souboru (ne vždy to bude 1)
-            MainWindow.GridLvl.Children.Add(Body);
+            this.HitBox = new Rect(HitBox.X, HitBox.Y, HitBox.Width, HitBox.Height);
         }
 
         public static Thickness GetMargin(Image img)

@@ -439,6 +439,9 @@ namespace TurtleWalk
                 gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS_STOPPED, UriKind.Relative);
             }
 
+            // ANIMATION ISN'T WORKING PROPERLY ON TURTLE.BODY (BODY IS AN IMAGE)
+            // IF I APPLY THE SAME ON THE IMAGE IN XAML (imgDirection), IT WORKS WITHOUT ANY PROBLEMS
+
             bitmapBody = new BitmapImage();
             bitmapBody.BeginInit();
             bitmapBody.UriSource = gifSourceTurtle;

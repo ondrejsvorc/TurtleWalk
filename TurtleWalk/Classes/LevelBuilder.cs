@@ -35,10 +35,11 @@ namespace TurtleWalk
             Image Element;
             BitmapImage bitmapBody;
 
-            int rowCount = CountRows();
             Uri source = null;
 
-            Images = new List<Image>();      
+            Images = new List<Image>();
+
+            int rowCount = CountRows();
 
             reader = new StreamReader(path);
 
@@ -139,11 +140,6 @@ namespace TurtleWalk
             reader.Close();
 
             return i;
-        }
-
-        private void AnimateTurtle()
-        {
-
         }
     }
 }

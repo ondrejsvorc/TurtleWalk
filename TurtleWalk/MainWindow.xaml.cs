@@ -118,8 +118,6 @@ namespace TurtleWalk
 
                     if (image.Width.ToString() == rowProperties[1] && image.Height.ToString() == rowProperties[2] && image.Margin.Left.ToString() == rowProperties[3] && image.Margin.Top.ToString() == rowProperties[4])
                     {
-                        // LISTY JSOU Z NĚJAKÉHO DŮVODU PRÁZDNÝ
-
                         switch (rowProperties[0])
                         {
                             case "Turtle":

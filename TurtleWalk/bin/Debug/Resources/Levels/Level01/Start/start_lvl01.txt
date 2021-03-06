@@ -2,7 +2,7 @@
 Background x x 0 0
 Ground 1030 130 -10 990
 Ground 1030 130 1000 990
-Ground 260 260 700 500
+Ground 260 260 700 400
 Leaf 80 80 780 880
 SavingPlatform 300 40 35 130
 Piston 180 200 450 900

@@ -40,11 +40,11 @@ namespace TurtleWalk
         private Uri gifSourceTurtle;
         private Uri gifSourceDirection;
 
-        private const string PATH_DIRECTION_FORWARD = "./Resources/Images/Turtle/turtle_direction_forward.gif";
-        private const string PATH_DIRECTION_BACKWARDS = "./Resources/Images/Turtle/turtle_direction_backwards.gif";
+        private const string PATH_DIRECTION_FORWARD = "pack://application:,,,/Resources/Images/Turtle/turtle_direction_forward.gif";
+        private const string PATH_DIRECTION_BACKWARDS = "pack://application:,,,/Resources/Images/Turtle/turtle_direction_backwards.gif";
 
-        private const string PATH_DIRECTION_FORWARD_STOPPED = "./Resources/Images/Turtle/turtleStopped_direction_forward.gif";
-        private const string PATH_DIRECTION_BACKWARDS_STOPPED = "./Resources/Images/Turtle/turtleStopped_direction_backwards.gif";
+        private const string PATH_DIRECTION_FORWARD_STOPPED = "pack://application:,,,/Resources/Images/Turtle/turtleStopped_direction_forward.gif";
+        private const string PATH_DIRECTION_BACKWARDS_STOPPED = "pack://application:,,,/Resources/Images/Turtle/turtleStopped_direction_backwards.gif";
 
         private int clickCountDirection, clickCountMovement;
 
@@ -422,21 +422,21 @@ namespace TurtleWalk
 
             if (turtle.IsMoving && turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_FORWARD, UriKind.Relative);
-                gifSourceDirection = new Uri(PATH_DIRECTION_BACKWARDS, UriKind.Relative);
+                gifSourceTurtle = new Uri(PATH_DIRECTION_FORWARD);
+                gifSourceDirection = new Uri(PATH_DIRECTION_BACKWARDS);
             }
             else if (turtle.IsMoving && !turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS, UriKind.Relative);
-                gifSourceDirection = new Uri(PATH_DIRECTION_FORWARD, UriKind.Relative);
+                gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS);
+                gifSourceDirection = new Uri(PATH_DIRECTION_FORWARD);
             }
             else if (!turtle.IsMoving && turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_FORWARD_STOPPED, UriKind.Relative);
+                gifSourceTurtle = new Uri(PATH_DIRECTION_FORWARD_STOPPED);
             }
             else if (!turtle.IsMoving && !turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS_STOPPED, UriKind.Relative);
+                gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS_STOPPED);
             }
 
             // ANIMATION ISN'T WORKING PROPERLY ON TURTLE.BODY (BODY IS AN IMAGE)

@@ -34,7 +34,7 @@ namespace TurtleWalk
         private Cursor cursorHand;
         private Cursor cursorGrabbed;
 
-        private double marginLeft, marginRight;
+        private double marginLeft;
 
         private BitmapImage bitmapBody;
         private Uri gifSourceTurtle;
@@ -125,12 +125,17 @@ namespace TurtleWalk
                                 turtle.Body = image;
                                 break;
 
+                            case "SavingPlatform":
+                                savingPlatform = new SavingPlatform();
+                                savingPlatform.Body = image;
+                                break;
+
                             case "Sign":
                                 finishSign = new Sign(CollisionElement.SetHitBox(image));
                                 break;
 
                             case "Ground":
-                                Ground ground = new Ground(CollisionElement.SetHitBox(image));
+                                Ground ground = new Ground(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
                                 grounds.Add(ground);
                                 break;
 
@@ -141,7 +146,7 @@ namespace TurtleWalk
                                 break;
 
                             case "Piston":
-                                Piston piston = new Piston(CollisionElement.SetHitBox(image));
+                                Piston piston = new Piston(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
                                 pistons.Add(piston);
                                 break;
 
@@ -201,24 +206,18 @@ namespace TurtleWalk
             }
 
             // ŽElVIČKA STOUPLA NA PISTON
-            foreach (Piston piston in pistons)
+            if (Piston.CheckCollision(turtle))
             {
-                if (turtle.HitBox.IntersectsWith(piston.HitBox))
-                {
-                    Turtle.Move(turtle, turtle.DistanceFromStart += 4.5, turtle.SeaLevel -= 22.5);
-                }
+                Turtle.Move(turtle, turtle.DistanceFromStart += 4.5, turtle.SeaLevel -= 22.5);
             }
 
             // ZELVIČKA SE NIČEHO NEDOTÝKÁ
-            foreach (Piston piston in pistons)
+            if (!(Ground.CheckCollision(turtle) || Piston.CheckCollision(turtle)))
             {
-                if (!(Ground.CheckCollision(turtle) || Piston.CheckCollision(turtle)))
-                {
-                    Turtle.Move(turtle, turtle.DistanceFromStart += 2, turtle.SeaLevel += 8);
-                }
+                Turtle.Move(turtle, turtle.DistanceFromStart += 2, turtle.SeaLevel += 8);
             }
 
-            //// ZELVIČKA SE NEHÝBE
+            // ZELVIČKA SE NEHÝBE
             if (!turtle.IsMoving)
             {
                 Turtle.DontMove(turtle);
@@ -315,6 +314,9 @@ namespace TurtleWalk
             }
         }
 
+        // indexy 0 - 6 jsou overlay (vždy)
+        // odebíráme z gridu všechny potomky do té doby, než tam nezůstane pouze overlay, jehož odstranění je nežádoucí
+
         private void LevelFinish()
         {
             timer.Stop();
@@ -334,35 +336,29 @@ namespace TurtleWalk
             gridMenu.Visibility = Visibility.Visible;
         }
 
-        // FIX THIS
         private void MovePlatform(object sender, KeyEventArgs e)
         {
-            //switch (e.Key)
-            //{
-            //    case Key.Left:
-            //    case Key.A:
-            //        if (marginLeft > 0)
-            //        {
-            //            marginLeft -= 25;
-            //            marginRight += 25;
-            //        }
-            //        break;
+            switch (e.Key)
+            {
+                case Key.Left:
+                case Key.A:
+                    if (savingPlatform.Body.Margin.Left > 0)
+                    {
+                        marginLeft = savingPlatform.Body.Margin.Left - 25;
+                    }
+                    break;
 
-            //    case Key.Right:
-            //    case Key.D:
-            //        if (marginRight > 0)
-            //        {
-            //            marginRight -= 25;
-            //            marginLeft += 25;
-            //        }
-            //        break;
-            //}
+                case Key.Right:
+                case Key.D:
+                    if (savingPlatform.Body.Margin.Left < 1000)
+                    {
+                        marginLeft = savingPlatform.Body.Margin.Left + 25;
+                    }
+                    break;
+            }
 
-            //SavingPlatform.Move(savingPlatform.Body, marginLeft, marginRight);
+            SavingPlatform.Move(savingPlatform, marginLeft);
         }
-
-        // indexy 0 - 6 jsou overlay (vždy)
-        // odebíráme z gridu všechny potomky do té doby, než tam nezůstane pouze overlay, jehož odstranění je nežádoucí
 
         private void TurtleChangeDirection(object sender, MouseButtonEventArgs e)
         {

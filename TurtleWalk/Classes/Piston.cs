@@ -10,8 +10,9 @@ namespace TurtleWalk
     {
         private static readonly List<Rect> hitBoxes = new List<Rect>();
 
-        public Piston(Rect pistonHitBox) : base(pistonHitBox)
+        public Piston(Rect pistonHitBox, double InflationWidth, double InflationHeight) : base(pistonHitBox)
         {
+            pistonHitBox.Inflate(InflationWidth, InflationHeight);   // Pro větší přirozenost HitBoxu
             hitBoxes.Add(pistonHitBox);
         }
 

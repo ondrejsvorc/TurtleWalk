@@ -10,9 +10,9 @@ namespace TurtleWalk
         // CONST - HODNOTY MUSÍME NASTAVIT PŘI INICIALIZACI (NÁZVY PROMĚNNÝCH TOHOTO TYPU PÍŠEME VELKÝMI PÍSMENY, ODDĚLUJEME PODTRŽÍTKEM)
         private static readonly List<Rect> hitBoxes = new List<Rect>();
 
-        public Ground(Rect groundHitBox/*, double InflationWidth, double InflationHeight*/) : base(groundHitBox)
+        public Ground(Rect groundHitBox, double InflationWidth, double InflationHeight) : base(groundHitBox)
         {
-            //groundHitBox.Inflate(InflationWidth, InflationHeight);   // Pro větší přirozenost HitBoxu
+            groundHitBox.Inflate(InflationWidth, InflationHeight);   // Pro větší přirozenost HitBoxu
             hitBoxes.Add(groundHitBox);
         }
 

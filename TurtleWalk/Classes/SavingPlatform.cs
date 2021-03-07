@@ -12,38 +12,30 @@ namespace TurtleWalk
 
         public SavingPlatform()
         {
-            //Body = new Image
-            //{
-            //    Width = Convert.ToDouble(MainWindow.Attributes[1]),
-            //    Height = Convert.ToDouble(MainWindow.Attributes[2]),
-            //    Margin = new Thickness(Convert.ToDouble(MainWindow.Attributes[3]), Convert.ToDouble(MainWindow.Attributes[4]), Convert.ToDouble(MainWindow.Attributes[5]), Convert.ToDouble(MainWindow.Attributes[6])),
-            //    Source = new BitmapImage(new Uri($"./Resources/Levels/Level01/Platforms/ice_platform_2.png", UriKind.Relative)),
-            //    HorizontalAlignment = HorizontalAlignment.Left,
-            //    VerticalAlignment = VerticalAlignment.Top
-            //};
         }
 
-        public static Thickness Move(Image imgPlatform, double marginLeft, double marginRight)
+        //ERORR KDYŽ KLIKNU NA ŠIPKU V MENU
+        public static Thickness Move(SavingPlatform savingPlatform, double marginLeft)
         {
-            return imgPlatform.Margin = new Thickness(marginLeft, imgPlatform.Margin.Top, marginRight, imgPlatform.Margin.Bottom);
+            return savingPlatform.Body.Margin = new Thickness(marginLeft, savingPlatform.Body.Margin.Top, 0, 0);
         }
 
-        public static void HitBoxUpdate(SavingPlatform savingPlatform, Image imgSavingPlatform)
+        public static void HitBoxUpdate(SavingPlatform savingPlatform)
         {
-            savingPlatform.HitBox = new Rect(imgSavingPlatform.Margin.Left, imgSavingPlatform.Margin.Top, imgSavingPlatform.Width, imgSavingPlatform.Height);
+            savingPlatform.HitBox = new Rect(savingPlatform.Body.Margin.Left, savingPlatform.Body.Margin.Top, savingPlatform.Body.Width, savingPlatform.Body.Height);
             savingPlatform.HitBox.Inflate(-10, -20);
         }
 
-        //public static bool CheckCollisionBetween(SavingPlatform savingPlatform, LavaDrop lavaDrop)
-        //{
-        //    if (savingPlatform.HitBox.IntersectsWith(lavaDrop.HitBox))
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
+        public static bool CheckCollisionBetween(SavingPlatform savingPlatform, LavaDrop lavaDrop)
+        {
+            if (savingPlatform.HitBox.IntersectsWith(lavaDrop.HitBox))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

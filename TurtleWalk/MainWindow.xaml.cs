@@ -30,6 +30,7 @@ namespace TurtleWalk
         private int scoreCount;
 
         private string levelInProgress;
+        private string currentLevelPath;
 
         private Cursor cursorHand;
         private Cursor cursorGrabbed;
@@ -47,6 +48,10 @@ namespace TurtleWalk
         private const string PATH_DIRECTION_BACKWARDS_STOPPED = "pack://application:,,,/Resources/Images/Turtle/turtleStopped_direction_backwards.gif";
 
         private int clickCountDirection, clickCountMovement;
+
+        private int[] collisionPlatform;
+        private int index;
+        private int timeElapsed;
 
         private List<Ground> grounds;
         private List<LavaDrop> lavaDrops;
@@ -91,6 +96,11 @@ namespace TurtleWalk
             clickCountDirection = 0;
             clickCountMovement = 0;
 
+            collisionPlatform = new int[4];
+
+            index = 0;
+            timeElapsed = 0;
+
             levelInProgress = "none";
         }
 
@@ -100,7 +110,7 @@ namespace TurtleWalk
             {
                 levelInProgress = lvl;
 
-                string currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
+                currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
 
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromMilliseconds(25);
@@ -151,7 +161,8 @@ namespace TurtleWalk
                                 break;
 
                             case "LavaDrop":
-                                LavaDrop lavaDrop = new LavaDrop(CollisionElement.GetMargin(image), CollisionElement.SetHitBox(image));
+                                LavaDrop lavaDrop = new LavaDrop(CollisionElement.SetHitBox(image));
+                                lavaDrop.Body = image;
                                 lavaDrops.Add(lavaDrop);
                                 break;
                         }
@@ -173,10 +184,10 @@ namespace TurtleWalk
         {
             //NEUSTÁLE SE AKTUALIZUJÍCÍ A MODIFIKOVANÉ HITBOXY ŽELVIČKY A PLATFORMY PRO PŘIROZENOU DETEKCI KOLIZE V REÁLNÉM ČASE
             Turtle.HitBoxUpdate(turtle);
-            //SavingPlatform.HitBoxUpdate(savingPlatform, savingPlatform.Body);
+            SavingPlatform.HitBoxUpdate(savingPlatform);
 
             //POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
-            //timeElapsed++;
+            timeElapsed++;
 
             //ZELVIČKA JDE POPŘEDU A DOTÝKÁ SE
             // ZELVIČKA JDE POZPÁTKU A DOTÝKÁ SE
@@ -223,70 +234,65 @@ namespace TurtleWalk
                 Turtle.DontMove(turtle);
             }
 
-            //// VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
-            //Array.Clear(collisionPlatform, 0, collisionPlatform.Length);
-            //index = 0;
+            // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
+            Array.Clear(collisionPlatform, 0, collisionPlatform.Length);
+            index = 0;
 
-            //// DETEKCE KOLIZE MEZI PLATFORMOU A KAPKOU (INDIVIDUÁLNÍ PRO KAŽDOU KAPKU)
+            // DETEKCE KOLIZE MEZI PLATFORMOU A KAPKOU (INDIVIDUÁLNÍ PRO KAŽDOU KAPKU)
 
-            //if (SavingPlatform.CheckCollisionBetween(platform, lavaDrop1))
-            //{
-            //    collisionPlatform[index++] = 1;
-            //}
+            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[0]))
+            {
+                collisionPlatform[index++] = 1;
+            }
 
-            //if (SavingPlatform.CheckCollisionBetween(platform, lavaDrop2))
-            //{
-            //    collisionPlatform[index++] = 2;
-            //}
+            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[1]))
+            {
+                collisionPlatform[index++] = 2;
+            }
 
-            //if (SavingPlatform.CheckCollisionBetween(platform, lavaDrop3))
-            //{
-            //    collisionPlatform[index++] = 3;
-            //}
+            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[2]))
+            {
+                collisionPlatform[index++] = 3;
+            }
 
-            //if (SavingPlatform.CheckCollisionBetween(platform, lavaDrop4))
-            //{
-            //    collisionPlatform[index++] = 4;
-            //}
+            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[3]))
+            {
+                collisionPlatform[index] = 4;
+            }
 
-            //// ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
+            // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
 
-            //// 1 tick = 25 ms
-            //// 80 * 25 = 2000 ms = 2s
+            // 1 tick = 25 ms
+            // 80 * 25 = 2000 ms = 2s
 
-            //if (timeElapsed >= 0 && timeElapsed <= 80)
-            //{
-            //    // Jestliže se želvička dotýká země - začni padat a do té doby, co se kapka nedotýká platformy ani země, padej dál
+            if (timeElapsed >= 0 && timeElapsed <= 80)
+            {
+                if (Ground.CheckCollisionBetween(turtle, grounds[0]) && !collisionPlatform.Contains(1) && !lavaDrops[0].HitBox.IntersectsWith(grounds[0].HitBox))
+                {
+                    LavaDrop.Fall(lavaDrops[0], lavaDrops[0].Body.Margin.Top);
+                }
 
-            //    if (Ground.CheckCollisionBetween(turtle, ground2) && !collisionPlatform.Contains(1) && !lavaDrop1.HitBox.IntersectsWith(ground2.HitBox))
-            //    {
-            //        LavaDrop.Fall(imgLavaDrop1, lavaDrop1, imgLavaDrop1.Margin.Top);
-            //    }
+                if (!collisionPlatform.Contains(2))
+                {
+                    LavaDrop.Fall(lavaDrops[1], lavaDrops[1].Body.Margin.Top);
+                }
 
-            //    if (!collisionPlatform.Contains(2))
-            //    {
-            //        LavaDrop.Fall(imgLavaDrop2, lavaDrop2, imgLavaDrop2.Margin.Top);
-            //    }
+                if (!collisionPlatform.Contains(3))
+                {
+                    LavaDrop.Fall(lavaDrops[2], lavaDrops[2].Body.Margin.Top);
+                }
 
-            //    if (!collisionPlatform.Contains(3))
-            //    {
-            //        LavaDrop.Fall(imgLavaDrop3, lavaDrop3, imgLavaDrop3.Margin.Top);
-            //    }
+                if (!collisionPlatform.Contains(4))
+                {
+                    LavaDrop.Fall(lavaDrops[3], lavaDrops[3].Body.Margin.Top);
+                }
+            }
+            else if (timeElapsed > 80)
+            {
+                LavaDrop.ResetPositions(lavaDrops);
 
-            //    if (!collisionPlatform.Contains(4))
-            //    {
-            //        LavaDrop.Fall(imgLavaDrop4, lavaDrop4, imgLavaDrop4.Margin.Top);
-            //    }
-            //}
-            //else if (timeElapsed > 80)
-            //{
-            //    LavaDrop.ResetPosition(imgLavaDrop2, lavaDrop2);
-            //    LavaDrop.ResetPosition(imgLavaDrop3, lavaDrop3);
-            //    LavaDrop.ResetPosition(imgLavaDrop4, lavaDrop4);
-            //    LavaDrop.ResetPosition(imgLavaDrop1, lavaDrop1);
-
-            //    timeElapsed = 0;
-            //}
+                timeElapsed = 0;
+            }
 
             //// ŽELVIČKA SE DOTKLA KAPKY (pozn.: zoptimalizovat podmínku)
             //if (turtle.HitBox.IntersectsWith(lavaDrop2.HitBox) || turtle.HitBox.IntersectsWith(lavaDrop3.HitBox) || turtle.HitBox.IntersectsWith(lavaDrop4.HitBox) || turtle.HitBox.IntersectsWith(lavaDrop1.HitBox))
@@ -307,7 +313,7 @@ namespace TurtleWalk
             {
                 if (e.Key == Key.Escape)
                 {
-                    //turtle.IsMoving = false;
+                    turtle.IsMoving = false;
                     gridLvl.Visibility = Visibility.Hidden;
                     gridMenu.Visibility = Visibility.Visible;
                 }
@@ -538,7 +544,7 @@ namespace TurtleWalk
 
         private void ResumeLevel()
         {
-
+            turtle.IsMoving = true;
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)

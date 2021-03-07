@@ -84,6 +84,10 @@ namespace TurtleWalk
                         }
                         break;
 
+                    case "LavaDrop":
+                        source = new Uri($"./Resources/Images/Deadly-Entities/lava_drop.png", UriKind.Relative);
+                        break;
+
                     case "Sign":
                         source = new Uri($"./Resources/Images/Other/finish.png", UriKind.Relative);
                         break;
@@ -111,7 +115,7 @@ namespace TurtleWalk
 
                 Images.Add(Element);
 
-                if (attributes[0] != "Background" && attributes[0] != "Piston" && attributes[0] != "Sign")
+                if (attributes[0] != "Background" && attributes[0] != "Piston" && attributes[0] != "Sign" && attributes[0] != "LavaDrop")
                 {
                     Panel.SetZIndex(Element, 1);
                 }

@@ -2,47 +2,37 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.IO;
+using System;
 
 namespace TurtleWalk
 {
     public sealed class LavaDrop : CollisionElement
     {
-        private static readonly Dictionary<Thickness, Rect> dictionary = new Dictionary<Thickness, Rect>();
+        private const double _marginTop = 70;
+        private static StreamReader _streamReader;
+        private static string[] attributes;
 
-        public LavaDrop(Thickness startImgMargin, Rect startLavaDropHitBox) : base(startLavaDropHitBox)
+        public LavaDrop(Rect lavaDropHitBox) : base(lavaDropHitBox)
         {
-            dictionary.Add(startImgMargin, startLavaDropHitBox);
         }
 
-        public static void Fall(Image imgLavaDrop, LavaDrop lavaDrop, double marginTop)
+        public static void Fall(LavaDrop lavaDrop, double marginTop)
         {
             marginTop += 25;
 
-            imgLavaDrop.Margin = new Thickness(imgLavaDrop.Margin.Left, marginTop, imgLavaDrop.Margin.Right, imgLavaDrop.Margin.Bottom);
-            lavaDrop.HitBox = new Rect(imgLavaDrop.Margin.Left, marginTop, imgLavaDrop.Width, imgLavaDrop.Height);
+            lavaDrop.Body.Margin = new Thickness(lavaDrop.Body.Margin.Left, marginTop, lavaDrop.Body.Margin.Right, lavaDrop.Body.Margin.Bottom);
+            lavaDrop.HitBox = new Rect(lavaDrop.Body.Margin.Left, marginTop, lavaDrop.Body.Width, lavaDrop.Body.Height);
         }
 
-        public static void ResetPosition(Image imgLavaDrop, LavaDrop lavaDrop)
+        // THERE MIGHT BE PROBLEMS
+        public static void ResetPositions(List<LavaDrop> lavaDrops)
         {
-            int i = 0;
-
-            switch (imgLavaDrop.Name)
+            foreach (LavaDrop lavaDrop in lavaDrops)
             {
-                case "imgLavaDrop2":
-                    i++;
-                    break;
-
-                case "imgLavaDrop3":
-                    i += 2;
-                    break;
-
-                case "imgLavaDrop4":
-                    i += 3;
-                    break;
+                lavaDrop.Body.Margin = new Thickness(lavaDrop.Body.Margin.Left, _marginTop, 0, 0);
+                //lavaDrop.Hitbox ?
             }
-
-            imgLavaDrop.Margin = dictionary.ElementAt(i).Key;
-            lavaDrop.HitBox = dictionary.ElementAt(i).Value;
         }
     }
 }

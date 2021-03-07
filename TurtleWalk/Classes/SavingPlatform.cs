@@ -23,7 +23,7 @@ namespace TurtleWalk
         public static void HitBoxUpdate(SavingPlatform savingPlatform)
         {
             savingPlatform.HitBox = new Rect(savingPlatform.Body.Margin.Left, savingPlatform.Body.Margin.Top, savingPlatform.Body.Width, savingPlatform.Body.Height);
-            savingPlatform.HitBox.Inflate(-10, -20);
+            //savingPlatform.HitBox.Inflate(-10, -20);
         }
 
         public static bool CheckCollisionBetween(SavingPlatform savingPlatform, LavaDrop lavaDrop)

@@ -69,21 +69,7 @@ namespace TurtleWalk
 
         private void Setup()
         {
-            // CHECKS FOR AVAILABLE LEVELS (EXCEPT FOR THE FIRST ONE, WHICH IS ALWAYS AVAILABLE)
-
-            reader = new StreamReader("./Resources/Levels/Available/available_levels.txt");
-
-            string[] availableLevels = reader.ReadLine().Split(' ');
-
-            for (int i = 0; i < availableLevels.Length - 1; i++)
-            {
-                if (availableLevels[i + 1] == "1")
-                {
-                    gridLevels.Children[i + 1].IsEnabled = true;
-                }
-            }
-
-            reader.Close();
+            GameManager.GetAvailableLevels(gridLevels);
 
             grounds = new List<Ground>();
             lavaDrops = new List<LavaDrop>();
@@ -180,16 +166,50 @@ namespace TurtleWalk
             }
         }
 
+        private void LevelRestart()
+        {
+        }
+
+        private void LevelResume()
+        {
+            turtle.IsMoving = true;
+        }
+
+        // Indexy 0 - 6 jsou vždy na gridu --> overlay 
+        // Z gridu odebíráme všechny potomky do té doby, než tam nezůstane pouze overlay, jehož odstranění je nežádoucí
+
+        private void LevelFinish()
+        {
+            timer.Stop();
+
+            levelInProgress = "none";
+
+            lbScore.Content = $"Score: {scoreCount = 0}";
+
+            int lastIndex = gridLvl.Children.Count - 1;
+
+            while (gridLvl.Children.Count != 7)
+            {
+                gridLvl.Children.RemoveAt(lastIndex--);
+            }
+
+            GameManager.SetAvailableLevels();
+            GameManager.GetAvailableLevels(gridLevels);
+
+            gridLvl.Visibility = Visibility.Hidden;
+            gridMenu.Visibility = Visibility.Visible;
+        }
+
         private void GameUpdate(object sender, EventArgs e)
         {
-            //NEUSTÁLE SE AKTUALIZUJÍCÍ A MODIFIKOVANÉ HITBOXY ŽELVIČKY A PLATFORMY PRO PŘIROZENOU DETEKCI KOLIZE V REÁLNÉM ČASE
+            // NEUSTÁLE SE AKTUALIZUJÍCÍ A MODIFIKOVANÉ HITBOXY ŽELVIČKY A PLATFORMY PRO PŘIROZENOU DETEKCI KOLIZE V REÁLNÉM ČASE
             Turtle.HitBoxUpdate(turtle);
             SavingPlatform.HitBoxUpdate(savingPlatform);
 
-            //POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
+            // POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
             timeElapsed++;
 
-            //ZELVIČKA JDE POPŘEDU A DOTÝKÁ SE
+            // ZELVIČKA JDE POPŘEDU A DOTÝKÁ SE
             // ZELVIČKA JDE POZPÁTKU A DOTÝKÁ SE
 
             if (turtle.IsMoving && turtle.IsDirectionForward && Ground.CheckCollision(turtle))
@@ -200,9 +220,6 @@ namespace TurtleWalk
             {
                 Turtle.Move(turtle, turtle.DistanceFromStart -= 5, turtle.SeaLevel);
             }
-
-
-            //NEFUNKČNÍ - MOŽNÁ SE NEAKTUALIZUJE HITBOX ŽELVIČKY?
 
             // ZELVIČKA SE DOTÝKÁ LISTU
             foreach (Leaf leaf in leafs)
@@ -252,12 +269,7 @@ namespace TurtleWalk
 
             if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[2]))
             {
-                collisionPlatform[index++] = 3;
-            }
-
-            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[3]))
-            {
-                collisionPlatform[index] = 4;
+                collisionPlatform[index] = 3;
             }
 
             // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
@@ -267,7 +279,7 @@ namespace TurtleWalk
 
             if (timeElapsed >= 0 && timeElapsed <= 80)
             {
-                if (Ground.CheckCollisionBetween(turtle, grounds[0]) && !collisionPlatform.Contains(1) && !lavaDrops[0].HitBox.IntersectsWith(grounds[0].HitBox))
+                if (!collisionPlatform.Contains(1))
                 {
                     LavaDrop.Fall(lavaDrops[0], lavaDrops[0].Body.Margin.Top);
                 }
@@ -281,11 +293,6 @@ namespace TurtleWalk
                 {
                     LavaDrop.Fall(lavaDrops[2], lavaDrops[2].Body.Margin.Top);
                 }
-
-                if (!collisionPlatform.Contains(4))
-                {
-                    LavaDrop.Fall(lavaDrops[3], lavaDrops[3].Body.Margin.Top);
-                }
             }
             else if (timeElapsed > 80)
             {
@@ -294,11 +301,13 @@ namespace TurtleWalk
                 timeElapsed = 0;
             }
 
-            //// ŽELVIČKA SE DOTKLA KAPKY (pozn.: zoptimalizovat podmínku)
-            //if (turtle.HitBox.IntersectsWith(lavaDrop2.HitBox) || turtle.HitBox.IntersectsWith(lavaDrop3.HitBox) || turtle.HitBox.IntersectsWith(lavaDrop4.HitBox) || turtle.HitBox.IntersectsWith(lavaDrop1.HitBox))
-            //{
-            //    GameRestart();
-            //}
+            foreach (LavaDrop lavaDrop in lavaDrops)
+            {
+                if (turtle.HitBox.IntersectsWith(lavaDrop.HitBox))
+                {
+                    LevelRestart();
+                }
+            }
 
             ////ŽELVIČKA DOKONČILA LEVEL
             if (turtle.HitBox.IntersectsWith(finishSign.HitBox))
@@ -320,28 +329,6 @@ namespace TurtleWalk
             }
         }
 
-        // indexy 0 - 6 jsou overlay (vždy)
-        // odebíráme z gridu všechny potomky do té doby, než tam nezůstane pouze overlay, jehož odstranění je nežádoucí
-
-        private void LevelFinish()
-        {
-            timer.Stop();
-
-            levelInProgress = "none";
-
-            lbScore.Content = $"Score: {scoreCount = 0}";
-
-            int lastIndex = gridLvl.Children.Count - 1;
-
-            while (gridLvl.Children.Count != 7)
-            {
-                gridLvl.Children.RemoveAt(lastIndex--);
-            }
-
-            gridLvl.Visibility = Visibility.Hidden;
-            gridMenu.Visibility = Visibility.Visible;
-        }
-
         private void MovePlatform(object sender, KeyEventArgs e)
         {
             switch (e.Key)
@@ -356,7 +343,7 @@ namespace TurtleWalk
 
                 case Key.Right:
                 case Key.D:
-                    if (savingPlatform.Body.Margin.Left < 1000)
+                    if (savingPlatform.Body.Margin.Left < 1050)
                     {
                         marginLeft = savingPlatform.Body.Margin.Left + 25;
                     }
@@ -438,9 +425,6 @@ namespace TurtleWalk
             {
                 gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS_STOPPED);
             }
-
-            // ANIMATION ISN'T WORKING PROPERLY ON TURTLE.BODY (BODY IS AN IMAGE)
-            // IF I APPLY THE SAME ON THE IMAGE IN XAML (imgDirection), IT WORKS WITHOUT ANY PROBLEMS
 
             bitmapBody = new BitmapImage();
             bitmapBody.BeginInit();
@@ -540,11 +524,6 @@ namespace TurtleWalk
         {
             gridButtons.Visibility = Visibility.Hidden;
             gridLevels.Visibility = Visibility.Visible;
-        }
-
-        private void ResumeLevel()
-        {
-            turtle.IsMoving = true;
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)

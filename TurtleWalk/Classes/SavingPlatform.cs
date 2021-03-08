@@ -7,8 +7,8 @@ namespace TurtleWalk
 {
     public sealed class SavingPlatform
     {
-        public Rect HitBox;
-        public Image Body;
+        public Rect HitBox { get; private set; }
+        public Image Body { get; set; }
 
         public SavingPlatform()
         {
@@ -23,7 +23,6 @@ namespace TurtleWalk
         public static void HitBoxUpdate(SavingPlatform savingPlatform)
         {
             savingPlatform.HitBox = new Rect(savingPlatform.Body.Margin.Left, savingPlatform.Body.Margin.Top, savingPlatform.Body.Width, savingPlatform.Body.Height);
-            //savingPlatform.HitBox.Inflate(-10, -20);
         }
 
         public static bool CheckCollisionBetween(SavingPlatform savingPlatform, LavaDrop lavaDrop)

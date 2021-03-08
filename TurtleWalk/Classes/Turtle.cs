@@ -21,6 +21,7 @@ namespace TurtleWalk
         public Turtle(Rect HitBox)
         {
             // POUZE PRO lvl01
+            // SeaLevel nastavovat pro každý level zvlášť
             SeaLevel = 830;
             IsMoving = true;
             IsDirectionForward = true;

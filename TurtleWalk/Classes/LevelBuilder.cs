@@ -14,19 +14,19 @@ namespace TurtleWalk
 {
     public class LevelBuilder
     {
-        private StreamReader reader;
+        private StreamReader _reader { get; set; }
 
-        private readonly string path;
-        private readonly string lvl;
-        private Grid gridLvl;
+        private Grid _gridLvl { get; set; }
+        private string _path { get; }
+        private string _lvl { get; }
 
-        public List<Image> Images;
+        public List<Image> Images { get; private set; }
 
         public LevelBuilder(string path, string lvl, Grid gridLvl)
         {
-            this.path = path;
-            this.lvl = lvl;
-            this.gridLvl = gridLvl;
+            _path = path;
+            _lvl = lvl;
+            _gridLvl = gridLvl;
         }
 
         // Proměnné zaniknou společně s funkcí - nepotřebujeme o nich znát nadále žádné informace
@@ -41,11 +41,11 @@ namespace TurtleWalk
 
             int rowCount = CountRows();
 
-            reader = new StreamReader(path);
+            _reader = new StreamReader(_path);
 
             for (int i = 0; i < rowCount; i++)
             {
-                string[] attributes = reader.ReadLine().Split(' ');
+                string[] attributes = _reader.ReadLine().Split(' ');
 
                 switch (attributes[0])
                 {
@@ -62,25 +62,25 @@ namespace TurtleWalk
                         break;
 
                     case "Background":
-                        source = new Uri($"./Resources/Levels/Level{lvl}/Background/background_lvl{lvl}.jpg", UriKind.Relative);
+                        source = new Uri($"./Resources/Levels/Level{_lvl}/Background/background_lvl{_lvl}.jpg", UriKind.Relative);
                         attributes[1] = SystemParameters.PrimaryScreenWidth.ToString();
                         attributes[2] = SystemParameters.PrimaryScreenHeight.ToString();
                         break;
 
                         // zatím jen pro lvl01
                     case "SavingPlatform":
-                        source = new Uri($"./Resources/Levels/Level{lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
+                        source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
                         break;
 
                         // zatím jen pro lvl01
                     case "Ground":
                         if (attributes[1] == "1030")
                         {
-                            source = new Uri($"./Resources/Levels/Level{lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
+                            source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
                         }
                         else
                         {
-                            source = new Uri($"./Resources/Levels/Level{lvl}/Platforms/ice_platform_1.png", UriKind.Relative);
+                            source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_1.png", UriKind.Relative);
                         }
                         break;
 
@@ -124,24 +124,24 @@ namespace TurtleWalk
                     Panel.SetZIndex(Element, 0);
                 }
 
-                gridLvl.Children.Add(Element);
+                _gridLvl.Children.Add(Element);
             }
 
-            reader.Close();
+            _reader.Close();
         }
 
         private int CountRows()
         {
-            reader = new StreamReader(path);
+            _reader = new StreamReader(_path);
 
             int i = 0;
 
-            while (reader.ReadLine() != null)
+            while (_reader.ReadLine() != null)
             {
                 i++;
             }
 
-            reader.Close();
+            _reader.Close();
 
             return i;
         }

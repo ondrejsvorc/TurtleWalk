@@ -9,9 +9,7 @@ namespace TurtleWalk
 {
     public sealed class LavaDrop : CollisionElement
     {
-        private const double _marginTop = 70;
-        private static StreamReader _streamReader;
-        private static string[] attributes;
+        private const double _marginTop = -70;
 
         public LavaDrop(Rect lavaDropHitBox) : base(lavaDropHitBox)
         {

@@ -20,6 +20,8 @@ namespace TurtleWalk
         private SavingPlatform savingPlatform;
         private Sign finishSign;
 
+        LevelBuilder builder;
+
         private StreamReader reader;
         private StreamWriter writer;
 
@@ -69,12 +71,12 @@ namespace TurtleWalk
 
         private void Setup()
         {
-            GameManager.GetAvailableLevels(gridLevels);
-
             grounds = new List<Ground>();
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
             pistons = new List<Piston>();
+
+            GameManager.GetAvailableLevels(gridLevels);
 
             cursorHand = new Cursor(new MemoryStream(Properties.Resources.cursorHand));
             cursorGrabbed = new Cursor(new MemoryStream(Properties.Resources.cursorGrabbed));
@@ -98,12 +100,7 @@ namespace TurtleWalk
 
                 currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
 
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(25);
-                timer.Tick += GameUpdate;
-                timer.Start();
-
-                LevelBuilder builder = new LevelBuilder(currentLevelPath, lvl, gridLvl);
+                builder = new LevelBuilder(currentLevelPath, lvl, gridLvl);
                 builder.BuildLevel();
 
                 reader = new StreamReader(currentLevelPath);
@@ -156,6 +153,11 @@ namespace TurtleWalk
                 }
 
                 reader.Close();
+
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(25);
+                timer.Tick += GameUpdate;
+                timer.Start();
 
                 gridLvl.Visibility = Visibility.Visible;
             }

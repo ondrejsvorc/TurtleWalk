@@ -14,6 +14,20 @@ using System.Windows.Controls.Primitives;
 
 namespace TurtleWalk
 {
+    // TO-DO
+    
+    // - Při dokončení levelu odemknout vždy jen další level (dokončení levelu 1 odekmkne level 2) 
+    //      : HOTOVO
+
+    // - Design 2. levelu
+
+
+    // - Ukládání nastavení
+
+
+    // - Načítání nastavení
+
+
     public partial class MainWindow : Window
     {
         private Turtle turtle;
@@ -23,7 +37,6 @@ namespace TurtleWalk
         private LevelBuilder builder;
 
         private StreamReader reader;
-        private StreamWriter writer;
 
         private DispatcherTimer timer;
 
@@ -191,7 +204,6 @@ namespace TurtleWalk
             LevelStart();
         }
 
-        // KDYŽ SPUSTÍM LEVEL A ŽELVIČKA SE UŽ NEHÝBALA, TAK SE NAJEDNOU ZAČNE HÝBAT (NEKORESPONDUJÍ OBRÁZKY)
         private void LevelResume()
         {
             gridMenu.Visibility = Visibility.Hidden;
@@ -211,9 +223,9 @@ namespace TurtleWalk
         {
             timer.Stop();
 
-            levelInProgress = "none";
-
             lbScore.Content = $"Score: {scoreCount = 0}";
+
+            levelInProgress = "none";
 
             int lastIndex = gridLvl.Children.Count - 1;
 
@@ -222,7 +234,7 @@ namespace TurtleWalk
                 gridLvl.Children.RemoveAt(lastIndex--);
             }
 
-            GameManager.SetAvailableLevels();
+            GameManager.SetAvailableLevels(gridLevels, lvl);
             GameManager.GetAvailableLevels(gridLevels);
 
             gridLvl.Visibility = Visibility.Hidden;
@@ -238,8 +250,8 @@ namespace TurtleWalk
             // POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
             timeElapsed++;
 
-            // ZELVIČKA JDE POPŘEDU A DOTÝKÁ SE
-            // ZELVIČKA JDE POZPÁTKU A DOTÝKÁ SE
+            // ŽELVIČKA JDE POPŘEDU A DOTÝKÁ SE
+            // ŽELVIČKA JDE POZPÁTKU A DOTÝKÁ SE
 
             if (turtle.IsMoving && turtle.IsDirectionForward && Ground.CheckCollision(turtle))
             {
@@ -252,7 +264,7 @@ namespace TurtleWalk
 
             if (turtle.IsMoving)
             {
-                // ZELVIČKA SE DOTÝKÁ LISTU
+                // ŽELVIČKA SE DOTÝKÁ LISTU
                 foreach (Leaf leaf in leafs)
                 {
                     if (turtle.HitBox.IntersectsWith(leaf.HitBox))

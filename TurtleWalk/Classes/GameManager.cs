@@ -23,7 +23,7 @@ namespace TurtleWalk
 
             using (_reader = new StreamReader("./Resources/Levels/Available/available_levels.txt"))
             {
-                if (!_reader.EndOfStream)        // if file isn't empty, don't even bother checking available levels
+                if (!_reader.EndOfStream)        // If the file is empty, don't even bother checking available levels
                 {
                     string[] availableLevels = _reader.ReadLine().Split(' ');
 
@@ -31,21 +31,30 @@ namespace TurtleWalk
                     {
                         if (availableLevels[i] == "1")
                         {
-                            gridLevels.Children[i + 1].IsEnabled = true;
+                            if (!gridLevels.Children[i + 1].IsEnabled)
+                            {
+                                gridLevels.Children[i + 1].IsEnabled = true;
+                            }
                         }
                     }
                 }
             }
         }
 
-        // WORKS FINE BUT IT NEEDS TO BE SET SO WHEN LVL1 IS FINISHED, IT ONLY UNLOCKS LV2
-        // MAYBE: 1 1 - LVL1 UNLOCKED LVL2
-        public static void SetAvailableLevels()
+        public static void SetAvailableLevels(Grid gridLevels, string lvl)
         {
-            using (_writer = new StreamWriter("./Resources/Levels/Available/available_levels.txt", true))
+            // lvl = "01" -> substring(1, 1) -> lvl = "1"
+            // index: 1 - 1 = 0
+            
+            int lvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
+
+            if (!gridLevels.Children[lvlIndex + 1].IsEnabled)
             {
-                _writer.Write("1" + " ");
-                _writer.Flush();
+                using (_writer = new StreamWriter("./Resources/Levels/Available/available_levels.txt", true))
+                {
+                    _writer.Write("1" + " ");
+                    _writer.Flush();
+                }
             }
         }
 

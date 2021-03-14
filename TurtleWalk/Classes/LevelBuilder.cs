@@ -15,7 +15,6 @@ namespace TurtleWalk
     public class LevelBuilder
     {
         private StreamReader _reader { get; set; }
-
         private Grid _gridLvl { get; set; }
         private string _path { get; }
         private string _lvl { get; }

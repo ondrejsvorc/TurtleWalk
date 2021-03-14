@@ -16,6 +16,8 @@ namespace TurtleWalk
         public double DistanceFromStart;
         public double SeaLevel;
 
+        public bool WasMoving;
+
         public Image Body;
 
         public Turtle(Rect HitBox)

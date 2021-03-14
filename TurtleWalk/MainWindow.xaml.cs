@@ -20,7 +20,7 @@ namespace TurtleWalk
         private SavingPlatform savingPlatform;
         private Sign finishSign;
 
-        LevelBuilder builder;
+        private LevelBuilder builder;
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -155,7 +155,7 @@ namespace TurtleWalk
                 reader.Close();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(25);
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 25);
                 timer.Tick += GameUpdate;
                 timer.Start();
 
@@ -163,18 +163,45 @@ namespace TurtleWalk
             }
             else
             {
-                gridMenu.Visibility = Visibility.Hidden;
-                gridLvl.Visibility = Visibility.Visible;
+                LevelResume();
             }
         }
 
         private void LevelRestart()
         {
+            timer.Stop();
+
+            grounds = new List<Ground>();
+            lavaDrops = new List<LavaDrop>();
+            leafs = new List<Leaf>();
+            pistons = new List<Piston>();
+
+            levelInProgress = "none";
+            timeElapsed = 0;
+
+            lbScore.Content = $"Score: {scoreCount = 0}";
+
+            int lastIndex = gridLvl.Children.Count - 1;
+
+            while (gridLvl.Children.Count != 7)
+            {
+                gridLvl.Children.RemoveAt(lastIndex--);
+            }
+
+            LevelStart();
         }
 
+        // KDYŽ SPUSTÍM LEVEL A ŽELVIČKA SE UŽ NEHÝBALA, TAK SE NAJEDNOU ZAČNE HÝBAT (NEKORESPONDUJÍ OBRÁZKY)
         private void LevelResume()
         {
-            turtle.IsMoving = true;
+            gridMenu.Visibility = Visibility.Hidden;
+
+            if (turtle.WasMoving)
+            {
+                turtle.IsMoving = true;
+            }
+
+            gridLvl.Visibility = Visibility.Visible;
         }
 
         // Indexy 0 - 6 jsou vždy na gridu --> overlay 
@@ -223,15 +250,24 @@ namespace TurtleWalk
                 Turtle.Move(turtle, turtle.DistanceFromStart -= 5, turtle.SeaLevel);
             }
 
-            // ZELVIČKA SE DOTÝKÁ LISTU
-            foreach (Leaf leaf in leafs)
+            if (turtle.IsMoving)
             {
-                if (turtle.HitBox.IntersectsWith(leaf.HitBox))
+                // ZELVIČKA SE DOTÝKÁ LISTU
+                foreach (Leaf leaf in leafs)
                 {
-                    leaf.HitBox = Rect.Empty;
-                    gridLvl.Children.Remove(leaf.Body);
+                    if (turtle.HitBox.IntersectsWith(leaf.HitBox))
+                    {
+                        leaf.HitBox = Rect.Empty;
+                        gridLvl.Children.Remove(leaf.Body);
 
-                    lbScore.Content = $"Score: {scoreCount += 10}";
+                        lbScore.Content = $"Score: {scoreCount += 10}";
+                    }
+                }
+
+                // ŽELVIČKA DOKONČILA LEVEL
+                if (turtle.HitBox.IntersectsWith(finishSign.HitBox))
+                {
+                    LevelFinish();
                 }
             }
 
@@ -311,11 +347,6 @@ namespace TurtleWalk
                 }
             }
 
-            ////ŽELVIČKA DOKONČILA LEVEL
-            if (turtle.HitBox.IntersectsWith(finishSign.HitBox))
-            {
-                LevelFinish();
-            }
         }
 
         private void LevelStop(object sender, KeyEventArgs e)
@@ -324,7 +355,12 @@ namespace TurtleWalk
             {
                 if (e.Key == Key.Escape)
                 {
-                    turtle.IsMoving = false;
+                    if (turtle.IsMoving)
+                    {
+                        turtle.IsMoving = false;
+                        turtle.WasMoving = true;
+                    }
+
                     gridLvl.Visibility = Visibility.Hidden;
                     gridMenu.Visibility = Visibility.Visible;
                 }
@@ -333,26 +369,29 @@ namespace TurtleWalk
 
         private void MovePlatform(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
+            if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || gridLevels.Visibility != Visibility.Visible))
             {
-                case Key.Left:
-                case Key.A:
-                    if (savingPlatform.Body.Margin.Left > 0)
-                    {
-                        marginLeft = savingPlatform.Body.Margin.Left - 25;
-                    }
-                    break;
+                switch (e.Key)
+                {
+                    case Key.Left:
+                    case Key.A:
+                        if (savingPlatform.Body.Margin.Left > 0)
+                        {
+                            marginLeft = savingPlatform.Body.Margin.Left - 25;
+                        }
+                        break;
 
-                case Key.Right:
-                case Key.D:
-                    if (savingPlatform.Body.Margin.Left < 1050)
-                    {
-                        marginLeft = savingPlatform.Body.Margin.Left + 25;
-                    }
-                    break;
+                    case Key.Right:
+                    case Key.D:
+                        if (savingPlatform.Body.Margin.Left < 1050)
+                        {
+                            marginLeft = savingPlatform.Body.Margin.Left + 25;
+                        }
+                        break;
+                }
+
+                SavingPlatform.Move(savingPlatform, marginLeft);
             }
-
-            SavingPlatform.Move(savingPlatform, marginLeft);
         }
 
         private void TurtleChangeDirection(object sender, MouseButtonEventArgs e)
@@ -526,6 +565,11 @@ namespace TurtleWalk
         {
             gridButtons.Visibility = Visibility.Hidden;
             gridLevels.Visibility = Visibility.Visible;
+        }
+
+        private void Restart(object sender, RoutedEventArgs e)
+        {
+            LevelRestart();
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)

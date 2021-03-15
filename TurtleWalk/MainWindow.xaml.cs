@@ -15,18 +15,21 @@ using System.Windows.Controls.Primitives;
 namespace TurtleWalk
 {
     // TO-DO
-    
+
     // - Při dokončení levelu odemknout vždy jen další level (dokončení levelu 1 odekmkne level 2) 
     //      : HOTOVO
 
-    // - Design 2. levelu
+    // - Přepínání na další levely
+    //      : 
 
+    // - Design 2. levelu
+    //      :
 
     // - Ukládání nastavení
-
+    //      :
 
     // - Načítání nastavení
-
+    //      :
 
     public partial class MainWindow : Window
     {
@@ -107,7 +110,7 @@ namespace TurtleWalk
 
         private void LevelStart()
         {
-            if (levelInProgress == "none")
+            if (levelInProgress == "none"/* || levelInProgress != lvl*/)
             {
                 levelInProgress = lvl;
 
@@ -598,13 +601,18 @@ namespace TurtleWalk
                     gridMenu.Visibility = Visibility.Hidden;
                     lvl = ((Button)sender).Content.ToString();
                     LevelStart();
-                    //if (levelInProgress == "none")
+                    //if (levelInProgress == "none") 
                     //{
-                    //    //Start();
+                    //    LevelStart();
+                    //}
+                    //else if (levelInProgress == lvl)
+                    //{
+                    //    LevelResume();
                     //}
                     //else
                     //{
-                    //    //ResumeLevel();
+                    //    LevelSwitch();
+                    //    LevelStart();
                     //}
                     break;
             }

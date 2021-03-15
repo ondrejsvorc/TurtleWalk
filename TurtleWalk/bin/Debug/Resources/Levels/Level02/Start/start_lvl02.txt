@@ -1,1 +1,12 @@
-﻿
+﻿Turtle 300 250 30 830
+Background x x 0 0
+Ground 260 260 650 400 -10 -75
+Ground 1030 130 -10 990 0 -65
+Ground 1030 130 1000 990 0 -65
+LavaDrop 30 60 1000 -70
+LavaDrop 30 60 1100 -70
+LavaDrop 30 60 1200 -70
+Leaf 80 80 735 850
+SavingPlatform 300 40 35 130
+Piston 180 200 450 900 -60 520
+Sign 155 150 1765 862

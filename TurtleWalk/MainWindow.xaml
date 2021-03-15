@@ -293,8 +293,9 @@
                 Width="100"
                 Margin="123,9,1697,1035"
                 Panel.ZIndex="1"
+                Click="Restart"
                 Content="Restart"
-                Style="{DynamicResource ButtonStyle}" Click="Restart" />
+                Style="{DynamicResource ButtonStyle}" />
 
             <Border
                 Width="200"

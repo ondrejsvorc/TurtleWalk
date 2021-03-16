@@ -20,15 +20,21 @@ namespace TurtleWalk
     //      : HOTOVO
 
     // - Přepínání na další levely
-    //      : 
+    //      : HOTOVO
 
     // - Design 2. levelu
     //      :
+
+    // - Lepší dělení do tříd, přidání více metod
+    //      : 
 
     // - Ukládání nastavení
     //      :
 
     // - Načítání nastavení
+    //      :
+
+    // - Design 3. levelu
     //      :
 
     public partial class MainWindow : Window
@@ -107,11 +113,10 @@ namespace TurtleWalk
 
             levelInProgress = "none";
         }
-
         private void LevelStart()
         {
-            if (levelInProgress == "none"/* || levelInProgress != lvl*/)
-            {
+            //if (levelInProgress == "none")
+            //{
                 levelInProgress = lvl;
 
                 currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
@@ -176,14 +181,14 @@ namespace TurtleWalk
                 timer.Start();
 
                 gridLvl.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                LevelResume();
-            }
+            //}
+            //else
+            //{
+            //    LevelResume();
+            //}
         }
 
-        private void LevelRestart()
+        private void LevelResetValues()
         {
             timer.Stop();
 
@@ -358,7 +363,7 @@ namespace TurtleWalk
             {
                 if (turtle.HitBox.IntersectsWith(lavaDrop.HitBox))
                 {
-                    LevelRestart();
+                    LevelResetValues();
                 }
             }
 
@@ -584,12 +589,14 @@ namespace TurtleWalk
 
         private void Restart(object sender, RoutedEventArgs e)
         {
-            LevelRestart();
+            LevelResetValues();
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)
         {
-            switch (((Button)sender).Content)
+            string lvlClickedOn = (string)((Button)sender).Content;
+
+            switch (lvlClickedOn)
             {
                 case "01":
                 case "02":
@@ -599,21 +606,21 @@ namespace TurtleWalk
                 case "06":
                 case "07":
                     gridMenu.Visibility = Visibility.Hidden;
-                    lvl = ((Button)sender).Content.ToString();
-                    LevelStart();
-                    //if (levelInProgress == "none") 
-                    //{
-                    //    LevelStart();
-                    //}
-                    //else if (levelInProgress == lvl)
-                    //{
-                    //    LevelResume();
-                    //}
-                    //else
-                    //{
-                    //    LevelSwitch();
-                    //    LevelStart();
-                    //}
+
+                    lvl = lvlClickedOn;
+
+                    if (levelInProgress == "none")
+                    {
+                        LevelStart();                   
+                    }
+                    else if (levelInProgress == lvl)
+                    {
+                        LevelResume();
+                    }
+                    else
+                    {
+                        LevelResetValues();             // Level switch
+                    }
                     break;
             }
         }

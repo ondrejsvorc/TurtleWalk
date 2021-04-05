@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace TurtleWalk
 {
-    public class GameManager
+    sealed class GameManager
     {
         private static StreamReader _reader;
         private static StreamWriter _writer;

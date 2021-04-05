@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace TurtleWalk
 {
-    public sealed class Sign : CollisionElement
+    sealed class Sign : CollisionElement
     {
         public Sign(Rect signHitBox) : base(signHitBox)
         {

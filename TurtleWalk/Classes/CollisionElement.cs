@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace TurtleWalk
 {
-    public class CollisionElement                                         // třída by měla být abstraktní - nelze si představit, co přesně CollisionElement je
+    abstract class CollisionElement                                         // třída by měla být abstraktní - nelze si představit, co přesně CollisionElement je
     {
         public Rect HitBox;
         public Image Body;

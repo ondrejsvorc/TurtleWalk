@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace TurtleWalk
 {
-    public sealed class Piston : CollisionElement
+    sealed class Piston : CollisionElement
     {
         private static readonly List<Rect> hitBoxes = new List<Rect>();
 

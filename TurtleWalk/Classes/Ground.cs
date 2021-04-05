@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace TurtleWalk
 {
-    public sealed class Ground : CollisionElement
+    sealed class Ground : CollisionElement
     {
         // READONLY - HODNOTY MUSÍME NASTAVIT BUĎ PŘI INICIALIZACI, NEBO V KONSTRUKTORU
         // CONST - HODNOTY MUSÍME NASTAVIT PŘI INICIALIZACI (NÁZVY PROMĚNNÝCH TOHOTO TYPU PÍŠEME VELKÝMI PÍSMENY, ODDĚLUJEME PODTRŽÍTKEM)

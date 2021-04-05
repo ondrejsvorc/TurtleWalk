@@ -8,7 +8,7 @@ namespace TurtleWalk
 {
     // MOMENTÁLNĚ NEFUKNČNÍ, LZE ZPROVOZNIT... JINÝ PŘÍSTUP? (TENTO JIŽ OZKOUŠEN NA JINÝCH PROJEKTECH)
 
-    public class SettingsManager
+    class SettingsManager
     {
 
         public SettingsManager()

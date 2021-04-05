@@ -6,7 +6,7 @@ using WpfAnimatedGif;
 
 namespace TurtleWalk
 {
-    public class Turtle
+    sealed class Turtle
     {
         public Rect HitBox;
 

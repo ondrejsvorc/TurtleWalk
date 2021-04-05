@@ -7,7 +7,7 @@ using System;
 
 namespace TurtleWalk
 {
-    public sealed class LavaDrop : CollisionElement
+    sealed class LavaDrop : CollisionElement
     {
         private const double _marginTop = -70;
 

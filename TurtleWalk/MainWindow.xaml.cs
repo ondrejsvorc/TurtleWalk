@@ -613,7 +613,7 @@ namespace TurtleWalk
                     {
                         LevelStart();                   
                     }
-                    else if (levelInProgress == lvl)
+                    else if (levelInProgress == lvlClickedOn)
                     {
                         LevelResume();
                     }

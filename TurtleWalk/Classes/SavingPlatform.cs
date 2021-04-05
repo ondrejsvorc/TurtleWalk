@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace TurtleWalk
 {
-    public sealed class SavingPlatform
+    sealed class SavingPlatform
     {
         public Rect HitBox { get; private set; }
         public Image Body { get; set; }
@@ -14,7 +14,6 @@ namespace TurtleWalk
         {
         }
 
-        //ERORR KDYŽ KLIKNU NA ŠIPKU V MENU
         public static Thickness Move(SavingPlatform savingPlatform, double marginLeft)
         {
             return savingPlatform.Body.Margin = new Thickness(marginLeft, savingPlatform.Body.Margin.Top, 0, 0);

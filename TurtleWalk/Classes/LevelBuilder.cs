@@ -12,7 +12,7 @@ using WpfAnimatedGif;
 
 namespace TurtleWalk
 {
-    public class LevelBuilder
+    sealed class LevelBuilder
     {
         private StreamReader _reader { get; set; }
         private Grid _gridLvl { get; set; }

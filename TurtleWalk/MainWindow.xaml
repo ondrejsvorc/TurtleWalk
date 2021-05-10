@@ -8,33 +8,49 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="window"
     Title="TurtleWalk"
-    Width="{x:Static SystemParameters.PrimaryScreenWidth}"
-    Height="{x:Static SystemParameters.PrimaryScreenHeight}"
+    Width="1300"
+    Height="750"
+    MinWidth="1300"
+    MinHeight="750"
     Cursor="./Resources/Images/Cursors/cursorHand.cur"
     KeyDown="LevelStop"
-    ResizeMode="NoResize"
-    WindowState="Maximized"
-    WindowStyle="None"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Grid x:Name="gridMain">
-        <Grid x:Name="gridMenu" Visibility="Visible">
+        <Grid x:Name="gridMenu">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
             <Image
                 x:Name="backgroundPic"
+                Grid.RowSpan="3"
                 Source="/Resources/Menu/Background/background_menu.png"
                 Stretch="Fill" />
 
             <Image
                 x:Name="Czech"
-                Margin="1826,0,10,975"
                 MouseDown="LanguageChange"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Width="100"
+                Height="80"
+                Grid.Row="0"
+                Margin="0,0,130,0"
                 MouseEnter="FlagColorChange"
                 MouseLeave="FlagColorBackToNormal"
                 Source="/Resources/Images/Languages/cs.png" />
 
             <Image
                 x:Name="English"
-                Margin="1826,105,10,870"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Width="100"
+                Height="80"
+                Margin="0,0,20,0"
+                Grid.Row="0"
                 MouseDown="LanguageChange"
                 MouseEnter="FlagColorChange"
                 MouseLeave="FlagColorBackToNormal"
@@ -44,40 +60,39 @@
                 x:Name="lbHeading"
                 Width="920"
                 Height="280"
-                Margin="477,10,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                Grid.Row="0"
+                VerticalContentAlignment="Center"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
                 Content="TurtleWalk"
                 FontFamily="Segoe UI Semibold"
-                FontSize="150"
+                FontSize="80"
                 Foreground="White" />
 
             <Label
                 x:Name="lbAuthor"
                 Width="Auto"
                 Height="50"
-                Margin="831,1028,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                Margin="0,0,0,5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
                 Content="Ondřej Švorc I2B"
                 FontFamily="Segoe UI Semibold"
                 FontSize="30"
+                Grid.Row="2"
                 Foreground="White" />
 
-            <Grid x:Name="gridButtons">
-
+            <StackPanel x:Name="gridButtons" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Button
                     x:Name="btnPlay"
-                    Width="890"
-                    Height="100"
-                    Margin="501,312,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="700"
+                    Height="80"
+                    Margin="0,0,0,10"
                     Background="#FF45BD78"
                     Click="Play"
                     Content="Hrát"
                     FontFamily="Segoe UI"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
@@ -85,15 +100,13 @@
 
                 <Button
                     x:Name="btnSettings"
-                    Width="890"
-                    Height="100"
-                    Margin="503,450,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="700"
+                    Height="80"
+                    Margin="0,0,0,10"
                     Background="#FF45BD78"
                     Content="Nastavení"
                     FontFamily="Segoe UI"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
@@ -101,15 +114,13 @@
 
                 <Button
                     x:Name="btnControls"
-                    Width="890"
-                    Height="100"
-                    Margin="503,588,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="700"
+                    Height="80"
+                    Margin="0,0,0,10"
                     Background="#FF45BD78"
                     Content="Ovládání"
                     FontFamily="Segoe UI"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
@@ -117,35 +128,51 @@
 
                 <Button
                     x:Name="btnExit"
-                    Width="890"
-                    Height="100"
-                    Margin="503,735,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="700"
+                    Height="80"
+                    Margin="0,0,0,10"
                     Background="#FF45BD78"
                     Click="Exit"
                     Content="Odejít"
                     FontFamily="Segoe UI"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
                     Style="{DynamicResource ButtonStyle}" />
-            </Grid>
+            </StackPanel>
 
-            <Grid x:Name="gridLevels" Visibility="Hidden">
+            <Button
+                    x:Name="btnBack"
+                    Width="150"
+                    Height="100"
+                    Margin="10,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#FF45BD78"
+                    Grid.Row="0"
+                    Click="Back"
+                    Content="Zpět"
+                    Visibility="Hidden"
+                    FontFamily="Segoe UI Light"
+                    FontSize="40"
+                    Foreground="White"
+                    MouseEnter="CursorEnters"
+                    MouseLeave="CursorLeaves"
+                    Style="{DynamicResource ButtonStyle}" />
+
+            <UniformGrid Columns="7" x:Name="uniformGridLevels" Visibility="Hidden" Grid.Row="1" Width="800" VerticalAlignment="Center">
                 <Button
                     x:Name="btnLvl1"
                     Width="100"
                     Height="100"
-                    Margin="524,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="01"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="True"
                     MouseEnter="CursorEnters"
@@ -156,14 +183,13 @@
                     x:Name="btnLvl2"
                     Width="100"
                     Height="100"
-                    Margin="647,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="02"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
@@ -174,14 +200,13 @@
                     x:Name="btnLvl3"
                     Width="100"
                     Height="100"
-                    Margin="770,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="03"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
@@ -192,14 +217,13 @@
                     x:Name="btnLvl4"
                     Width="100"
                     Height="100"
-                    Margin="893,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="04"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
@@ -210,14 +234,13 @@
                     x:Name="btnLvl5"
                     Width="100"
                     Height="100"
-                    Margin="1017,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="05"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
@@ -228,14 +251,13 @@
                     x:Name="btnLvl6"
                     Width="100"
                     Height="100"
-                    Margin="1144,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="06"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
@@ -246,44 +268,29 @@
                     x:Name="btnLvl7"
                     Width="100"
                     Height="100"
-                    Margin="1269,519,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="07"
                     FontFamily="Segoe UI Light"
-                    FontSize="60"
+                    FontSize="40"
                     Foreground="White"
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
                     Style="{DynamicResource ButtonStyle}" />
-
-                <Button
-                    x:Name="btnBack"
-                    Width="150"
-                    Height="100"
-                    Margin="10,10,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Background="#FF45BD78"
-                    Click="Back"
-                    Content="Zpět"
-                    FontFamily="Segoe UI Light"
-                    FontSize="60"
-                    Foreground="White"
-                    MouseEnter="CursorEnters"
-                    MouseLeave="CursorLeaves"
-                    Style="{DynamicResource ButtonStyle}" />
-            </Grid>
+            </UniformGrid>
         </Grid>
 
         <Grid x:Name="gridLvl" Visibility="Hidden">
             <ToggleButton
                 x:Name="btnSound"
                 Width="100"
-                Margin="18,9,1802,1035"
+                Height="25"
+                Margin="15,15,0,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
                 Panel.ZIndex="1"
                 Content="Sound off"
                 Style="{DynamicResource ToggleButtonStyle}" />
@@ -291,16 +298,21 @@
             <Button
                 x:Name="btnRestart"
                 Width="100"
-                Margin="123,9,1697,1035"
+                Height="25"
+                Margin="130,15,0,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
                 Panel.ZIndex="1"
                 Click="Restart"
                 Content="Restart"
                 Style="{DynamicResource ButtonStyle}" />
 
             <Border
-                Width="200"
-                Height="180"
-                Margin="1472,46,248,854"
+                Width="160"
+                Height="140"
+                Margin="0,45,15,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
                 Panel.ZIndex="1"
                 BorderBrush="Black"
                 BorderThickness="2"
@@ -315,9 +327,11 @@
             </Border>
 
             <Border
-                Width="200"
-                Height="180"
-                Margin="1677,46,43,854"
+                Width="160"
+                Height="140"
+                Margin="0,45,190,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
                 Panel.ZIndex="1"
                 BorderBrush="Black"
                 BorderThickness="2"
@@ -333,9 +347,11 @@
 
             <Label
                 x:Name="lbDirection"
-                Width="164"
-                Margin="1522,9,234,0"
-                HorizontalAlignment="Center"
+                Width="160"
+                Height="40"
+                HorizontalAlignment="Right"
+                HorizontalContentAlignment="Center"
+                Margin="0,5,15,0"
                 VerticalAlignment="Top"
                 Panel.ZIndex="1"
                 Content="Backwards"
@@ -343,9 +359,11 @@
 
             <Label
                 x:Name="lbState"
-                Width="63"
-                Margin="1753,9,0,0"
-                HorizontalAlignment="Left"
+                Width="160"
+                Height="40"
+                HorizontalAlignment="Right"
+                HorizontalContentAlignment="Center"
+                Margin="0,5,190,0"
                 VerticalAlignment="Top"
                 Panel.ZIndex="1"
                 Content="Stop"
@@ -353,11 +371,13 @@
 
             <Label
                 x:Name="lbScore"
-                Margin="1592,231,43,777"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="1140,200,0,0"
                 Panel.ZIndex="1"
                 Content="Score: 0"
                 FontFamily="Yu Gothic UI Light"
-                FontSize="50" />
+                FontSize="30" />
         </Grid>
     </Grid>
 </Window>

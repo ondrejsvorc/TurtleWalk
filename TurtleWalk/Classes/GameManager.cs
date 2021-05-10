@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassGameManager
 {
     sealed class GameManager
     {
@@ -17,7 +13,7 @@ namespace TurtleWalk
         {
         }
 
-        public static void GetAvailableLevels(Grid gridLevels)
+        public static void GetAvailableLevels(UniformGrid uniformGridLevels)
         {
             // CHECKS FOR AVAILABLE LEVELS (EXCEPT FOR THE FIRST ONE, WHICH IS ALWAYS AVAILABLE)
 
@@ -31,9 +27,9 @@ namespace TurtleWalk
                     {
                         if (availableLevels[i] == "1")
                         {
-                            if (!gridLevels.Children[i + 1].IsEnabled)
+                            if (!uniformGridLevels.Children[i + 1].IsEnabled)
                             {
-                                gridLevels.Children[i + 1].IsEnabled = true;
+                                uniformGridLevels.Children[i + 1].IsEnabled = true;
                             }
                         }
                     }
@@ -41,14 +37,14 @@ namespace TurtleWalk
             }
         }
 
-        public static void SetAvailableLevels(Grid gridLevels, string lvl)
+        public static void SetAvailableLevels(UniformGrid uniformGridLevels, string lvl)
         {
             // lvl = "01" -> substring(1, 1) -> lvl = "1"
             // index: 1 - 1 = 0
             
             int lvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
 
-            if (!gridLevels.Children[lvlIndex + 1].IsEnabled)
+            if (!uniformGridLevels.Children[lvlIndex + 1].IsEnabled)
             {
                 using (_writer = new StreamWriter("./Resources/Levels/Available/available_levels.txt", true))
                 {

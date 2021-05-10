@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.IO;
-using System;
+using TurtleWalk.ClassCollisionElement;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassLavaDrop
 {
     sealed class LavaDrop : CollisionElement
     {
@@ -13,6 +10,7 @@ namespace TurtleWalk
 
         public LavaDrop(Rect lavaDropHitBox) : base(lavaDropHitBox)
         {
+            
         }
 
         public static void Fall(LavaDrop lavaDrop, double marginTop)

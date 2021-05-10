@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using TurtleWalk.ClassCollisionElement;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassLeaf
 {
     sealed class Leaf : CollisionElement
     {

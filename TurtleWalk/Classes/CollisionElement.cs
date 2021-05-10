@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassCollisionElement
 {
     abstract class CollisionElement                                         // třída by měla být abstraktní - nelze si představit, co přesně CollisionElement je
     {

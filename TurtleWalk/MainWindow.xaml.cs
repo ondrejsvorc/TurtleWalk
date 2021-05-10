@@ -5,12 +5,21 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.IO;
 using WpfAnimatedGif;
-using System.Windows.Controls.Primitives;
+using TurtleWalk.ClassCollisionElement;
+using TurtleWalk.ClassConstants;
+using TurtleWalk.ClassGround;
+using TurtleWalk.ClassLavaDrop;
+using TurtleWalk.ClassLeaf;
+using TurtleWalk.ClassLevelBuilder;
+using TurtleWalk.ClassPiston;
+using TurtleWalk.ClassSavingPlatform;
+using TurtleWalk.ClassSign;
+using TurtleWalk.ClassTurtle;
+using TurtleWalk.ClassGameManager;
 
 namespace TurtleWalk
 {
@@ -43,10 +52,6 @@ namespace TurtleWalk
         private SavingPlatform savingPlatform;
         private Sign finishSign;
 
-        private LevelBuilder builder;
-
-        private StreamReader reader;
-
         private DispatcherTimer timer;
 
         private string lvl;
@@ -54,22 +59,11 @@ namespace TurtleWalk
         private int scoreCount;
 
         private string levelInProgress;
-        private string currentLevelPath;
 
         private Cursor cursorHand;
         private Cursor cursorGrabbed;
 
-        private double marginLeft;
-
-        private BitmapImage bitmapBody;
-        private Uri gifSourceTurtle;
-        private Uri gifSourceDirection;
-
-        private const string PATH_DIRECTION_FORWARD = "pack://application:,,,/Resources/Images/Turtle/turtle_direction_forward.gif";
-        private const string PATH_DIRECTION_BACKWARDS = "pack://application:,,,/Resources/Images/Turtle/turtle_direction_backwards.gif";
-
-        private const string PATH_DIRECTION_FORWARD_STOPPED = "pack://application:,,,/Resources/Images/Turtle/turtleStopped_direction_forward.gif";
-        private const string PATH_DIRECTION_BACKWARDS_STOPPED = "pack://application:,,,/Resources/Images/Turtle/turtleStopped_direction_backwards.gif";
+        private double marginLeft = 25;
 
         private int clickCountDirection, clickCountMovement;
 
@@ -77,10 +71,8 @@ namespace TurtleWalk
         private int index;
         private int timeElapsed;
 
-        private List<Ground> grounds;
         private List<LavaDrop> lavaDrops;
         private List<Leaf> leafs;
-        private List<Piston> pistons;
 
         public MainWindow()
         {
@@ -93,12 +85,10 @@ namespace TurtleWalk
 
         private void Setup()
         {
-            grounds = new List<Ground>();
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
-            pistons = new List<Piston>();
 
-            GameManager.GetAvailableLevels(gridLevels);
+            GameManager.GetAvailableLevels(uniformGridLevels);
 
             cursorHand = new Cursor(new MemoryStream(Properties.Resources.cursorHand));
             cursorGrabbed = new Cursor(new MemoryStream(Properties.Resources.cursorGrabbed));
@@ -119,64 +109,61 @@ namespace TurtleWalk
             //{
                 levelInProgress = lvl;
 
-                currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
+                string currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
 
-                builder = new LevelBuilder(currentLevelPath, lvl, gridLvl);
+                LevelBuilder builder = new LevelBuilder(currentLevelPath, lvl, gridLvl);
                 builder.BuildLevel();
 
-                reader = new StreamReader(currentLevelPath);
-
-                foreach (Image image in builder.Images)
+                using (StreamReader reader = new StreamReader(currentLevelPath))
                 {
-                    string[] rowProperties = reader.ReadLine().Split(' ');
-
-                    if (image.Width.ToString() == rowProperties[1] && image.Height.ToString() == rowProperties[2] && image.Margin.Left.ToString() == rowProperties[3] && image.Margin.Top.ToString() == rowProperties[4])
+                    foreach (Image image in builder.Images)
                     {
-                        switch (rowProperties[0])
+                        string[] rowProperties = reader.ReadLine().Split(' ');
+
+                        if (image.Width.ToString() == rowProperties[1] && image.Height.ToString() == rowProperties[2] && image.Margin.Left.ToString() == rowProperties[3] && image.Margin.Top.ToString() == rowProperties[4])
                         {
-                            case "Turtle":
-                                turtle = new Turtle(CollisionElement.SetHitBox(image));
-                                turtle.Body = image;
-                                break;
+                            switch (rowProperties[0])
+                            {
+                                case "Turtle":
+                                    turtle = new Turtle(CollisionElement.SetHitBox(image), image.Margin.Left, image.Margin.Top);
+                                    turtle.Body = image;
+                                    break;
 
-                            case "SavingPlatform":
-                                savingPlatform = new SavingPlatform();
-                                savingPlatform.Body = image;
-                                break;
+                                case "SavingPlatform":
+                                    savingPlatform = new SavingPlatform();
+                                    savingPlatform.Body = image;
+                                    break;
 
-                            case "Sign":
-                                finishSign = new Sign(CollisionElement.SetHitBox(image));
-                                break;
+                                case "Sign":
+                                    finishSign = new Sign(CollisionElement.SetHitBox(image));
+                                    break;
 
-                            case "Ground":
-                                Ground ground = new Ground(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
-                                grounds.Add(ground);
-                                break;
+                                case "Ground":
+                                    Ground ground = new Ground(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                    break;
 
-                            case "Leaf":
-                                Leaf leaf = new Leaf(CollisionElement.SetHitBox(image));
-                                leaf.Body = image;
-                                leafs.Add(leaf);
-                                break;
+                                case "Leaf":
+                                    Leaf leaf = new Leaf(CollisionElement.SetHitBox(image));
+                                    leaf.Body = image;
+                                    leafs.Add(leaf);
+                                    break;
 
-                            case "Piston":
-                                Piston piston = new Piston(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
-                                pistons.Add(piston);
-                                break;
+                                case "Piston":
+                                    Piston piston = new Piston(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                    break;
 
-                            case "LavaDrop":
-                                LavaDrop lavaDrop = new LavaDrop(CollisionElement.SetHitBox(image));
-                                lavaDrop.Body = image;
-                                lavaDrops.Add(lavaDrop);
-                                break;
+                                case "LavaDrop":
+                                    LavaDrop lavaDrop = new LavaDrop(CollisionElement.SetHitBox(image));
+                                    lavaDrop.Body = image;
+                                    lavaDrops.Add(lavaDrop);
+                                    break;
+                            }
                         }
                     }
                 }
 
-                reader.Close();
-
                 timer = new DispatcherTimer();
-                timer.Interval = new TimeSpan(0, 0, 0, 0, 25);
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 30);
                 timer.Tick += GameUpdate;
                 timer.Start();
 
@@ -188,14 +175,16 @@ namespace TurtleWalk
             //}
         }
 
+
+        // TATO METODA SE VOLÁ I PŘI SMRTI ŽELVY, TÍM PÁDEM SE VYKRESLUJE CELEJ LEVEL ZNOVA ZBYTEČNĚ - OŠETŘIT TO TAK, ABY SE DALA ŽELVA A PLOŠINKA NA ZAČÁTEK
+        // + ABY SE VYKRESLILY ZNOVA LISTY, TY TOTIŽ MŮŽEME V PRŮBĚHU HRY SEŽRAT A PAK BY TAM CHYBĚLI
+        // ALE ABY SE TAM VYKRESLOVALI ZNOVA GROUND APOD. TO JE ZBYTEČNÝ
         private void LevelResetValues()
         {
             timer.Stop();
 
-            grounds = new List<Ground>();
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
-            pistons = new List<Piston>();
 
             levelInProgress = "none";
             timeElapsed = 0;
@@ -214,13 +203,9 @@ namespace TurtleWalk
 
         private void LevelResume()
         {
+            timer.Start();
+
             gridMenu.Visibility = Visibility.Hidden;
-
-            if (turtle.WasMoving)
-            {
-                turtle.IsMoving = true;
-            }
-
             gridLvl.Visibility = Visibility.Visible;
         }
 
@@ -242,8 +227,8 @@ namespace TurtleWalk
                 gridLvl.Children.RemoveAt(lastIndex--);
             }
 
-            GameManager.SetAvailableLevels(gridLevels, lvl);
-            GameManager.GetAvailableLevels(gridLevels);
+            GameManager.SetAvailableLevels(uniformGridLevels, lvl);
+            GameManager.GetAvailableLevels(uniformGridLevels);
 
             gridLvl.Visibility = Visibility.Hidden;
             gridMenu.Visibility = Visibility.Visible;
@@ -267,7 +252,10 @@ namespace TurtleWalk
             }
             else if (turtle.IsMoving && !turtle.IsDirectionForward && Ground.CheckCollision(turtle))
             {
-                Turtle.Move(turtle, turtle.DistanceFromStart -= 5, turtle.SeaLevel);
+                if (turtle.DistanceFromStart > -(turtle.Body.Width / 4))
+                {
+                    Turtle.Move(turtle, turtle.DistanceFromStart -= 5, turtle.SeaLevel);
+                }
             }
 
             if (turtle.IsMoving)
@@ -303,12 +291,6 @@ namespace TurtleWalk
                 Turtle.Move(turtle, turtle.DistanceFromStart += 2, turtle.SeaLevel += 8);
             }
 
-            // ZELVIČKA SE NEHÝBE
-            if (!turtle.IsMoving)
-            {
-                Turtle.DontMove(turtle);
-            }
-
             // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
             Array.Clear(collisionPlatform, 0, collisionPlatform.Length);
             index = 0;
@@ -332,10 +314,10 @@ namespace TurtleWalk
 
             // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
 
-            // 1 tick = 25 ms
-            // 80 * 25 = 2000 ms = 2s
+            // 1 tick = 30 ms
+            // 66 * 30 = 2000 ms = 2s
 
-            if (timeElapsed >= 0 && timeElapsed <= 80)
+            if (timeElapsed >= 0 && timeElapsed <= 66)
             {
                 if (!collisionPlatform.Contains(1))
                 {
@@ -352,7 +334,7 @@ namespace TurtleWalk
                     LavaDrop.Fall(lavaDrops[2], lavaDrops[2].Body.Margin.Top);
                 }
             }
-            else if (timeElapsed > 80)
+            else if (timeElapsed > 66)
             {
                 LavaDrop.ResetPositions(lavaDrops);
 
@@ -375,11 +357,7 @@ namespace TurtleWalk
             {
                 if (e.Key == Key.Escape)
                 {
-                    if (turtle.IsMoving)
-                    {
-                        turtle.IsMoving = false;
-                        turtle.WasMoving = true;
-                    }
+                    timer.Stop();
 
                     gridLvl.Visibility = Visibility.Hidden;
                     gridMenu.Visibility = Visibility.Visible;
@@ -389,13 +367,13 @@ namespace TurtleWalk
 
         private void MovePlatform(object sender, KeyEventArgs e)
         {
-            if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || gridLevels.Visibility != Visibility.Visible))
+            if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || uniformGridLevels.Visibility != Visibility.Visible))
             {
                 switch (e.Key)
                 {
                     case Key.Left:
                     case Key.A:
-                        if (savingPlatform.Body.Margin.Left > 0)
+                        if (savingPlatform.Body.Margin.Left > 25)
                         {
                             marginLeft = savingPlatform.Body.Margin.Left - 25;
                         }
@@ -403,7 +381,7 @@ namespace TurtleWalk
 
                     case Key.Right:
                     case Key.D:
-                        if (savingPlatform.Body.Margin.Left < 1050)
+                        if (savingPlatform.Body.Margin.Left < 650)
                         {
                             marginLeft = savingPlatform.Body.Margin.Left + 25;
                         }
@@ -468,26 +446,29 @@ namespace TurtleWalk
             // ZELVIČKA SE NEHÝBE A SMĚR JE NASTAVEN DOPŘEDU
             // ZELVIČKA SE NEHÝBE A SMĚR JE NASTAVEN POZPÁTKU
 
+            Uri gifSourceTurtle = null;
+            Uri gifSourceDirection = null;
+
             if (turtle.IsMoving && turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_FORWARD);
-                gifSourceDirection = new Uri(PATH_DIRECTION_BACKWARDS);
+                gifSourceTurtle = new Uri(Constants.PATH_DIRECTION_FORWARD);
+                gifSourceDirection = new Uri(Constants.PATH_DIRECTION_BACKWARDS);
             }
             else if (turtle.IsMoving && !turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS);
-                gifSourceDirection = new Uri(PATH_DIRECTION_FORWARD);
+                gifSourceTurtle = new Uri(Constants.PATH_DIRECTION_BACKWARDS);
+                gifSourceDirection = new Uri(Constants.PATH_DIRECTION_FORWARD);
             }
             else if (!turtle.IsMoving && turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_FORWARD_STOPPED);
+                gifSourceTurtle = new Uri(Constants.PATH_DIRECTION_FORWARD_STOPPED);
             }
             else if (!turtle.IsMoving && !turtle.IsDirectionForward)
             {
-                gifSourceTurtle = new Uri(PATH_DIRECTION_BACKWARDS_STOPPED);
+                gifSourceTurtle = new Uri(Constants.PATH_DIRECTION_BACKWARDS_STOPPED);
             }
 
-            bitmapBody = new BitmapImage();
+            BitmapImage bitmapBody = new BitmapImage();
             bitmapBody.BeginInit();
             bitmapBody.UriSource = gifSourceTurtle;
             bitmapBody.EndInit();
@@ -538,7 +519,8 @@ namespace TurtleWalk
 
         private void Back(object sender, RoutedEventArgs e)
         {
-            gridLevels.Visibility = Visibility.Hidden;
+            uniformGridLevels.Visibility = Visibility.Hidden;
+            btnBack.Visibility = Visibility.Hidden;
             gridButtons.Visibility = Visibility.Visible;
         }
 
@@ -584,7 +566,8 @@ namespace TurtleWalk
         private void Play(object sender, RoutedEventArgs e)
         {
             gridButtons.Visibility = Visibility.Hidden;
-            gridLevels.Visibility = Visibility.Visible;
+            uniformGridLevels.Visibility = Visibility.Visible;
+            btnBack.Visibility = Visibility.Visible;
         }
 
         private void Restart(object sender, RoutedEventArgs e)

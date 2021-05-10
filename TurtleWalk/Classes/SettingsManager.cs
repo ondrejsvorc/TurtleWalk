@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TurtleWalk
+﻿namespace TurtleWalk.ClassSettingsManager
 {
     // MOMENTÁLNĚ NEFUKNČNÍ, LZE ZPROVOZNIT... JINÝ PŘÍSTUP? (TENTO JIŽ OZKOUŠEN NA JINÝCH PROJEKTECH)
 

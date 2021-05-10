@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
+using TurtleWalk.ClassCollisionElement;
+using TurtleWalk.ClassTurtle;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassGround
 {
     sealed class Ground : CollisionElement
     {

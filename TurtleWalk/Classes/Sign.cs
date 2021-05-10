@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
+using TurtleWalk.ClassCollisionElement;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassSign
 {
     sealed class Sign : CollisionElement
     {

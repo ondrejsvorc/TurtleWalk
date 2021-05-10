@@ -42,3 +42,25 @@ C:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CoreCompile
 C:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CopyComplete
 C:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe
 C:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.pdb
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe.config
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.pdb
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.dll
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\XamlAnimatedGif.dll
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.pdb
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\WpfAnimatedGif.xml
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csprojAssemblyReference.cache
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\MainWindow.g.cs
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\App.g.cs
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk_Content.g.cs
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk_MarkupCompile.cache
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk_MarkupCompile.lref
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\App.baml
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\MainWindow.baml
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.g.resources
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.Properties.Resources.resources
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.GenerateResource.cache
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CoreCompileInputs.cache
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CopyComplete
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.pdb

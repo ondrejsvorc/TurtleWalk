@@ -7,10 +7,11 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Collections;
 using WpfAnimatedGif;
+using TurtleWalk.ClassConstants;
+using TurtleWalk;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassLevelBuilder
 {
     sealed class LevelBuilder
     {
@@ -38,32 +39,30 @@ namespace TurtleWalk
 
             Images = new List<Image>();
 
-            int rowCount = CountRows();
-
             _reader = new StreamReader(_path);
 
-            for (int i = 0; i < rowCount; i++)
+            while (!_reader.EndOfStream)
             {
                 string[] attributes = _reader.ReadLine().Split(' ');
 
                 switch (attributes[0])
                 {
                     case "Turtle":
-                        source = new Uri("./Resources/Images/Turtle/turtle_direction_forward.gif", UriKind.Relative);
+                        source = new Uri(Constants.PATH_DIRECTION_FORWARD);
                         break;
 
                     case "Piston":
-                        source = new Uri("./Resources/Images/Other/piston.gif", UriKind.Relative);
+                        source = new Uri(Constants.PISTON, UriKind.Relative);
                         break;
 
                     case "Leaf":
-                        source = new Uri("./Resources/Images/Points/leaf.gif", UriKind.Relative);
+                        source = new Uri(Constants.LEAF, UriKind.Relative);
                         break;
 
                     case "Background":
                         source = new Uri($"./Resources/Levels/Level{_lvl}/Background/background_lvl{_lvl}.jpg", UriKind.Relative);
-                        attributes[1] = SystemParameters.PrimaryScreenWidth.ToString();
-                        attributes[2] = SystemParameters.PrimaryScreenHeight.ToString();
+                        attributes[1] = Convert.ToString(1300);
+                        attributes[2] = Convert.ToString(750);
                         break;
 
                         // zatím jen pro lvl01
@@ -73,7 +72,7 @@ namespace TurtleWalk
 
                         // zatím jen pro lvl01
                     case "Ground":
-                        if (attributes[1] == "1030")
+                        if (attributes[1] == "670")
                         {
                             source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
                         }
@@ -84,11 +83,11 @@ namespace TurtleWalk
                         break;
 
                     case "LavaDrop":
-                        source = new Uri($"./Resources/Images/Deadly-Entities/lava_drop.png", UriKind.Relative);
+                        source = new Uri(Constants.LAVA_DROP, UriKind.Relative);
                         break;
 
                     case "Sign":
-                        source = new Uri($"./Resources/Images/Other/finish.png", UriKind.Relative);
+                        source = new Uri(Constants.SIGN, UriKind.Relative);
                         break;
                 }
 
@@ -127,22 +126,6 @@ namespace TurtleWalk
             }
 
             _reader.Close();
-        }
-
-        private int CountRows()
-        {
-            _reader = new StreamReader(_path);
-
-            int i = 0;
-
-            while (_reader.ReadLine() != null)
-            {
-                i++;
-            }
-
-            _reader.Close();
-
-            return i;
         }
     }
 }

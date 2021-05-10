@@ -1,10 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using WpfAnimatedGif;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassTurtle
 {
     sealed class Turtle
     {
@@ -16,20 +13,17 @@ namespace TurtleWalk
         public double DistanceFromStart;
         public double SeaLevel;
 
-        public bool WasMoving;
-
         public Image Body;
 
-        public Turtle(Rect HitBox)
+        public Turtle(Rect HitBox, double distanceFromStart, double seaLevel)
         {
-            // POUZE PRO lvl01
-            // SeaLevel nastavovat pro každý level zvlášť
-            SeaLevel = 830;
+            this.HitBox = HitBox;
+
+            DistanceFromStart = distanceFromStart;
+            SeaLevel = seaLevel;
+
             IsMoving = true;
             IsDirectionForward = true;
-            DistanceFromStart = 30;
-
-            this.HitBox = HitBox;
         }
 
         public static Thickness Move(Turtle turtle, double x, double y)
@@ -37,15 +31,10 @@ namespace TurtleWalk
             return turtle.Body.Margin = new Thickness(x, y, 0, 0);
         }
 
-        public static Thickness DontMove(Turtle turtle)
-        {
-            return turtle.Body.Margin;
-        }
-
         public static void HitBoxUpdate(Turtle turtle)
         {
             turtle.HitBox = new Rect(turtle.Body.Margin.Left, turtle.Body.Margin.Top, turtle.Body.Width, turtle.Body.Height);
-            turtle.HitBox.Inflate(-turtle.Body.Width / 3, -15);
+            turtle.HitBox.Inflate(-(turtle.Body.Width / 3), -30);
         }
 
         public static Thickness GoToBeginning(Turtle turtle)

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+using TurtleWalk.ClassCollisionElement;
+using TurtleWalk.ClassTurtle;
 
-namespace TurtleWalk
+namespace TurtleWalk.ClassPiston
 {
     sealed class Piston : CollisionElement
     {

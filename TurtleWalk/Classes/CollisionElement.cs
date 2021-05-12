@@ -13,11 +13,6 @@ namespace TurtleWalk.ClassCollisionElement
             this.HitBox = new Rect(HitBox.X, HitBox.Y, HitBox.Width, HitBox.Height);
         }
 
-        public static Thickness GetMargin(Image img)
-        {
-            return img.Margin;
-        }
-
         public static Rect SetHitBox(Image img)
         {
             return new Rect(img.Margin.Left, img.Margin.Top, img.Width, img.Height);

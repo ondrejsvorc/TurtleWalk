@@ -6,11 +6,11 @@ namespace TurtleWalk.ClassLavaDrop
 {
     sealed class LavaDrop : CollisionElement
     {
-        private const double _marginTop = -70;
+        private static double _startY;
 
-        public LavaDrop(Rect lavaDropHitBox) : base(lavaDropHitBox)
+        public LavaDrop(Rect lavaDropHitBox, double y) : base(lavaDropHitBox)
         {
-            
+            _startY = y;
         }
 
         public static void Fall(LavaDrop lavaDrop, double marginTop)
@@ -26,7 +26,7 @@ namespace TurtleWalk.ClassLavaDrop
         {
             foreach (LavaDrop lavaDrop in lavaDrops)
             {
-                lavaDrop.Body.Margin = new Thickness(lavaDrop.Body.Margin.Left, _marginTop, 0, 0);
+                lavaDrop.Body.Margin = new Thickness(lavaDrop.Body.Margin.Left, _startY, 0, 0);
                 //lavaDrop.Hitbox ?
             }
         }

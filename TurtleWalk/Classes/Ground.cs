@@ -37,16 +37,16 @@ namespace TurtleWalk.ClassGround
             return result;
         }
 
-        public static bool CheckCollisionBetween(Turtle turtle, Ground ground)
-        {
-            if (turtle.HitBox.IntersectsWith(ground.HitBox))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        //public static bool CheckCollisionBetween(Turtle turtle, Ground ground)
+        //{
+        //    if (turtle.HitBox.IntersectsWith(ground.HitBox))
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
     }
 }

@@ -10,36 +10,59 @@ namespace TurtleWalk.ClassTurtle
         public bool IsMoving;
         public bool IsDirectionForward;
 
-        public double DistanceFromStart;
-        public double SeaLevel;
+        private double _y;
+
+        public double Y
+        {
+            get => _y;
+            set
+            {
+                _y = value;
+
+                if (_turtle != null)
+                {
+                    _turtle.Body.Margin = new Thickness(_x, _y, 0, 0);
+                }
+            }
+        }
+
+        private double _x;
+
+        public double X 
+        {
+            get => _x;
+            set
+            {
+                _x = value;
+
+                if (_turtle != null)
+                {
+                    _turtle.Body.Margin = new Thickness(_x, _y, 0, 0);
+                }
+            }
+        }
 
         public Image Body;
 
-        public Turtle(Rect HitBox, double distanceFromStart, double seaLevel)
+        private Turtle _turtle;
+
+        public Turtle(Rect HitBox, double x, double y)
         {
             this.HitBox = HitBox;
 
-            DistanceFromStart = distanceFromStart;
-            SeaLevel = seaLevel;
+            _x = x;
+            _y = y;
 
             IsMoving = true;
             IsDirectionForward = true;
+
+            _turtle = this;
         }
 
-        public static Thickness Move(Turtle turtle, double x, double y)
+        public void HitBoxUpdate()
         {
-            return turtle.Body.Margin = new Thickness(x, y, 0, 0);
-        }
-
-        public static void HitBoxUpdate(Turtle turtle)
-        {
-            turtle.HitBox = new Rect(turtle.Body.Margin.Left, turtle.Body.Margin.Top, turtle.Body.Width, turtle.Body.Height);
-            turtle.HitBox.Inflate(-(turtle.Body.Width / 3), -30);
-        }
-
-        public static Thickness GoToBeginning(Turtle turtle)
-        {
-            return turtle.Body.Margin = new Thickness(30, 830, 0, 0);
+            _turtle.HitBox = new Rect(_x, _y, _turtle.Body.Width, _turtle.Body.Height);
+            _turtle.HitBox.Inflate(-(_turtle.Body.Width / 3), -30);
         }
     }
 }

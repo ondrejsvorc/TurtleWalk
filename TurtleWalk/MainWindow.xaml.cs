@@ -130,7 +130,7 @@ namespace TurtleWalk
                                     break;
 
                                 case "SavingPlatform":
-                                    savingPlatform = new SavingPlatform();
+                                    savingPlatform = new SavingPlatform(image.Margin.Left);
                                     savingPlatform.Body = image;
                                     break;
 
@@ -153,7 +153,7 @@ namespace TurtleWalk
                                     break;
 
                                 case "LavaDrop":
-                                    LavaDrop lavaDrop = new LavaDrop(CollisionElement.SetHitBox(image));
+                                    LavaDrop lavaDrop = new LavaDrop(CollisionElement.SetHitBox(image), image.Margin.Top);
                                     lavaDrop.Body = image;
                                     lavaDrops.Add(lavaDrop);
                                     break;
@@ -188,6 +188,9 @@ namespace TurtleWalk
 
             levelInProgress = "none";
             timeElapsed = 0;
+
+            clickCountDirection = 0;
+            clickCountMovement = 0;
 
             lbScore.Content = $"Score: {scoreCount = 0}";
 
@@ -237,8 +240,8 @@ namespace TurtleWalk
         private void GameUpdate(object sender, EventArgs e)
         {
             // NEUSTÁLE SE AKTUALIZUJÍCÍ A MODIFIKOVANÉ HITBOXY ŽELVIČKY A PLATFORMY PRO PŘIROZENOU DETEKCI KOLIZE V REÁLNÉM ČASE
-            Turtle.HitBoxUpdate(turtle);
-            SavingPlatform.HitBoxUpdate(savingPlatform);
+            turtle.HitBoxUpdate();
+            savingPlatform.HitBoxUpdate();
 
             // POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
             timeElapsed++;
@@ -248,13 +251,13 @@ namespace TurtleWalk
 
             if (turtle.IsMoving && turtle.IsDirectionForward && Ground.CheckCollision(turtle))
             {
-                Turtle.Move(turtle, turtle.DistanceFromStart += 5, turtle.SeaLevel);
+                turtle.X += 5;
             }
             else if (turtle.IsMoving && !turtle.IsDirectionForward && Ground.CheckCollision(turtle))
             {
-                if (turtle.DistanceFromStart > -(turtle.Body.Width / 4))
+                if (turtle.X > -(turtle.Body.Width / 4))
                 {
-                    Turtle.Move(turtle, turtle.DistanceFromStart -= 5, turtle.SeaLevel);
+                    turtle.X -= 5;
                 }
             }
 
@@ -282,13 +285,15 @@ namespace TurtleWalk
             // ŽElVIČKA STOUPLA NA PISTON
             if (Piston.CheckCollision(turtle))
             {
-                Turtle.Move(turtle, turtle.DistanceFromStart += 4.5, turtle.SeaLevel -= 22.5);
+                turtle.X += 4.5;
+                turtle.Y -= 22.5;
             }
 
             // ZELVIČKA SE NIČEHO NEDOTÝKÁ
             if (!(Ground.CheckCollision(turtle) || Piston.CheckCollision(turtle)))
             {
-                Turtle.Move(turtle, turtle.DistanceFromStart += 2, turtle.SeaLevel += 8);
+                turtle.X += 2;
+                turtle.Y += 8;
             }
 
             // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
@@ -297,17 +302,17 @@ namespace TurtleWalk
 
             // DETEKCE KOLIZE MEZI PLATFORMOU A KAPKOU (INDIVIDUÁLNÍ PRO KAŽDOU KAPKU)
 
-            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[0]))
+            if (savingPlatform.CheckCollisionWith(lavaDrops[0]))
             {
                 collisionPlatform[index++] = 1;
             }
 
-            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[1]))
+            if (savingPlatform.CheckCollisionWith(lavaDrops[1]))
             {
                 collisionPlatform[index++] = 2;
             }
 
-            if (SavingPlatform.CheckCollisionBetween(savingPlatform, lavaDrops[2]))
+            if (savingPlatform.CheckCollisionWith(lavaDrops[2]))
             {
                 collisionPlatform[index] = 3;
             }
@@ -369,26 +374,28 @@ namespace TurtleWalk
         {
             if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || uniformGridLevels.Visibility != Visibility.Visible))
             {
+                int step = 0;
+
                 switch (e.Key)
                 {
                     case Key.Left:
                     case Key.A:
-                        if (savingPlatform.Body.Margin.Left > 25)
+                        if (savingPlatform.X > 25)
                         {
-                            marginLeft = savingPlatform.Body.Margin.Left - 25;
+                            step = -25;
                         }
                         break;
 
                     case Key.Right:
                     case Key.D:
-                        if (savingPlatform.Body.Margin.Left < 650)
+                        if (savingPlatform.X < 650)
                         {
-                            marginLeft = savingPlatform.Body.Margin.Left + 25;
+                            step = 25;
                         }
                         break;
                 }
 
-                SavingPlatform.Move(savingPlatform, marginLeft);
+                savingPlatform.X += step;
             }
         }
 

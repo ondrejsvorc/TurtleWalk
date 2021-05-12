@@ -15,10 +15,11 @@ namespace TurtleWalk.ClassLevelBuilder
 {
     sealed class LevelBuilder
     {
-        private StreamReader _reader { get; set; }
-        private Grid _gridLvl { get; set; }
-        private string _path { get; }
-        private string _lvl { get; }
+        private StreamReader _reader;
+        private Grid _gridLvl;
+
+        private readonly string _path;
+        private readonly string _lvl;
 
         public List<Image> Images { get; private set; }
 

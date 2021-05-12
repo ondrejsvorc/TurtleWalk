@@ -6,9 +6,9 @@ Ground 180 140 650 636 -10 -70
 Ground 180 140 775 636 -10 -70
 Ground 180 140 900 636 -10 -70
 Ground 180 140 1025 636 -10 -70
-LavaDrop 25 50 720 -25
-LavaDrop 25 50 790 -25
-LavaDrop 25 50 850 -25
+LavaDrop 25 50 720 -50
+LavaDrop 25 50 790 -50
+LavaDrop 25 50 850 -50
 Leaf 60 60 575 570
 SavingPlatform 240 30 25 90
 Piston 150 150 380 560 -60 240

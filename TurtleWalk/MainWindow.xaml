@@ -15,6 +15,7 @@
     Cursor="./Resources/Images/Cursors/cursorHand.cur"
     KeyDown="LevelStop"
     WindowStartupLocation="CenterScreen"
+    ResizeMode="CanMinimize"
     mc:Ignorable="d">
 
     <Grid x:Name="gridMain">
@@ -293,6 +294,7 @@
                 HorizontalAlignment="Left"
                 Panel.ZIndex="1"
                 Content="Sound off"
+                Focusable="False"
                 Style="{DynamicResource ToggleButtonStyle}" />
 
             <Button
@@ -305,6 +307,7 @@
                 Panel.ZIndex="1"
                 Click="Restart"
                 Content="Restart"
+                Focusable="False"
                 Style="{DynamicResource ButtonStyle}" />
 
             <Border

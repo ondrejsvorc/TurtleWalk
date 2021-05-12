@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Controls.Primitives;
+using TurtleWalk.ClassConstants;
 
 namespace TurtleWalk.ClassGameManager
 {
@@ -9,15 +10,11 @@ namespace TurtleWalk.ClassGameManager
         private static StreamReader _reader;
         private static StreamWriter _writer;
 
-        public GameManager()
-        {
-        }
-
         public static void GetAvailableLevels(UniformGrid uniformGridLevels)
         {
             // CHECKS FOR AVAILABLE LEVELS (EXCEPT FOR THE FIRST ONE, WHICH IS ALWAYS AVAILABLE)
 
-            using (_reader = new StreamReader("./Resources/Levels/Available/available_levels.txt"))
+            using (_reader = new StreamReader(Constants.AVAILABLE_LEVELS))
             {
                 if (!_reader.EndOfStream)        // If the file is empty, don't even bother checking available levels
                 {
@@ -46,7 +43,7 @@ namespace TurtleWalk.ClassGameManager
 
             if (!uniformGridLevels.Children[lvlIndex + 1].IsEnabled)
             {
-                using (_writer = new StreamWriter("./Resources/Levels/Available/available_levels.txt", true))
+                using (_writer = new StreamWriter(Constants.AVAILABLE_LEVELS, true))
                 {
                     _writer.Write("1" + " ");
                     _writer.Flush();

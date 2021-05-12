@@ -7,25 +7,40 @@ namespace TurtleWalk.ClassSavingPlatform
     sealed class SavingPlatform
     {
         public Rect HitBox { get; private set; }
-        public Image Body { get; set; }
+        public Image Body;
 
-        public SavingPlatform()
+        private SavingPlatform _savingPlatform;
+
+        private double _x;
+
+        public double X
         {
+            get => _x;
+            set
+            {
+                _x = value;
+
+                if (_savingPlatform != null)
+                {
+                    _savingPlatform.Body.Margin = new Thickness(_x, _savingPlatform.Body.Margin.Top, 0, 0);
+                }
+            }
         }
 
-        public static Thickness Move(SavingPlatform savingPlatform, double marginLeft)
+        public SavingPlatform(double x)
         {
-            return savingPlatform.Body.Margin = new Thickness(marginLeft, savingPlatform.Body.Margin.Top, 0, 0);
+            _x = x;
+            _savingPlatform = this;
         }
 
-        public static void HitBoxUpdate(SavingPlatform savingPlatform)
+        public void HitBoxUpdate()
         {
-            savingPlatform.HitBox = new Rect(savingPlatform.Body.Margin.Left, savingPlatform.Body.Margin.Top, savingPlatform.Body.Width, savingPlatform.Body.Height);
+            _savingPlatform.HitBox = new Rect(_savingPlatform.Body.Margin.Left, _savingPlatform.Body.Margin.Top, _savingPlatform.Body.Width, _savingPlatform.Body.Height);
         }
 
-        public static bool CheckCollisionBetween(SavingPlatform savingPlatform, LavaDrop lavaDrop)
+        public bool CheckCollisionWith(LavaDrop lavaDrop)
         {
-            if (savingPlatform.HitBox.IntersectsWith(lavaDrop.HitBox))
+            if (_savingPlatform.HitBox.IntersectsWith(lavaDrop.HitBox))
             {
                 return true;
             }

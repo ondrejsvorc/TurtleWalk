@@ -10,6 +10,8 @@ namespace TurtleWalk.ClassTurtle
         public bool IsMoving;
         public bool IsDirectionForward;
 
+        public Image Body;
+
         private double _y;
 
         public double Y
@@ -41,8 +43,6 @@ namespace TurtleWalk.ClassTurtle
                 }
             }
         }
-
-        public Image Body;
 
         private Turtle _turtle;
 

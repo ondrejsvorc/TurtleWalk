@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using TurtleWalk.ClassCollisionElement;
 
@@ -21,13 +22,12 @@ namespace TurtleWalk.ClassLavaDrop
             lavaDrop.HitBox = new Rect(lavaDrop.Body.Margin.Left, marginTop, lavaDrop.Body.Width, lavaDrop.Body.Height);
         }
 
-        // THERE MIGHT BE PROBLEMS
         public static void ResetPositions(List<LavaDrop> lavaDrops)
         {
             foreach (LavaDrop lavaDrop in lavaDrops)
             {
                 lavaDrop.Body.Margin = new Thickness(lavaDrop.Body.Margin.Left, _startY, 0, 0);
-                //lavaDrop.Hitbox ?
+                lavaDrop.HitBox = new Rect(lavaDrop.Body.Margin.Left, _startY, lavaDrop.Body.Width, lavaDrop.Body.Height);
             }
         }
     }

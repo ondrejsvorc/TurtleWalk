@@ -297,24 +297,23 @@ namespace TurtleWalk
             }
 
             // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
-            Array.Clear(collisionPlatform, 0, collisionPlatform.Length);
-            index = 0;
+            collisionPlatform = new int[4];
 
             // DETEKCE KOLIZE MEZI PLATFORMOU A KAPKOU (INDIVIDUÁLNÍ PRO KAŽDOU KAPKU)
 
             if (savingPlatform.CheckCollisionWith(lavaDrops[0]))
             {
-                collisionPlatform[index++] = 1;
+                collisionPlatform[0] = 1;
             }
 
             if (savingPlatform.CheckCollisionWith(lavaDrops[1]))
             {
-                collisionPlatform[index++] = 2;
+                collisionPlatform[1] = 2;
             }
 
             if (savingPlatform.CheckCollisionWith(lavaDrops[2]))
             {
-                collisionPlatform[index] = 3;
+                collisionPlatform[2] = 3;
             }
 
             // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK

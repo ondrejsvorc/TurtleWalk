@@ -35,7 +35,7 @@ namespace TurtleWalk.ClassSavingPlatform
 
         public void HitBoxUpdate()
         {
-            _savingPlatform.HitBox = new Rect(_savingPlatform.Body.Margin.Left, _savingPlatform.Body.Margin.Top, _savingPlatform.Body.Width, _savingPlatform.Body.Height);
+            _savingPlatform.HitBox = new Rect(_x, _savingPlatform.Body.Margin.Top, _savingPlatform.Body.Width, _savingPlatform.Body.Height);
         }
 
         public bool CheckCollisionWith(LavaDrop lavaDrop)

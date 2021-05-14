@@ -160,6 +160,8 @@
     <Resource Include="Resources\Menu\Background\background_menu.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_2.png" />
+    <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_1.png" />
     <Resource Include="Resources\Levels\Level02\Start\start_lvl02.txt" />
     <Resource Include="Resources\Levels\Level01\Start\start_lvl01.txt" />
     <Resource Include="Resources\Levels\Available\available_levels.txt">

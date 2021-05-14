@@ -10,8 +10,6 @@
     Title="TurtleWalk"
     Width="1300"
     Height="750"
-    MinWidth="1300"
-    MinHeight="750"
     Cursor="./Resources/Images/Cursors/cursorHand.cur"
     KeyDown="LevelStop"
     WindowStartupLocation="CenterScreen"
@@ -311,8 +309,8 @@
                 Style="{DynamicResource ButtonStyle}" />
 
             <Border
-                Width="160"
-                Height="140"
+                Width="110"
+                Height="100"
                 Margin="0,45,15,0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
@@ -330,9 +328,9 @@
             </Border>
 
             <Border
-                Width="160"
-                Height="140"
-                Margin="0,45,190,0"
+                Width="110"
+                Height="100"
+                Margin="0,45,140,0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
                 Panel.ZIndex="1"
@@ -354,11 +352,11 @@
                 Height="40"
                 HorizontalAlignment="Right"
                 HorizontalContentAlignment="Center"
-                Margin="0,5,15,0"
+                Margin="0,5,-10,0"
                 VerticalAlignment="Top"
                 Panel.ZIndex="1"
                 Content="Backwards"
-                FontSize="20" />
+                FontSize="16" />
 
             <Label
                 x:Name="lbState"
@@ -366,21 +364,21 @@
                 Height="40"
                 HorizontalAlignment="Right"
                 HorizontalContentAlignment="Center"
-                Margin="0,5,190,0"
+                Margin="0,5,118,0"
                 VerticalAlignment="Top"
                 Panel.ZIndex="1"
                 Content="Stop"
-                FontSize="20" />
+                FontSize="16" />
 
             <Label
                 x:Name="lbScore"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
-                Margin="1140,200,0,0"
+                Margin="1116,145,0,0"
                 Panel.ZIndex="1"
                 Content="Score: 0"
                 FontFamily="Yu Gothic UI Light"
-                FontSize="30" />
+                FontSize="24" />
         </Grid>
     </Grid>
 </Window>

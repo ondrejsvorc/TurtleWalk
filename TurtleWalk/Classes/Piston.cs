@@ -7,7 +7,7 @@ namespace TurtleWalk.ClassPiston
 {
     sealed class Piston : CollisionElement
     {
-        private static readonly List<Rect> hitBoxes = new List<Rect>();
+        private static List<Rect> hitBoxes = new List<Rect>();
 
         public Piston(Rect pistonHitBox, double InflationWidth, double InflationHeight) : base(pistonHitBox)
         {
@@ -17,7 +17,7 @@ namespace TurtleWalk.ClassPiston
 
         public static bool CheckCollision(Turtle turtle)
         {
-            bool result = true;
+            bool result = false;
 
             foreach (Rect pistonHitBox in hitBoxes)
             {
@@ -33,6 +33,11 @@ namespace TurtleWalk.ClassPiston
             }
 
             return result;
+        }
+
+        public static void NullHitBoxes()
+        {
+            hitBoxes = new List<Rect>();
         }
     }
 }

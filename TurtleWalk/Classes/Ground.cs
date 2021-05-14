@@ -9,7 +9,7 @@ namespace TurtleWalk.ClassGround
     {
         // READONLY - HODNOTY MUSÍME NASTAVIT BUĎ PŘI INICIALIZACI, NEBO V KONSTRUKTORU
         // CONST - HODNOTY MUSÍME NASTAVIT PŘI INICIALIZACI (NÁZVY PROMĚNNÝCH TOHOTO TYPU PÍŠEME VELKÝMI PÍSMENY, ODDĚLUJEME PODTRŽÍTKEM)
-        private static readonly List<Rect> hitBoxes = new List<Rect>();
+        private static List<Rect> hitBoxes = new List<Rect>();
 
         public Ground(Rect groundHitBox, double InflationWidth, double InflationHeight) : base(groundHitBox)
         {
@@ -35,6 +35,11 @@ namespace TurtleWalk.ClassGround
             }
 
             return result;
+        }
+
+        public static void NullHitBoxes()
+        {
+            hitBoxes = new List<Rect>();
         }
 
         //public static bool CheckCollisionBetween(Turtle turtle, Ground ground)

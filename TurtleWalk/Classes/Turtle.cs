@@ -30,7 +30,7 @@ namespace TurtleWalk.ClassTurtle
 
         private double _x;
 
-        public double X 
+        public double X
         {
             get => _x;
             set

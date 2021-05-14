@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
 using TurtleWalk.ClassConstants;
 using TurtleWalk;
+using System.Windows.Media;
 
 namespace TurtleWalk.ClassLevelBuilder
 {
@@ -99,8 +100,13 @@ namespace TurtleWalk.ClassLevelBuilder
                     Margin = new Thickness(Convert.ToDouble(attributes[3]), Convert.ToDouble(attributes[4]), 0, 0),
                     Source = new BitmapImage(source),
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top
+                    VerticalAlignment = VerticalAlignment.Top,
                 };
+
+                if (attributes[0] == "Background")
+                {
+                    Element.Stretch = Stretch.Fill;
+                }
 
                 if (attributes[0] == "Turtle" || attributes[0] == "Piston" || attributes[0] == "Leaf")
                 {

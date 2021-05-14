@@ -63,12 +63,9 @@ namespace TurtleWalk
         private Cursor cursorHand;
         private Cursor cursorGrabbed;
 
-        private double marginLeft = 25;
-
         private int clickCountDirection, clickCountMovement;
 
         private int[] collisionPlatform;
-        private int index;
         private int timeElapsed;
 
         private List<LavaDrop> lavaDrops;
@@ -98,7 +95,6 @@ namespace TurtleWalk
 
             collisionPlatform = new int[4];
 
-            index = 0;
             timeElapsed = 0;
 
             levelInProgress = "none";
@@ -175,7 +171,6 @@ namespace TurtleWalk
             //}
         }
 
-
         // TATO METODA SE VOLÁ I PŘI SMRTI ŽELVY, TÍM PÁDEM SE VYKRESLUJE CELEJ LEVEL ZNOVA ZBYTEČNĚ - OŠETŘIT TO TAK, ABY SE DALA ŽELVA A PLOŠINKA NA ZAČÁTEK
         // + ABY SE VYKRESLILY ZNOVA LISTY, TY TOTIŽ MŮŽEME V PRŮBĚHU HRY SEŽRAT A PAK BY TAM CHYBĚLI
         // ALE ABY SE TAM VYKRESLOVALI ZNOVA GROUND APOD. TO JE ZBYTEČNÝ
@@ -185,6 +180,9 @@ namespace TurtleWalk
 
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
+
+            Ground.NullHitBoxes();
+            Piston.NullHitBoxes();
 
             levelInProgress = "none";
             timeElapsed = 0;
@@ -200,7 +198,11 @@ namespace TurtleWalk
             {
                 gridLvl.Children.RemoveAt(lastIndex--);
             }
+        }
 
+        private void LevelRestart()
+        {
+            LevelResetValues();
             LevelStart();
         }
 
@@ -217,18 +219,7 @@ namespace TurtleWalk
 
         private void LevelFinish()
         {
-            timer.Stop();
-
-            lbScore.Content = $"Score: {scoreCount = 0}";
-
-            levelInProgress = "none";
-
-            int lastIndex = gridLvl.Children.Count - 1;
-
-            while (gridLvl.Children.Count != 7)
-            {
-                gridLvl.Children.RemoveAt(lastIndex--);
-            }
+            LevelResetValues();
 
             GameManager.SetAvailableLevels(uniformGridLevels, lvl);
             GameManager.GetAvailableLevels(uniformGridLevels);
@@ -237,11 +228,21 @@ namespace TurtleWalk
             gridMenu.Visibility = Visibility.Visible;
         }
 
+        private void LevelSwitch()
+        {
+            LevelResetValues();
+            LevelStart();
+        }
+
         private void GameUpdate(object sender, EventArgs e)
         {
             // NEUSTÁLE SE AKTUALIZUJÍCÍ A MODIFIKOVANÉ HITBOXY ŽELVIČKY A PLATFORMY PRO PŘIROZENOU DETEKCI KOLIZE V REÁLNÉM ČASE
             turtle.HitBoxUpdate();
-            savingPlatform.HitBoxUpdate();
+
+            if (savingPlatform != null)
+            {
+                savingPlatform.HitBoxUpdate();
+            }
 
             // POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
             timeElapsed++;
@@ -296,63 +297,64 @@ namespace TurtleWalk
                 turtle.Y += 8;
             }
 
-            // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
-            collisionPlatform = new int[4];
-
-            // DETEKCE KOLIZE MEZI PLATFORMOU A KAPKOU (INDIVIDUÁLNÍ PRO KAŽDOU KAPKU)
-
-            if (savingPlatform.CheckCollisionWith(lavaDrops[0]))
+            if (lavaDrops.Count() != 0)
             {
-                collisionPlatform[0] = 1;
-            }
+                // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
+                collisionPlatform = new int[4];
 
-            if (savingPlatform.CheckCollisionWith(lavaDrops[1]))
-            {
-                collisionPlatform[1] = 2;
-            }
-
-            if (savingPlatform.CheckCollisionWith(lavaDrops[2]))
-            {
-                collisionPlatform[2] = 3;
-            }
-
-            // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
-
-            // 1 tick = 30 ms
-            // 66 * 30 = 2000 ms = 2s
-
-            if (timeElapsed >= 0 && timeElapsed <= 66)
-            {
-                if (!collisionPlatform.Contains(1))
+                // DETEKCE KOLIZE MEZI PLATFORMOU A KAPKOU (INDIVIDUÁLNÍ PRO KAŽDOU KAPKU)
+                if (savingPlatform.CheckCollisionWith(lavaDrops[0]))
                 {
-                    LavaDrop.Fall(lavaDrops[0], lavaDrops[0].Body.Margin.Top);
+                    collisionPlatform[0] = 1;
                 }
 
-                if (!collisionPlatform.Contains(2))
+                if (savingPlatform.CheckCollisionWith(lavaDrops[1]))
                 {
-                    LavaDrop.Fall(lavaDrops[1], lavaDrops[1].Body.Margin.Top);
+                    collisionPlatform[1] = 2;
                 }
 
-                if (!collisionPlatform.Contains(3))
+                if (savingPlatform.CheckCollisionWith(lavaDrops[2]))
                 {
-                    LavaDrop.Fall(lavaDrops[2], lavaDrops[2].Body.Margin.Top);
+                    collisionPlatform[2] = 3;
+                }
+
+                // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
+
+                // 1 tick = 30 ms
+                // 66 * 30 = 2000 ms = 2s
+
+                if (timeElapsed >= 0 && timeElapsed <= 66)
+                {
+                    if (!collisionPlatform.Contains(1))
+                    {
+                        LavaDrop.Fall(lavaDrops[0], lavaDrops[0].Body.Margin.Top);
+                    }
+
+                    if (!collisionPlatform.Contains(2))
+                    {
+                        LavaDrop.Fall(lavaDrops[1], lavaDrops[1].Body.Margin.Top);
+                    }
+
+                    if (!collisionPlatform.Contains(3))
+                    {
+                        LavaDrop.Fall(lavaDrops[2], lavaDrops[2].Body.Margin.Top);
+                    }
+                }
+                else if (timeElapsed > 66)
+                {
+                    LavaDrop.ResetPositions(lavaDrops);
+
+                    timeElapsed = 0;
+                }
+
+                foreach (LavaDrop lavaDrop in lavaDrops)
+                {
+                    if (turtle.HitBox.IntersectsWith(lavaDrop.HitBox))
+                    {
+                        LevelRestart();
+                    }
                 }
             }
-            else if (timeElapsed > 66)
-            {
-                LavaDrop.ResetPositions(lavaDrops);
-
-                timeElapsed = 0;
-            }
-
-            foreach (LavaDrop lavaDrop in lavaDrops)
-            {
-                if (turtle.HitBox.IntersectsWith(lavaDrop.HitBox))
-                {
-                    LevelResetValues();
-                }
-            }
-
         }
 
         private void LevelStop(object sender, KeyEventArgs e)
@@ -578,39 +580,27 @@ namespace TurtleWalk
 
         private void Restart(object sender, RoutedEventArgs e)
         {
-            LevelResetValues();
+            LevelRestart();
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)
         {
             string lvlClickedOn = (string)((Button)sender).Content;
+            lvl = lvlClickedOn;
 
-            switch (lvlClickedOn)
+            gridMenu.Visibility = Visibility.Hidden;
+
+            if (levelInProgress == "none")
             {
-                case "01":
-                case "02":
-                case "03":
-                case "04":
-                case "05":
-                case "06":
-                case "07":
-                    gridMenu.Visibility = Visibility.Hidden;
-
-                    lvl = lvlClickedOn;
-
-                    if (levelInProgress == "none")
-                    {
-                        LevelStart();                   
-                    }
-                    else if (levelInProgress == lvlClickedOn)
-                    {
-                        LevelResume();
-                    }
-                    else
-                    {
-                        LevelResetValues();             // Level switch
-                    }
-                    break;
+                LevelStart();
+            }
+            else if (levelInProgress == lvlClickedOn)
+            {
+                LevelResume();
+            }
+            else
+            {
+                LevelSwitch();
             }
         }
     }

@@ -7,19 +7,19 @@ namespace TurtleWalk.ClassPiston
 {
     sealed class Piston : CollisionElement
     {
-        private static List<Rect> hitBoxes = new List<Rect>();
+        private static List<Rect> _hitBoxes = new List<Rect>();
 
         public Piston(Rect pistonHitBox, double InflationWidth, double InflationHeight) : base(pistonHitBox)
         {
             pistonHitBox.Inflate(InflationWidth, InflationHeight);   // Pro větší přirozenost HitBoxu
-            hitBoxes.Add(pistonHitBox);
+            _hitBoxes.Add(pistonHitBox);
         }
 
         public static bool CheckCollision(Turtle turtle)
         {
             bool result = false;
 
-            foreach (Rect pistonHitBox in hitBoxes)
+            foreach (Rect pistonHitBox in _hitBoxes)
             {
                 if (turtle.HitBox.IntersectsWith(pistonHitBox))
                 {
@@ -37,7 +37,7 @@ namespace TurtleWalk.ClassPiston
 
         public static void NullHitBoxes()
         {
-            hitBoxes = new List<Rect>();
+            _hitBoxes = new List<Rect>();
         }
     }
 }

@@ -3,9 +3,9 @@ using System.IO;
 using System.Windows.Controls.Primitives;
 using TurtleWalk.ClassConstants;
 
-namespace TurtleWalk.ClassGameManager
+namespace TurtleWalk.ClassLevelManager
 {
-    sealed class GameManager
+    sealed class LevelsManager
     {
         private static StreamReader _reader;
         private static StreamWriter _writer;

@@ -71,14 +71,16 @@
     </Compile>
     <Compile Include="Classes\CollisionElement.cs" />
     <Compile Include="Classes\Constants.cs" />
-    <Compile Include="Classes\GameManager.cs" />
+    <Compile Include="Classes\LevelsManager.cs" />
     <Compile Include="Classes\Ground.cs" />
     <Compile Include="Classes\LavaDrop.cs" />
     <Compile Include="Classes\Leaf.cs" />
     <Compile Include="Classes\LevelBuilder.cs" />
     <Compile Include="Classes\Piston.cs" />
+    <Compile Include="Classes\Profile.cs" />
+    <Compile Include="Classes\ProfilesManager.cs" />
     <Compile Include="Classes\SavingPlatform.cs" />
-    <Compile Include="Classes\SettingsManager.cs" />
+    <Compile Include="Classes\Scoreboard.cs" />
     <Compile Include="Classes\Sign.cs" />
     <Compile Include="Classes\Turtle.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -160,6 +162,7 @@
     <Resource Include="Resources\Menu\Background\background_menu.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\scoreboard.txt" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_2.png" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_1.png" />
     <Resource Include="Resources\Levels\Level02\Start\start_lvl02.txt" />

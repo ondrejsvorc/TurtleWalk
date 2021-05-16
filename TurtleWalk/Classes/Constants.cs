@@ -16,5 +16,6 @@
         public static readonly string SIGN = "./Resources/Images/Other/finish.png";
 
         public static readonly string AVAILABLE_LEVELS = "./Resources/Levels/Available/available_levels.txt";
+        public static readonly string SCOREBOARD_DATA = "./Resources/scoreboard.txt";
     }
 }

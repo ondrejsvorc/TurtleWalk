@@ -19,7 +19,9 @@ using TurtleWalk.ClassPiston;
 using TurtleWalk.ClassSavingPlatform;
 using TurtleWalk.ClassSign;
 using TurtleWalk.ClassTurtle;
-using TurtleWalk.ClassGameManager;
+using TurtleWalk.ClassLevelManager;
+using TurtleWalk.ClassScoreboard;
+using TurtleWalk.ClassProfilesManager;
 
 namespace TurtleWalk
 {
@@ -34,13 +36,7 @@ namespace TurtleWalk
     // - Design 2. levelu
     //      :
 
-    // - Lepší dělení do tříd, přidání více metod
-    //      : 
-
-    // - Ukládání nastavení
-    //      :
-
-    // - Načítání nastavení
+    // - Scoreboard
     //      :
 
     // - Design 3. levelu
@@ -71,6 +67,8 @@ namespace TurtleWalk
         private List<LavaDrop> lavaDrops;
         private List<Leaf> leafs;
 
+        public List<string> players = new List<string>() { "Test", "Test2" };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -85,7 +83,10 @@ namespace TurtleWalk
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
 
-            GameManager.GetAvailableLevels(uniformGridLevels);
+            LevelsManager.GetAvailableLevels(uniformGridLevels);
+
+            Scoreboard.DataGet();
+            Scoreboard.DataSet(dataGridScoreboard);
 
             cursorHand = new Cursor(new MemoryStream(Properties.Resources.cursorHand));
             cursorGrabbed = new Cursor(new MemoryStream(Properties.Resources.cursorGrabbed));
@@ -221,8 +222,8 @@ namespace TurtleWalk
         {
             LevelResetValues();
 
-            GameManager.SetAvailableLevels(uniformGridLevels, lvl);
-            GameManager.GetAvailableLevels(uniformGridLevels);
+            LevelsManager.SetAvailableLevels(uniformGridLevels, lvl);
+            LevelsManager.GetAvailableLevels(uniformGridLevels);
 
             gridLvl.Visibility = Visibility.Hidden;
             gridMenu.Visibility = Visibility.Visible;
@@ -527,8 +528,21 @@ namespace TurtleWalk
 
         private void Back(object sender, RoutedEventArgs e)
         {
-            uniformGridLevels.Visibility = Visibility.Hidden;
+            if (uniformGridLevels.Visibility == Visibility.Visible)
+            {
+                uniformGridLevels.Visibility = Visibility.Hidden;
+            }
+            else if (gridProfiles.Visibility == Visibility.Visible)
+            {
+                gridProfiles.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                dataGridScoreboard.Visibility = Visibility.Hidden;
+            }
+
             btnBack.Visibility = Visibility.Hidden;
+            gridMenu.Visibility = Visibility.Visible;
             gridButtons.Visibility = Visibility.Visible;
         }
 
@@ -543,8 +557,8 @@ namespace TurtleWalk
             {
                 case "Czech":
                     btnPlay.Content = "Hrát";
-                    btnSettings.Content = "Nastavení";
-                    btnControls.Content = "Ovládaní";
+                    btnProfiles.Content = "Profily";
+                    btnScoreboard.Content = "Žebříček";
                     btnExit.Content = "Odejít";
                     btnBack.Content = "Zpět";
                     break;
@@ -581,6 +595,44 @@ namespace TurtleWalk
         private void Restart(object sender, RoutedEventArgs e)
         {
             LevelRestart();
+        }
+
+        private void ShowScoreboard(object sender, RoutedEventArgs e)
+        {
+            dataGridScoreboard.Visibility = Visibility.Visible;
+            btnBack.Visibility = Visibility.Visible;
+
+            gridMenu.Visibility = Visibility.Hidden;
+        }
+
+        private void NewProfile(object sender, RoutedEventArgs e)
+        {
+            ProfilesManager.ProfileAdd(txtBoxNewProfile.Text, uniformGridProfiles);
+        }
+
+        private void ProfileNameCheck(object sender, TextChangedEventArgs e)
+        {
+            TextBox txtBoxSender = sender as TextBox;
+
+            if (!string.IsNullOrWhiteSpace(txtBoxSender.Text))
+            {
+               btnCreate.IsEnabled = true;
+            }
+            else
+            {
+                if (btnCreate.IsEnabled)
+                {
+                    btnCreate.IsEnabled = false;
+                }
+            }
+        }
+
+        private void ShowProfiles(object sender, RoutedEventArgs e)
+        {
+            gridProfiles.Visibility = Visibility.Visible;
+            btnBack.Visibility = Visibility.Visible;
+
+            gridMenu.Visibility = Visibility.Hidden;
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)

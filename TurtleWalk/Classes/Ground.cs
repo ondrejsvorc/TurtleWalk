@@ -9,19 +9,19 @@ namespace TurtleWalk.ClassGround
     {
         // READONLY - HODNOTY MUSÍME NASTAVIT BUĎ PŘI INICIALIZACI, NEBO V KONSTRUKTORU
         // CONST - HODNOTY MUSÍME NASTAVIT PŘI INICIALIZACI (NÁZVY PROMĚNNÝCH TOHOTO TYPU PÍŠEME VELKÝMI PÍSMENY, ODDĚLUJEME PODTRŽÍTKEM)
-        private static List<Rect> hitBoxes = new List<Rect>();
+        private static List<Rect> _hitBoxes = new List<Rect>();
 
         public Ground(Rect groundHitBox, double InflationWidth, double InflationHeight) : base(groundHitBox)
         {
             groundHitBox.Inflate(InflationWidth, InflationHeight);   // Pro větší přirozenost HitBoxu
-            hitBoxes.Add(groundHitBox);
+            _hitBoxes.Add(groundHitBox);
         }
 
         public static bool CheckCollision(Turtle turtle)
         {
             bool result = true;
 
-            foreach (Rect groundHitBox in hitBoxes)
+            foreach (Rect groundHitBox in _hitBoxes)
             {
                 if (turtle.HitBox.IntersectsWith(groundHitBox))
                 {
@@ -39,7 +39,7 @@ namespace TurtleWalk.ClassGround
 
         public static void NullHitBoxes()
         {
-            hitBoxes = new List<Rect>();
+            _hitBoxes = new List<Rect>();
         }
 
         //public static bool CheckCollisionBetween(Turtle turtle, Ground ground)

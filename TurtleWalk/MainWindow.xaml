@@ -16,18 +16,47 @@
     ResizeMode="CanMinimize"
     mc:Ignorable="d">
 
+    <Window.Resources>
+        <Style x:Key="CenterGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style x:Key="FontSizeStyle" TargetType="DataGridRow">
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </Window.Resources>
+
     <Grid x:Name="gridMain">
+        <Image
+            x:Name="backgroundPic"
+            Source="/Resources/Menu/Background/background_menu.png"
+            Stretch="Fill" />
+
+        <Button
+            x:Name="btnBack"
+            Width="150"
+            Height="100"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="#FF45BD78"
+            Grid.Row="0"
+            Click="Back"
+            Content="Zpět"
+            Visibility="Hidden"
+            FontFamily="Segoe UI Light"
+            FontSize="40"
+            Foreground="White"
+            MouseEnter="CursorEnters"
+            MouseLeave="CursorLeaves"
+            Style="{DynamicResource ButtonStyle}" />
+
         <Grid x:Name="gridMenu">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
-            <Image
-                x:Name="backgroundPic"
-                Grid.RowSpan="3"
-                Source="/Resources/Menu/Background/background_menu.png"
-                Stretch="Fill" />
 
             <Image
                 x:Name="Czech"
@@ -98,32 +127,32 @@
                     Style="{DynamicResource ButtonStyle}" />
 
                 <Button
-                    x:Name="btnSettings"
+                    x:Name="btnProfiles"
                     Width="700"
                     Height="80"
                     Margin="0,0,0,10"
                     Background="#FF45BD78"
-                    Content="Nastavení"
+                    Content="Herní profily"
                     FontFamily="Segoe UI"
                     FontSize="40"
                     Foreground="White"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
-                    Style="{DynamicResource ButtonStyle}" />
+                    Style="{DynamicResource ButtonStyle}" Click="ShowProfiles" />
 
                 <Button
-                    x:Name="btnControls"
+                    x:Name="btnScoreboard"
                     Width="700"
                     Height="80"
                     Margin="0,0,0,10"
                     Background="#FF45BD78"
-                    Content="Ovládání"
+                    Content="Žebříček"
                     FontFamily="Segoe UI"
                     FontSize="40"
                     Foreground="White"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
-                    Style="{DynamicResource ButtonStyle}" />
+                    Style="{DynamicResource ButtonStyle}" Click="ShowScoreboard" />
 
                 <Button
                     x:Name="btnExit"
@@ -140,25 +169,6 @@
                     MouseLeave="CursorLeaves"
                     Style="{DynamicResource ButtonStyle}" />
             </StackPanel>
-
-            <Button
-                    x:Name="btnBack"
-                    Width="150"
-                    Height="100"
-                    Margin="10,10,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Background="#FF45BD78"
-                    Grid.Row="0"
-                    Click="Back"
-                    Content="Zpět"
-                    Visibility="Hidden"
-                    FontFamily="Segoe UI Light"
-                    FontSize="40"
-                    Foreground="White"
-                    MouseEnter="CursorEnters"
-                    MouseLeave="CursorLeaves"
-                    Style="{DynamicResource ButtonStyle}" />
 
             <UniformGrid Columns="7" x:Name="uniformGridLevels" Visibility="Hidden" Grid.Row="1" Width="800" VerticalAlignment="Center">
                 <Button
@@ -281,6 +291,46 @@
                     Style="{DynamicResource ButtonStyle}" />
             </UniformGrid>
         </Grid>
+
+        <Grid 
+            x:Name="gridProfiles"
+            Visibility="Hidden"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Width="600"
+            Height="600"
+            Background="#FF45BD78" 
+            Opacity="0.8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="lbProfiles" Grid.Row="0" Content="Herní profily" FontSize="45" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <UniformGrid Grid.Row="1" x:Name="uniformGridProfiles">
+                <TextBlock FontSize="16" FontStyle="Italic" Text="Zatím nebyl vytvořen žádný profil." VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </UniformGrid>
+            <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                <TextBlock Text="Nový profil" HorizontalAlignment="Center" FontSize="30" Padding="0,0,0,15"/>
+                <TextBox x:Name="txtBoxNewProfile" Width="250" Height="35" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MaxLength="26" TextChanged="ProfileNameCheck"/>
+                <Button x:Name="btnCreate" Content="Vytvořit" Width="135" Height="40" HorizontalAlignment="Center" FontSize="24" Margin="0,15,0,0" Style="{DynamicResource ButtonStyle }" Click="NewProfile" IsEnabled="False"/>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid
+            x:Name="dataGridScoreboard" 
+            ColumnWidth="*"
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Auto"
+            ColumnHeaderStyle="{StaticResource CenterGridHeaderStyle}"
+            RowStyle="{StaticResource FontSizeStyle}"
+            Visibility="Hidden" 
+            Width="600" 
+            Height="600" 
+            Background="#FF45BD78" 
+            Opacity="0.8" 
+            IsReadOnly="True">
+        </DataGrid>
 
         <Grid x:Name="gridLvl" Visibility="Hidden">
             <ToggleButton

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using TurtleWalk.ClassGround;
 
 namespace TurtleWalk.ClassCollisionElement
 {
@@ -9,9 +10,9 @@ namespace TurtleWalk.ClassCollisionElement
         public Rect HitBox;
         public Image Body;
 
-        public CollisionElement(Rect HitBox)
+        public CollisionElement(Rect hitBox)
         {
-            this.HitBox = new Rect(HitBox.X, HitBox.Y, HitBox.Width, HitBox.Height);
+            HitBox = new Rect(hitBox.X, hitBox.Y, hitBox.Width, hitBox.Height);
         }
 
         public static Rect SetHitBox(Image img)

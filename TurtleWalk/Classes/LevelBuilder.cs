@@ -74,13 +74,17 @@ namespace TurtleWalk.ClassLevelBuilder
 
                         // zatím jen pro lvl01
                     case "Ground":
-                        if (attributes[1] == "670")
+                        if (attributes[1] == "140" || attributes[1] == "180")
+                        {
+                            source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_1.png", UriKind.Relative);
+                        }
+                        else if (attributes[1] == "670")
                         {
                             source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
                         }
                         else
                         {
-                            source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_1.png", UriKind.Relative);
+                            source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/rounded_platform.png", UriKind.Relative);
                         }
                         break;
 
@@ -90,6 +94,14 @@ namespace TurtleWalk.ClassLevelBuilder
 
                     case "Sign":
                         source = new Uri(Constants.SIGN, UriKind.Relative);
+                        break;
+
+                    case "Lava":
+                        source = new Uri(Constants.LAVA, UriKind.Relative);
+                        break;
+
+                    case "Button":
+                        source = new Uri(Constants.BUTTON, UriKind.Relative);
                         break;
                 }
 
@@ -108,7 +120,7 @@ namespace TurtleWalk.ClassLevelBuilder
                     Element.Stretch = Stretch.Fill;
                 }
 
-                if (attributes[0] == "Turtle" || attributes[0] == "Piston" || attributes[0] == "Leaf")
+                if (attributes[0] == "Turtle" || attributes[0] == "Piston" || attributes[0] == "Leaf" || attributes[0] == "Lava")
                 {
                     bitmapBody = new BitmapImage();
                     bitmapBody.BeginInit();
@@ -120,7 +132,11 @@ namespace TurtleWalk.ClassLevelBuilder
 
                 Images.Add(Element);
 
-                if (attributes[0] != "Background" && attributes[0] != "Piston" && attributes[0] != "Sign" && attributes[0] != "LavaDrop")
+                if (attributes[0] == "Background")
+                {
+                    Panel.SetZIndex(Element, -2);
+                }
+                else if (attributes[0] != "Piston" && attributes[0] != "Sign" && attributes[0] != "LavaDrop")
                 {
                     Panel.SetZIndex(Element, 1);
                 }
@@ -128,6 +144,24 @@ namespace TurtleWalk.ClassLevelBuilder
                 {
                     Panel.SetZIndex(Element, 0);
                 }
+
+                if (source.ToString().Contains("rounded_platform.png"))
+                {
+                    Panel.SetZIndex(Element, -1);
+                }
+
+                //if (attributes[0] != "Background" && attributes[0] != "Piston" && attributes[0] != "Sign" && attributes[0] != "LavaDrop")
+                //{
+                //    Panel.SetZIndex(Element, 1);
+                //}
+                //else if (source.ToString().Contains("rounded_platform.png"))
+                //{
+                //    Panel.SetZIndex(Element, 0);
+                //}
+                //else
+                //{
+                //    Panel.SetZIndex(Element, -1);
+                //}
 
                 _gridLvl.Children.Add(Element);
             }

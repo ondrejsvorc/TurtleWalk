@@ -69,8 +69,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Btn.cs" />
     <Compile Include="Classes\CollisionElement.cs" />
     <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Classes\Lava.cs" />
     <Compile Include="Classes\LevelsManager.cs" />
     <Compile Include="Classes\Ground.cs" />
     <Compile Include="Classes\LavaDrop.cs" />
@@ -162,6 +164,7 @@
     <Resource Include="Resources\Menu\Background\background_menu.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Levels\Level02\Platforms\rounded_platform.png" />
     <Resource Include="Resources\scoreboard.txt" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_2.png" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_1.png" />
@@ -170,6 +173,8 @@
     <Resource Include="Resources\Levels\Available\available_levels.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\Deadly-Entities\hot_lava.gif" />
+    <Resource Include="Resources\Images\Other\button.png" />
     <Content Include="Resources\Levels\Level01\Music\music_level01.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

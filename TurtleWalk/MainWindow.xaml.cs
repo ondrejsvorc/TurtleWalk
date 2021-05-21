@@ -22,6 +22,8 @@ using TurtleWalk.ClassTurtle;
 using TurtleWalk.ClassLevelManager;
 using TurtleWalk.ClassScoreboard;
 using TurtleWalk.ClassProfilesManager;
+using TurtleWalk.ClassLava;
+using TurtleWalk.ClassBtn;
 
 namespace TurtleWalk
 {
@@ -56,9 +58,6 @@ namespace TurtleWalk
 
         private string levelInProgress;
 
-        private Cursor cursorHand;
-        private Cursor cursorGrabbed;
-
         private int clickCountDirection, clickCountMovement;
 
         private int[] collisionPlatform;
@@ -88,9 +87,6 @@ namespace TurtleWalk
             Scoreboard.DataGet();
             Scoreboard.DataSet(dataGridScoreboard);
 
-            cursorHand = new Cursor(new MemoryStream(Properties.Resources.cursorHand));
-            cursorGrabbed = new Cursor(new MemoryStream(Properties.Resources.cursorGrabbed));
-
             clickCountDirection = 0;
             clickCountMovement = 0;
 
@@ -117,42 +113,69 @@ namespace TurtleWalk
                     {
                         string[] rowProperties = reader.ReadLine().Split(' ');
 
-                        if (image.Width.ToString() == rowProperties[1] && image.Height.ToString() == rowProperties[2] && image.Margin.Left.ToString() == rowProperties[3] && image.Margin.Top.ToString() == rowProperties[4])
+                        double entityWidth = Convert.ToDouble(rowProperties[1]);
+                        double entityHeight = Convert.ToDouble(rowProperties[2]);
+
+                        double entityMarginLeft = Convert.ToDouble(rowProperties[3]);
+                        double entityMarginTop = Convert.ToDouble(rowProperties[4]);
+
+                        if (image.Width == entityWidth && image.Height == entityHeight && image.Margin.Left == entityMarginLeft && image.Margin.Top == entityMarginTop)
                         {
                             switch (rowProperties[0])
                             {
                                 case "Turtle":
-                                    turtle = new Turtle(CollisionElement.SetHitBox(image), image.Margin.Left, image.Margin.Top);
+                                    turtle = new Turtle(CollisionElement.GetHitBox(image), entityMarginLeft, entityMarginTop);
                                     turtle.Body = image;
                                     break;
 
                                 case "SavingPlatform":
-                                    savingPlatform = new SavingPlatform(image.Margin.Left);
+                                    savingPlatform = new SavingPlatform(entityMarginLeft);
                                     savingPlatform.Body = image;
                                     break;
 
                                 case "Sign":
-                                    finishSign = new Sign(CollisionElement.SetHitBox(image));
+                                    finishSign = new Sign(CollisionElement.GetHitBox(image));
                                     break;
 
                                 case "Ground":
-                                    Ground ground = new Ground(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                    Ground ground;
+                                    try
+                                    {
+                                        ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                    }
+                                    catch
+                                    {
+                                        ground = new Ground(CollisionElement.GetHitBox(image));
+                                        ground.Body = image;
+                                    }
+                                    ground.X = Convert.ToDouble(rowProperties[3]);
+                                    ground.Y = Convert.ToDouble(rowProperties[4]);
                                     break;
 
                                 case "Leaf":
-                                    Leaf leaf = new Leaf(CollisionElement.SetHitBox(image));
+                                    Leaf leaf = new Leaf(CollisionElement.GetHitBox(image));
                                     leaf.Body = image;
                                     leafs.Add(leaf);
                                     break;
 
                                 case "Piston":
-                                    Piston piston = new Piston(CollisionElement.SetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                    Piston piston = new Piston(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
                                     break;
 
                                 case "LavaDrop":
-                                    LavaDrop lavaDrop = new LavaDrop(CollisionElement.SetHitBox(image), image.Margin.Top);
+                                    LavaDrop lavaDrop = new LavaDrop(CollisionElement.GetHitBox(image), image.Margin.Top);
                                     lavaDrop.Body = image;
                                     lavaDrops.Add(lavaDrop);
+                                    break;
+
+                                case "Lava":
+                                    Lava lava = new Lava(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                    lava.Body = image;
+                                    break;
+
+                                case "Button":
+                                    image.Tag = Convert.ToInt32(rowProperties[7]);
+                                    Btn btn = new Btn(image);
                                     break;
                             }
                         }
@@ -182,8 +205,9 @@ namespace TurtleWalk
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
 
-            Ground.NullHitBoxes();
+            Ground.NullValues();
             Piston.NullHitBoxes();
+            Lava.NullHitBoxes();
 
             levelInProgress = "none";
             timeElapsed = 0;
@@ -271,9 +295,10 @@ namespace TurtleWalk
                     if (turtle.HitBox.IntersectsWith(leaf.HitBox))
                     {
                         leaf.HitBox = Rect.Empty;
-                        gridLvl.Children.Remove(leaf.Body);
 
+                        gridLvl.Children.Remove(leaf.Body);
                         lbScore.Content = $"Score: {scoreCount += 10}";
+                        break;
                     }
                 }
 
@@ -296,6 +321,11 @@ namespace TurtleWalk
             {
                 turtle.X += 2;
                 turtle.Y += 8;
+
+                if (Lava.CheckCollision(turtle))
+                {
+                    LevelRestart();
+                }
             }
 
             if (lavaDrops.Count() != 0)
@@ -322,6 +352,7 @@ namespace TurtleWalk
                 // ALGORITMUS PRO AUTOMATICKÉ PADÁNÍ KAPEK
 
                 // 1 tick = 30 ms
+                // 2000 / 30 = 66 ticks
                 // 66 * 30 = 2000 ms = 2s
 
                 if (timeElapsed >= 0 && timeElapsed <= 66)
@@ -374,30 +405,33 @@ namespace TurtleWalk
 
         private void MovePlatform(object sender, KeyEventArgs e)
         {
-            if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || uniformGridLevels.Visibility != Visibility.Visible))
+            if (savingPlatform != null)
             {
-                int step = 0;
-
-                switch (e.Key)
+                if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || uniformGridLevels.Visibility != Visibility.Visible))
                 {
-                    case Key.Left:
-                    case Key.A:
-                        if (savingPlatform.X > 25)
-                        {
-                            step = -25;
-                        }
-                        break;
+                    int step = 0;
 
-                    case Key.Right:
-                    case Key.D:
-                        if (savingPlatform.X < 650)
-                        {
-                            step = 25;
-                        }
-                        break;
+                    switch (e.Key)
+                    {
+                        case Key.Left:
+                        case Key.A:
+                            if (savingPlatform.X > 25)
+                            {
+                                step = -25;
+                            }
+                            break;
+
+                        case Key.Right:
+                        case Key.D:
+                            if (savingPlatform.X < 650)
+                            {
+                                step = 25;
+                            }
+                            break;
+                    }
+
+                    savingPlatform.X += step;
                 }
-
-                savingPlatform.X += step;
             }
         }
 
@@ -407,7 +441,7 @@ namespace TurtleWalk
 
             if (++clickCountDirection % 2 > 0)   // lichý klik (první, třetí, pátý, ...)
             {
-                imgDirection.Cursor = cursorGrabbed;
+                imgDirection.Cursor = Constants.CURSOR_GRABBED;
 
                 lbDirection.Content = "Forward";
                 turtle.IsDirectionForward = false;
@@ -415,7 +449,7 @@ namespace TurtleWalk
             }
             else                                // sudý klik (druhý, čtvrtý, šestý, ...)
             {
-                imgDirection.Cursor = cursorHand;
+                imgDirection.Cursor = Constants.CURSOR_HAND;
 
                 lbDirection.Content = "Backwards";
                 turtle.IsDirectionForward = true;
@@ -430,7 +464,7 @@ namespace TurtleWalk
 
             if (++clickCountMovement % 2 > 0)   // lichý klik (první, třetí, pátý, ...)
             {
-                imgTurtleState.Cursor = cursorGrabbed;
+                imgTurtleState.Cursor = Constants.CURSOR_GRABBED;
 
                 lbState.Content = "Walk";
                 turtle.IsMoving = false;
@@ -438,7 +472,7 @@ namespace TurtleWalk
             }
             else                               // sudý klik (druhý, čtvrtý, šestý, ...)
             {
-                imgTurtleState.Cursor = cursorHand;
+                imgTurtleState.Cursor = Constants.CURSOR_HAND;
 
                 lbState.Content = "Stop";
                 turtle.IsMoving = true;
@@ -499,7 +533,7 @@ namespace TurtleWalk
         {
             Button btnSender = (Button)sender;
 
-            btnSender.Cursor = cursorGrabbed;
+            btnSender.Cursor = Constants.CURSOR_GRABBED;
             btnSender.Background = new SolidColorBrush(Colors.White);
             btnSender.Foreground = new SolidColorBrush(Color.FromRgb(69, 189, 120));
 
@@ -519,7 +553,7 @@ namespace TurtleWalk
 
         private void CursorLeaves(object sender, MouseEventArgs e)
         {
-            ((Button)sender).Cursor = cursorHand;
+            ((Button)sender).Cursor = Constants.CURSOR_HAND;
             ((Button)sender).Background = new SolidColorBrush(Color.FromRgb(69, 189, 120));
             ((Button)sender).Foreground = new SolidColorBrush(Colors.White);
 
@@ -576,13 +610,13 @@ namespace TurtleWalk
         private void FlagColorChange(object sender, MouseEventArgs e)
         {
             ((Image)sender).Opacity = 0.5;
-            ((Image)sender).Cursor = cursorGrabbed;
+            ((Image)sender).Cursor = Constants.CURSOR_GRABBED;
         }
 
         private void FlagColorBackToNormal(object sender, MouseEventArgs e)
         {
             ((Image)sender).Opacity = 1;
-            ((Image)sender).Cursor = cursorHand;
+            ((Image)sender).Cursor = Constants.CURSOR_HAND;
         }
 
         private void Play(object sender, RoutedEventArgs e)

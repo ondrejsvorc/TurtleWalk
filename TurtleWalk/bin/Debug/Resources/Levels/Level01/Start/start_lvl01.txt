@@ -1,5 +1,5 @@
-﻿Turtle 220 220 15 525
-Background x x 0 0
+﻿Background 0 0 0 0
+Turtle 220 220 15 525
 Ground 140 140 530 310 -10 -70
 Ground 670 100 -10 640 0 0
 Ground 180 140 650 636 -10 -70

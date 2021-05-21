@@ -15,7 +15,7 @@ namespace TurtleWalk.ClassCollisionElement
             HitBox = new Rect(hitBox.X, hitBox.Y, hitBox.Width, hitBox.Height);
         }
 
-        public static Rect SetHitBox(Image img)
+        public static Rect GetHitBox(Image img)
         {
             return new Rect(img.Margin.Left, img.Margin.Top, img.Width, img.Height);
         }

@@ -141,15 +141,15 @@ namespace TurtleWalk
                                     Ground ground;
                                     try
                                     {
-                                        ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                        ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]), Convert.ToBoolean(rowProperties[7]));
+                                        ground.Body = image;
+                                        ground.X = Convert.ToDouble(rowProperties[3]);
+                                        ground.Y = Convert.ToDouble(rowProperties[4]);
                                     }
                                     catch
                                     {
-                                        ground = new Ground(CollisionElement.GetHitBox(image));
-                                        ground.Body = image;
+                                        ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
                                     }
-                                    ground.X = Convert.ToDouble(rowProperties[3]);
-                                    ground.Y = Convert.ToDouble(rowProperties[4]);
                                     break;
 
                                 case "Leaf":

@@ -43,16 +43,21 @@ namespace TurtleWalk.ClassGround
             }
         }
 
-        public Ground(Rect groundHitBox, double InflationWidth, double InflationHeight) : base(groundHitBox)
+        public Ground(Rect groundHitBox, double inflationWidth, double inflationHeight) : base(groundHitBox)
         {
-            groundHitBox.Inflate(InflationWidth, InflationHeight);   // Pro větší přirozenost HitBoxu
+            groundHitBox.Inflate(inflationWidth, inflationHeight);   // Pro větší přirozenost HitBoxu
             _hitBoxes.Add(groundHitBox);
         }
 
-        public Ground(Rect groundHitBox) : base(groundHitBox)
-        {
-            MovableGrounds.Add(this);
+        private bool _movable;
 
+        public Ground(Rect groundHitBox, double inflationWidth, double inflationHeight, bool movable) : base(groundHitBox)
+        {
+            _movable = movable;
+
+            groundHitBox.Inflate(inflationWidth, inflationHeight);   // Pro větší přirozenost HitBoxu
+
+            MovableGrounds.Add(this);
             _hitBoxes.Add(groundHitBox);
         }
 

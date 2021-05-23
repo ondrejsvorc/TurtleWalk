@@ -11,54 +11,41 @@ using System.Windows.Data;
 using TurtleWalk.ClassConstants;
 using TurtleWalk.ClassProfile;
 
-namespace TurtleWalk.ClassScoreboard
+namespace TurtleWalk.ClassScoreboardManager
 {
-    class Scoreboard
+    class ScoreboardManager
     {
-        private static List<Profile> _players = new List<Profile>();
+        private static List<Profile> _profiles = new List<Profile>();
 
         private static DataGrid _scoreboard;
 
         private static DataTable _dataTable;
 
-        public static void DataGet()
-        {
-            using (StreamReader streamReader = new StreamReader(Constants.SCOREBOARD_DATA))
-            {
-                while (!streamReader.EndOfStream)
-                {
-                    string[] playerAttributes = streamReader.ReadLine().Split(' ');
-
-                    Profile player = new Profile();
-                    player.Name = playerAttributes[0];
-
-                    for (int i = 1; i < playerAttributes.Length; i++)
-                    {
-                        player.ScoreList.Add(Convert.ToInt32(playerAttributes[i]));
-                    }
-
-                    _players.Add(player);
-                }
-            }
-        }
-
-        public static void DataSet(DataGrid scoreboard)
+        public ScoreboardManager(DataGrid scoreboard)
         {
             _scoreboard = scoreboard;
+        }
 
+        public void DataGet(List<Profile> profiles)
+        {
+            _profiles = profiles;
+        }
+
+        public void DataSet()
+        {
             GenerateColumns();
             GenerateRows();
         }
 
-        public static void DataUpdate()
+        public void DataUpdate()
         {
             _dataTable.Clear();
 
-            DataGet();
-            DataSet(_scoreboard);
+            DataGet(_profiles);
+            DataSet();
         }
 
-        private static void GenerateColumns()
+        private void GenerateColumns()
         {
             _dataTable = new DataTable();
 
@@ -70,17 +57,17 @@ namespace TurtleWalk.ClassScoreboard
             }
         }
 
-        private static void GenerateRows()
+        private void GenerateRows()
         {
-            int playersCount = _players.Count();
+            int playersCount = _profiles.Count();
 
-            foreach (Profile player in _players)
+            foreach (Profile player in _profiles)
             {
                 _dataTable.Rows.Add(player.Name, player.ScoreList[0], player.ScoreList[1], player.ScoreList[2]);
 
                 for (int columnIndex = 1; columnIndex < 3; columnIndex++)
                 {
-                    for (int rowIndex = 0; rowIndex < playersCount; rowIndex++)
+                    for (int rowIndex = 0; rowIndex < playersCount - 1; rowIndex++)
                     {
                         DataRow newRow = _dataTable.NewRow();
                         newRow.SetField(columnIndex, player.ScoreList[rowIndex]);

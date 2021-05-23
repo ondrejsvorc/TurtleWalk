@@ -98,13 +98,11 @@
                 Foreground="White" />
 
             <Label
-                x:Name="lbAuthor"
+                x:Name="lbProfile"
                 Width="Auto"
                 Height="50"
-                Margin="0,0,0,5"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Content="Ondřej Švorc I2B"
+                VerticalAlignment="Center"
                 FontFamily="Segoe UI Semibold"
                 FontSize="30"
                 Grid.Row="2"
@@ -312,8 +310,9 @@
             </UniformGrid>
             <StackPanel Grid.Row="2" VerticalAlignment="Center">
                 <TextBlock Text="Nový profil" HorizontalAlignment="Center" FontSize="30" Padding="0,0,0,15"/>
-                <TextBox x:Name="txtBoxNewProfile" Width="250" Height="35" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MaxLength="26" TextChanged="ProfileNameCheck"/>
-                <Button x:Name="btnCreate" Content="Vytvořit" Width="135" Height="40" HorizontalAlignment="Center" FontSize="24" Margin="0,15,0,0" Style="{DynamicResource ButtonStyle }" Click="NewProfile" IsEnabled="False"/>
+                <TextBox x:Name="txtBoxNewProfile" Width="250" Height="35" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MaxLength="26" TextChanged="ProfileNameCheck" PreviewKeyDown="DisableSpacesInProfileName"/>
+                <TextBlock x:Name="txtBlockMessage" Text="" HorizontalAlignment="Center" FontSize="16" Padding="0,0,0,0"/>
+                <Button x:Name="btnCreate" Content="Vytvořit" Width="135" Height="40" HorizontalAlignment="Center" FontSize="24" Margin="0,30,0,0" Style="{DynamicResource ButtonStyle }" Click="NewProfile" IsEnabled="False"/>
             </StackPanel>
         </Grid>
 

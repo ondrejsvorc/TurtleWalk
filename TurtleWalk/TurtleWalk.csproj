@@ -82,7 +82,7 @@
     <Compile Include="Classes\Profile.cs" />
     <Compile Include="Classes\ProfilesManager.cs" />
     <Compile Include="Classes\SavingPlatform.cs" />
-    <Compile Include="Classes\Scoreboard.cs" />
+    <Compile Include="Classes\ScoreboardManager.cs" />
     <Compile Include="Classes\Sign.cs" />
     <Compile Include="Classes\Turtle.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -165,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Levels\Level02\Platforms\rounded_platform.png" />
-    <Resource Include="Resources\scoreboard.txt" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_2.png" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_1.png" />
     <Resource Include="Resources\Levels\Level02\Start\start_lvl02.txt" />

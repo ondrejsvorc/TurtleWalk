@@ -1,10 +1,15 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Input;
 
 namespace TurtleWalk.ClassConstants
 {
     class Constants
     {
+        private static readonly string APP_DATA = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        public static readonly string APP_LOCATION = Path.Combine(APP_DATA, "TurtleWalk");
+        public static readonly string PROFILES_LOCATION = Path.Combine(APP_LOCATION, "profiles.txt");
+
         public const string PATH_DIRECTION_FORWARD = "pack://application:,,,/Resources/Images/Turtle/turtle_direction_forward.gif";
         public const string PATH_DIRECTION_BACKWARDS = "pack://application:,,,/Resources/Images/Turtle/turtle_direction_backwards.gif";
 

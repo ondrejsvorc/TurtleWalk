@@ -20,10 +20,11 @@ using TurtleWalk.ClassSavingPlatform;
 using TurtleWalk.ClassSign;
 using TurtleWalk.ClassTurtle;
 using TurtleWalk.ClassLevelManager;
-using TurtleWalk.ClassScoreboard;
+using TurtleWalk.ClassScoreboardManager;
 using TurtleWalk.ClassProfilesManager;
 using TurtleWalk.ClassLava;
 using TurtleWalk.ClassBtn;
+using System.Threading.Tasks;
 
 namespace TurtleWalk
 {
@@ -68,6 +69,10 @@ namespace TurtleWalk
 
         public List<string> players = new List<string>() { "Test", "Test2" };
 
+        private ProfilesManager profilesManager;
+        private LevelsManager levelsManager;
+        private ScoreboardManager scoreboardManager;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -77,15 +82,30 @@ namespace TurtleWalk
             window.KeyDown += LevelStop;
         }
 
-        private void Setup()
+        private async void Setup()
         {
+            if (!Directory.Exists(Constants.APP_LOCATION))
+            {
+                Directory.CreateDirectory(Constants.APP_LOCATION);
+            }
+
+            if (!File.Exists(Constants.PROFILES_LOCATION))
+            {
+                File.Create(Constants.PROFILES_LOCATION);
+            }
+
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
 
-            LevelsManager.GetAvailableLevels(uniformGridLevels);
+            levelsManager = new LevelsManager(uniformGridLevels);
+            profilesManager = new ProfilesManager(gridProfiles, gridMenu, uniformGridProfiles, btnBack, lbProfile);
+            scoreboardManager = new ScoreboardManager(dataGridScoreboard);
 
-            Scoreboard.DataGet();
-            Scoreboard.DataSet(dataGridScoreboard);
+            await profilesManager.ProfilesGet();
+            await levelsManager.GetAvailableLevels();
+
+            scoreboardManager.DataGet(profilesManager.Profiles);
+            scoreboardManager.DataSet();
 
             clickCountDirection = 0;
             clickCountMovement = 0;
@@ -96,6 +116,7 @@ namespace TurtleWalk
 
             levelInProgress = "none";
         }
+
         private void LevelStart()
         {
             //if (levelInProgress == "none")
@@ -246,8 +267,8 @@ namespace TurtleWalk
         {
             LevelResetValues();
 
-            LevelsManager.SetAvailableLevels(uniformGridLevels, lvl);
-            LevelsManager.GetAvailableLevels(uniformGridLevels);
+            levelsManager.SetAvailableLevels(lvl);
+            levelsManager.GetAvailableLevels();
 
             gridLvl.Visibility = Visibility.Hidden;
             gridMenu.Visibility = Visibility.Visible;
@@ -423,7 +444,7 @@ namespace TurtleWalk
 
                         case Key.Right:
                         case Key.D:
-                            if (savingPlatform.X < 650)
+                            if (savingPlatform.X < 675)
                             {
                                 step = 25;
                             }
@@ -639,9 +660,18 @@ namespace TurtleWalk
             gridMenu.Visibility = Visibility.Hidden;
         }
 
-        private void NewProfile(object sender, RoutedEventArgs e)
+        private async void NewProfile(object sender, RoutedEventArgs e)
         {
-            ProfilesManager.ProfileAdd(txtBoxNewProfile.Text, uniformGridProfiles);
+            if (!profilesManager.ProfileExists(txtBoxNewProfile.Text))
+            {
+                profilesManager.ProfileAdd(txtBoxNewProfile.Text);
+            }
+            else
+            {
+                txtBlockMessage.Text = "Tento profil byl již vytvořen";
+                await Task.Delay(2000);
+                txtBlockMessage.Text = string.Empty;
+            }
         }
 
         private void ProfileNameCheck(object sender, TextChangedEventArgs e)
@@ -667,6 +697,24 @@ namespace TurtleWalk
             btnBack.Visibility = Visibility.Visible;
 
             gridMenu.Visibility = Visibility.Hidden;
+        }
+
+        private void DisableSpacesInProfileName(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void WishToDeleteProfile(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you wish to delete this profile?", "Profile deletion", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    profilesManager.ProfileDelete();
+                }
+            }
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)

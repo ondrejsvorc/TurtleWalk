@@ -67,8 +67,6 @@ namespace TurtleWalk
         private List<LavaDrop> lavaDrops;
         private List<Leaf> leafs;
 
-        public List<string> players = new List<string>() { "Test", "Test2" };
-
         private ProfilesManager profilesManager;
         private LevelsManager levelsManager;
         private ScoreboardManager scoreboardManager;

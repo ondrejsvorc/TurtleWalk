@@ -123,7 +123,7 @@ namespace TurtleWalk.ClassBtn
         // HITBOX PROBLEMS - INFLATION HEIGHT, WIDTH MAYBE? 
         private async Task GroundsFadeAnimation()
         {
-            await Task.Delay(20000);
+            await Task.Delay(2000);
 
             MoveBack();
 

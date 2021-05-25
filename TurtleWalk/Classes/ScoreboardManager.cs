@@ -59,15 +59,13 @@ namespace TurtleWalk.ClassScoreboardManager
 
         private void GenerateRows()
         {
-            int playersCount = _profiles.Count();
-
             foreach (Profile player in _profiles)
             {
                 _dataTable.Rows.Add(player.Name, player.ScoreList[0], player.ScoreList[1], player.ScoreList[2]);
 
                 for (int columnIndex = 1; columnIndex < 3; columnIndex++)
                 {
-                    for (int rowIndex = 0; rowIndex < playersCount - 1; rowIndex++)
+                    for (int rowIndex = 0; rowIndex < player.ScoreList.Count(); rowIndex++)
                     {
                         DataRow newRow = _dataTable.NewRow();
                         newRow.SetField(columnIndex, player.ScoreList[rowIndex]);

@@ -18,7 +18,7 @@ namespace TurtleWalk.ClassLevelManager
             _uniformGridLevels = uniformGridLevels;
         }
 
-        public async Task GetAvailableLevels()
+        public void GetAvailableLevels()
         {
             // CHECKS FOR AVAILABLE LEVELS (EXCEPT FOR THE FIRST ONE, WHICH IS ALWAYS AVAILABLE)
 

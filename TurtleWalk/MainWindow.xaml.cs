@@ -80,7 +80,7 @@ namespace TurtleWalk
             window.KeyDown += LevelStop;
         }
 
-        private async void Setup()
+        private async Task Setup()
         {
             if (!Directory.Exists(Constants.APP_LOCATION))
             {
@@ -100,7 +100,7 @@ namespace TurtleWalk
             scoreboardManager = new ScoreboardManager(dataGridScoreboard);
 
             await profilesManager.ProfilesGet();
-            await levelsManager.GetAvailableLevels();
+            levelsManager.GetAvailableLevels();
 
             scoreboardManager.DataGet(profilesManager.Profiles);
             scoreboardManager.DataSet();
@@ -113,6 +113,11 @@ namespace TurtleWalk
             timeElapsed = 0;
 
             levelInProgress = "none";
+        }
+
+        private async void test()
+        {
+            
         }
 
         private void LevelStart()

@@ -72,6 +72,7 @@
     <Compile Include="Classes\Btn.cs" />
     <Compile Include="Classes\CollisionElement.cs" />
     <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Classes\GroundMover.cs" />
     <Compile Include="Classes\Lava.cs" />
     <Compile Include="Classes\LevelsManager.cs" />
     <Compile Include="Classes\Ground.cs" />

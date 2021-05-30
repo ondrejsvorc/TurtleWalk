@@ -133,15 +133,23 @@ namespace TurtleWalk
 
                 using (StreamReader reader = new StreamReader(currentLevelPath))
                 {
+                    double entityWidth;
+                    double entityHeight;
+
+                    double entityMarginLeft;
+                    double entityMarginTop;
+
+                    string[] rowProperties;
+
                     foreach (Image image in builder.Images)
                     {
-                        string[] rowProperties = reader.ReadLine().Split(' ');
+                        rowProperties = reader.ReadLine().Split(' ');
 
-                        double entityWidth = Convert.ToDouble(rowProperties[1]);
-                        double entityHeight = Convert.ToDouble(rowProperties[2]);
+                        entityWidth = Convert.ToDouble(rowProperties[1]);
+                        entityHeight = Convert.ToDouble(rowProperties[2]);
 
-                        double entityMarginLeft = Convert.ToDouble(rowProperties[3]);
-                        double entityMarginTop = Convert.ToDouble(rowProperties[4]);
+                        entityMarginLeft = Convert.ToDouble(rowProperties[3]);
+                        entityMarginTop = Convert.ToDouble(rowProperties[4]);
 
                         if (image.Width == entityWidth && image.Height == entityHeight && image.Margin.Left == entityMarginLeft && image.Margin.Top == entityMarginTop)
                         {

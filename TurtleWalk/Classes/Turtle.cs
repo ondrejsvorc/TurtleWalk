@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace TurtleWalk.ClassTurtle
 {
-    sealed class Turtle
+    class Turtle
     {
         public Rect HitBox;
 

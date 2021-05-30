@@ -120,6 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Levels\Level02\Music\" />
+    <Folder Include="Resources\Levels\Level03\Music\" />
+    <Folder Include="Resources\Levels\Level04\Music\" />
     <Folder Include="Resources\Menu\Music\" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +167,18 @@
     <Resource Include="Resources\Menu\Background\background_menu.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Levels\Level04\Background\background_lvl04.jpg" />
+    <Resource Include="Resources\Levels\Level04\Platforms\dirt_platform_1.png" />
+    <Resource Include="Resources\Levels\Level04\Platforms\ice_platform_1.png" />
+    <Resource Include="Resources\Levels\Level04\Platforms\ice_platform_2.png" />
+    <Resource Include="Resources\Levels\Level04\Platforms\rounded_platform.png" />
+    <Resource Include="Resources\Levels\Level04\Start\start_lvl04.txt" />
+    <Resource Include="Resources\Levels\Level03\Background\background_lvl03.jpg" />
+    <Resource Include="Resources\Levels\Level03\Start\start_lvl02.txt" />
+    <Resource Include="Resources\Levels\Level03\Platforms\rounded_platform.png" />
+    <Resource Include="Resources\Levels\Level03\Platforms\ice_platform_2.png" />
+    <Resource Include="Resources\Levels\Level03\Platforms\ice_platform_1.png" />
+    <Resource Include="Resources\Levels\Level03\Platforms\dirt_platform_1.png" />
     <Resource Include="Resources\Levels\Level02\Platforms\rounded_platform.png" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_2.png" />
     <Resource Include="Resources\Levels\Level02\Platforms\ice_platform_1.png" />

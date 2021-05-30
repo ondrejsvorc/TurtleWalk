@@ -4,10 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
-using TurtleWalk.ClassCollisionElement;
 using TurtleWalk.ClassConstants;
-using TurtleWalk.ClassGround;
 using TurtleWalk.ClassGroundMover;
 
 namespace TurtleWalk.ClassBtn

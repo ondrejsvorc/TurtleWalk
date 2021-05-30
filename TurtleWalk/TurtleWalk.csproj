@@ -72,7 +72,10 @@
     <Compile Include="Classes\Btn.cs" />
     <Compile Include="Classes\CollisionElement.cs" />
     <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Classes\Enemy.cs" />
+    <Compile Include="Classes\FlyingEnemy.cs" />
     <Compile Include="Classes\GroundMover.cs" />
+    <Compile Include="Classes\Healthbar.cs" />
     <Compile Include="Classes\Lava.cs" />
     <Compile Include="Classes\LevelsManager.cs" />
     <Compile Include="Classes\Ground.cs" />
@@ -189,6 +192,7 @@
     </Resource>
     <Resource Include="Resources\Images\Deadly-Entities\hot_lava.gif" />
     <Resource Include="Resources\Images\Other\button.png" />
+    <Resource Include="Resources\Images\Deadly-Entities\flying_enemy.gif" />
     <Content Include="Resources\Levels\Level01\Music\music_level01.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

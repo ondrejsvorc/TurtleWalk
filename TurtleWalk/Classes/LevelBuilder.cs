@@ -103,6 +103,10 @@ namespace TurtleWalk.ClassLevelBuilder
                     case "Button":
                         source = new Uri(Constants.BUTTON, UriKind.Relative);
                         break;
+
+                    case "FlyingEnemy":
+                        source = new Uri(Constants.FLYING_ENEMY, UriKind.Relative);
+                        break;
                 }
 
                 Element = new Image
@@ -120,7 +124,7 @@ namespace TurtleWalk.ClassLevelBuilder
                     Element.Stretch = Stretch.Fill;
                 }
 
-                if (attributes[0] == "Turtle" || attributes[0] == "Piston" || attributes[0] == "Leaf" || attributes[0] == "Lava")
+                if (attributes[0] == "Turtle" || attributes[0] == "Piston" || attributes[0] == "Leaf" || attributes[0] == "Lava" || attributes[0] == "FlyingEnemy")
                 {
                     bitmapBody = new BitmapImage();
                     bitmapBody.BeginInit();

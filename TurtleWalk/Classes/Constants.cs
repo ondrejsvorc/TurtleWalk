@@ -18,6 +18,7 @@ namespace TurtleWalk.ClassConstants
 
         public static readonly string LAVA_DROP = "./Resources/Images/Deadly-Entities/lava_drop.png";
         public static readonly string LAVA = "./Resources/Images/Deadly-Entities/hot_lava.gif";
+        public static readonly string FLYING_ENEMY = "./Resources/Images/Deadly-Entities/flying_enemy.gif";
 
         public static readonly string PISTON = "./Resources/Images/Other/piston.gif";
         public static readonly string LEAF = "./Resources/Images/Points/leaf.gif";

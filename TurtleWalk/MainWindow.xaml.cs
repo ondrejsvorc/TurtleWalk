@@ -25,6 +25,7 @@ using TurtleWalk.ClassProfilesManager;
 using TurtleWalk.ClassLava;
 using TurtleWalk.ClassBtn;
 using System.Threading.Tasks;
+using TurtleWalk.Classes;
 
 namespace TurtleWalk
 {
@@ -66,6 +67,7 @@ namespace TurtleWalk
 
         private List<LavaDrop> lavaDrops;
         private List<Leaf> leafs;
+        private List<Enemy> enemies;
 
         private ProfilesManager profilesManager;
         private LevelsManager levelsManager;
@@ -94,6 +96,7 @@ namespace TurtleWalk
 
             lavaDrops = new List<LavaDrop>();
             leafs = new List<Leaf>();
+            enemies = new List<Enemy>();
 
             levelsManager = new LevelsManager(uniformGridLevels);
             profilesManager = new ProfilesManager(gridProfiles, gridMenu, uniformGridProfiles, btnBack, lbProfile);
@@ -113,11 +116,6 @@ namespace TurtleWalk
             timeElapsed = 0;
 
             levelInProgress = "none";
-        }
-
-        private async void test()
-        {
-            
         }
 
         private void LevelStart()
@@ -208,6 +206,12 @@ namespace TurtleWalk
                                 case "Button":
                                     image.Tag = Convert.ToInt32(rowProperties[7]);
                                     Btn btn = new Btn(image);
+                                    break;
+
+                                case "FlyingEnemy":
+                                    Enemy enemy = new FlyingEnemy(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]));
+                                    enemy.Body = image;
+                                    enemies.Add(enemy);
                                     break;
                             }
                         }
@@ -357,6 +361,15 @@ namespace TurtleWalk
                 if (Lava.CheckCollision(turtle))
                 {
                     LevelRestart();
+                }
+            }
+
+            if (enemies.OfType<FlyingEnemy>().Count() != 0)
+            {
+                foreach (FlyingEnemy enemy in enemies.OfType<FlyingEnemy>())
+                {
+                    enemy.StayAheadOfTurtle(turtle);
+                    enemy.Shoot(turtle, gridLvl);
                 }
             }
 

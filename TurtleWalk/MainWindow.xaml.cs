@@ -26,6 +26,7 @@ using TurtleWalk.ClassLava;
 using TurtleWalk.ClassBtn;
 using System.Threading.Tasks;
 using TurtleWalk.Classes;
+using TurtleWalk.Enemies;
 
 namespace TurtleWalk
 {
@@ -57,6 +58,8 @@ namespace TurtleWalk
         private string lvl;
 
         private int scoreCount;
+
+        private int ticks;
 
         private string levelInProgress;
 
@@ -114,6 +117,7 @@ namespace TurtleWalk
             collisionPlatform = new int[4];
 
             timeElapsed = 0;
+            ticks = 0;
 
             levelInProgress = "none";
         }
@@ -209,7 +213,7 @@ namespace TurtleWalk
                                     break;
 
                                 case "FlyingEnemy":
-                                    Enemy enemy = new FlyingEnemy(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]));
+                                    Enemy enemy = new FlyingEnemy(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), gridLvl);
                                     enemy.Body = image;
                                     enemies.Add(enemy);
                                     break;
@@ -366,10 +370,24 @@ namespace TurtleWalk
 
             if (enemies.OfType<FlyingEnemy>().Count() != 0)
             {
+                ticks++;
+
                 foreach (FlyingEnemy enemy in enemies.OfType<FlyingEnemy>())
                 {
-                    enemy.StayAheadOfTurtle(turtle);
-                    enemy.Shoot(turtle, gridLvl);
+                    if (ticks / 3 == 10)           // každých 300 ms
+                    {
+                        if (!Enemy.AreShooting)
+                        {
+                            enemy.ShootBullet(turtle);
+                        }
+
+                        ticks = 0;
+                    }
+                    
+                    if (!Enemy.AreShooting)
+                    {
+                        enemy.StayAheadOfTurtle(turtle);
+                    }
                 }
             }
 

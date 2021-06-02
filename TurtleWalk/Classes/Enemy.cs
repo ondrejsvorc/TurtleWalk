@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using TurtleWalk.ClassLavaDrop;
 using TurtleWalk.ClassTurtle;
 
-namespace TurtleWalk.Classes
+namespace TurtleWalk.Enemies
 {
     abstract class Enemy
     {
@@ -16,7 +16,7 @@ namespace TurtleWalk.Classes
         public Image Body;
         public bool WasHit;
         public Rect HitBox;
-        protected LavaDrop _bullet;
+        public static bool AreShooting = false;
 
         public double X => Body.Margin.Left;
         public double Y => Body.Margin.Top;
@@ -24,8 +24,9 @@ namespace TurtleWalk.Classes
         public Enemy(Rect hitBox)
         {
             HitBox = new Rect(hitBox.X, hitBox.Y, hitBox.Width, hitBox.Height);
+            Body = new Image();
         }
 
-        public abstract void Shoot(Turtle turtle, Grid grid);
+        public abstract void ShootBullet(Turtle turtle);
     }
 }

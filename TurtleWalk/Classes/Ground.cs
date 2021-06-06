@@ -76,10 +76,6 @@ namespace TurtleWalk.ClassGround
                     result1 = true;
                     break;
                 }
-                else
-                {
-                    result1 = false;
-                }
             }
 
             foreach (Ground movableGround in MovableGroundsList)
@@ -88,10 +84,6 @@ namespace TurtleWalk.ClassGround
                 {
                     result2 = true;
                     break;
-                }
-                else
-                {
-                    result2 = false;
                 }
             }
 

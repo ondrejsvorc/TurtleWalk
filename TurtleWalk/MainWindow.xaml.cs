@@ -68,13 +68,15 @@ namespace TurtleWalk
         private int[] collisionPlatform;
         private int timeElapsed;
 
-        private List<LavaDrop> lavaDrops;
-        private List<Leaf> leafs;
-        private List<Enemy> enemies;
-
         private ProfilesManager profilesManager;
         private LevelsManager levelsManager;
         private ScoreboardManager scoreboardManager;
+
+        private List<Enemy> enemies;
+        private List<LavaDrop> lavaDrops;
+        private List<CollisionElement> collisionElements;
+
+        private bool userNotInMenu;
 
         public MainWindow()
         {
@@ -98,8 +100,8 @@ namespace TurtleWalk
             }
 
             lavaDrops = new List<LavaDrop>();
-            leafs = new List<Leaf>();
             enemies = new List<Enemy>();
+            collisionElements = new List<CollisionElement>();
 
             levelsManager = new LevelsManager(uniformGridLevels);
             profilesManager = new ProfilesManager(gridProfiles, gridMenu, uniformGridProfiles, btnBack, lbProfile);
@@ -153,6 +155,8 @@ namespace TurtleWalk
                         entityMarginLeft = Convert.ToDouble(rowProperties[3]);
                         entityMarginTop = Convert.ToDouble(rowProperties[4]);
 
+                        CollisionElement collisionElement = new CollisionElement();
+
                         if (image.Width == entityWidth && image.Height == entityHeight && image.Margin.Left == entityMarginLeft && image.Margin.Top == entityMarginTop)
                         {
                             switch (rowProperties[0])
@@ -187,9 +191,7 @@ namespace TurtleWalk
                                     break;
 
                                 case "Leaf":
-                                    Leaf leaf = new Leaf(CollisionElement.GetHitBox(image));
-                                    leaf.Body = image;
-                                    leafs.Add(leaf);
+                                    collisionElement = new Leaf(CollisionElement.GetHitBox(image));
                                     break;
 
                                 case "Piston":
@@ -203,8 +205,7 @@ namespace TurtleWalk
                                     break;
 
                                 case "Lava":
-                                    Lava lava = new Lava(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
-                                    lava.Body = image;
+                                    collisionElement = new Lava(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
                                     break;
 
                                 case "Button":
@@ -218,6 +219,9 @@ namespace TurtleWalk
                                     enemies.Add(enemy);
                                     break;
                             }
+
+                            collisionElement.Body = image;
+                            collisionElements.Add(collisionElement);
                         }
                     }
                 }
@@ -242,12 +246,13 @@ namespace TurtleWalk
         {
             timer.Stop();
 
-            lavaDrops = new List<LavaDrop>();
-            leafs = new List<Leaf>();
-
             Ground.NullValues();
             Piston.NullHitBoxes();
             Lava.NullHitBoxes();
+
+            enemies = new List<Enemy>();
+            lavaDrops = new List<LavaDrop>();
+            collisionElements = new List<CollisionElement>();
 
             levelInProgress = "none";
             timeElapsed = 0;
@@ -330,9 +335,9 @@ namespace TurtleWalk
             if (turtle.IsMoving)
             {
                 // ŽELVIČKA SE DOTÝKÁ LISTU
-                foreach (Leaf leaf in leafs)
+                foreach (Leaf leaf in collisionElements.OfType<Leaf>())
                 {
-                    if (turtle.HitBox.IntersectsWith(leaf.HitBox))
+                    if (turtle.CheckCollisionWith(leaf))
                     {
                         leaf.HitBox = Rect.Empty;
 
@@ -343,7 +348,7 @@ namespace TurtleWalk
                 }
 
                 // ŽELVIČKA DOKONČILA LEVEL
-                if (turtle.HitBox.IntersectsWith(finishSign.HitBox))
+                if (turtle.CheckCollisionWith(finishSign))
                 {
                     LevelFinish();
                 }
@@ -357,7 +362,7 @@ namespace TurtleWalk
             }
 
             // ZELVIČKA SE NIČEHO NEDOTÝKÁ
-            if (!(Ground.CheckCollision(turtle) || Piston.CheckCollision(turtle)))
+            if (!Ground.CheckCollision(turtle) && !Piston.CheckCollision(turtle))
             {
                 turtle.X += 2;
                 turtle.Y += 8;
@@ -368,7 +373,7 @@ namespace TurtleWalk
                 }
             }
 
-            if (enemies.OfType<FlyingEnemy>().Count() != 0)
+            if (!IsListEmpty(enemies.OfType<FlyingEnemy>()))
             {
                 ticks++;
 
@@ -391,7 +396,7 @@ namespace TurtleWalk
                 }
             }
 
-            if (lavaDrops.Count() != 0)
+            if (!IsListEmpty(lavaDrops))
             {
                 // VYMAZÁNÍ PŘEDEŠLÝCH ZAZNAMENANÝCH KOLIZÍ KAPEK A RESTART INDEXU PRO MOŽNOST ZNOVU ZAPISOVÁNÍ DO POLE
                 collisionPlatform = new int[4];
@@ -422,17 +427,17 @@ namespace TurtleWalk
                 {
                     if (!collisionPlatform.Contains(1))
                     {
-                        LavaDrop.Fall(lavaDrops[0], lavaDrops[0].Body.Margin.Top);
+                        lavaDrops[0].Fall();
                     }
 
                     if (!collisionPlatform.Contains(2))
                     {
-                        LavaDrop.Fall(lavaDrops[1], lavaDrops[1].Body.Margin.Top);
+                        lavaDrops[1].Fall();
                     }
 
                     if (!collisionPlatform.Contains(3))
                     {
-                        LavaDrop.Fall(lavaDrops[2], lavaDrops[2].Body.Margin.Top);
+                        lavaDrops[2].Fall();
                     }
                 }
                 else if (timeElapsed > 66)
@@ -444,7 +449,7 @@ namespace TurtleWalk
 
                 foreach (LavaDrop lavaDrop in lavaDrops)
                 {
-                    if (turtle.HitBox.IntersectsWith(lavaDrop.HitBox))
+                    if (turtle.CheckCollisionWith(lavaDrop))
                     {
                         LevelRestart();
                     }
@@ -452,11 +457,16 @@ namespace TurtleWalk
             }
         }
 
+        private bool IsListEmpty<T>(IEnumerable<T> list)
+        {
+            return list.Count() == 0;
+        }
+
         private void LevelStop(object sender, KeyEventArgs e)
         {
             if (levelInProgress != "none")
             {
-                if (e.Key == Key.Escape)
+                if (e.Key == Key.Escape && gridLvl.Visibility == Visibility.Visible)
                 {
                     timer.Stop();
 
@@ -470,9 +480,11 @@ namespace TurtleWalk
         {
             if (savingPlatform != null)
             {
-                if (levelInProgress != "none" && (gridMenu.Visibility != Visibility.Visible || uniformGridLevels.Visibility != Visibility.Visible))
+                bool userNotInMenu = gridLvl.Visibility == Visibility.Visible;
+
+                if (userNotInMenu)
                 {
-                    int step = 0;
+                    double step = 0;
 
                     switch (e.Key)
                     {

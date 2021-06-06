@@ -14,12 +14,12 @@ namespace TurtleWalk.ClassLavaDrop
             _startY = y;
         }
 
-        public static void Fall(LavaDrop lavaDrop, double marginTop)
+        public void Fall()
         {
-            marginTop += 25;
+            double marginTop = Body.Margin.Top + 25;
 
-            lavaDrop.Body.Margin = new Thickness(lavaDrop.Body.Margin.Left, marginTop, lavaDrop.Body.Margin.Right, lavaDrop.Body.Margin.Bottom);
-            lavaDrop.HitBox = new Rect(lavaDrop.Body.Margin.Left, marginTop, lavaDrop.Body.Width, lavaDrop.Body.Height);
+            Body.Margin = new Thickness(Body.Margin.Left, marginTop, Body.Margin.Right, Body.Margin.Bottom);
+            HitBox = new Rect(Body.Margin.Left, marginTop, Body.Width, Body.Height);
         }
 
         public static void ResetPositions(List<LavaDrop> lavaDrops)

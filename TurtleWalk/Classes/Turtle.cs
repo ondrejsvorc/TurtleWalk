@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using TurtleWalk.ClassCollisionElement;
 
 namespace TurtleWalk.ClassTurtle
 {
@@ -51,6 +52,18 @@ namespace TurtleWalk.ClassTurtle
         {
             HitBox = new Rect(_x, _y, Body.Width, Body.Height);
             HitBox.Inflate(-(Body.Width / 3), -30);
+        }
+
+        public bool CheckCollisionWith(CollisionElement collisionElement)
+        {
+            bool result = false;
+
+            if (HitBox.IntersectsWith(collisionElement.HitBox))
+            {
+                result = true;
+            }
+
+            return result;
         }
     }
 }

@@ -27,6 +27,7 @@ using TurtleWalk.ClassBtn;
 using System.Threading.Tasks;
 using TurtleWalk.Classes;
 using TurtleWalk.Enemies;
+using TurtleWalk.ClassBulet;
 
 namespace TurtleWalk
 {
@@ -75,8 +76,6 @@ namespace TurtleWalk
         private List<Enemy> enemies;
         private List<LavaDrop> lavaDrops;
         private List<CollisionElement> collisionElements;
-
-        private bool userNotInMenu;
 
         public MainWindow()
         {
@@ -379,20 +378,15 @@ namespace TurtleWalk
 
                 foreach (FlyingEnemy enemy in enemies.OfType<FlyingEnemy>())
                 {
-                    if (ticks / 3 == 10)           // každých 300 ms
+                    if (ticks % 30 == 0)           // každých 300 ms
                     {
-                        if (!Enemy.AreShooting)
-                        {
-                            enemy.ShootBullet(turtle);
-                        }
+                        enemy.IsShooting = true;
+                        enemy.ShootBullet(turtle);
 
                         ticks = 0;
                     }
-                    
-                    if (!Enemy.AreShooting)
-                    {
-                        enemy.StayAheadOfTurtle(turtle);
-                    }
+
+                    enemy.StayAheadOfTurtle(turtle);
                 }
             }
 
@@ -443,7 +437,6 @@ namespace TurtleWalk
                 else if (timeElapsed > 66)
                 {
                     LavaDrop.ResetPositions(lavaDrops);
-
                     timeElapsed = 0;
                 }
 

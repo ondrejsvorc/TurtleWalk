@@ -51,7 +51,7 @@ namespace TurtleWalk.ClassScoreboardManager
 
             _dataTable.Columns.Add("Hráč");
 
-            for (int i = 1; i < 4; i++)
+            for (int i = 1; i < 5; i++)
             {
                 _dataTable.Columns.Add("Skóre level " + i);
             }
@@ -61,9 +61,9 @@ namespace TurtleWalk.ClassScoreboardManager
         {
             foreach (Profile player in _profiles)
             {
-                _dataTable.Rows.Add(player.Name, player.ScoreList[0], player.ScoreList[1], player.ScoreList[2]);
+                _dataTable.Rows.Add(player.Name, player.ScoreList[0], player.ScoreList[1], player.ScoreList[2], player.ScoreList[3]);
 
-                for (int columnIndex = 1; columnIndex < 3; columnIndex++)
+                for (int columnIndex = 0; columnIndex < 3; columnIndex++)
                 {
                     for (int rowIndex = 0; rowIndex < player.ScoreList.Count(); rowIndex++)
                     {

@@ -25,14 +25,10 @@ namespace TurtleWalk.ClassLava
 
             foreach (Rect lavaHitBox in _hitBoxes)
             {
-                if (turtle.HitBox.IntersectsWith(lavaHitBox))
+                if (turtle.CheckCollisionWith(lavaHitBox))
                 {
                     result = true;
                     break;
-                }
-                else
-                {
-                    result = false;
                 }
             }
 

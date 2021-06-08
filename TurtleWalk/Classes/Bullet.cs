@@ -47,10 +47,14 @@ namespace TurtleWalk.ClassBulet
 
         private DispatcherTimer timer;
 
+        public bool HasFinished;
+
         public Bullet(Enemy enemy, Grid grid)
         {
             _x = enemy.X;
             _y = enemy.Y;
+
+            HasFinished = false;
 
             _imgBullet = new Image()
             {
@@ -70,11 +74,15 @@ namespace TurtleWalk.ClassBulet
         private double _turtleX;
         private double _turtleY;
 
+        private Enemy _enemy;
+
         // different approach, this sucks, i guess
-        public void FlyToTurtle(double turtleX, double turtleY)
+        public void FlyToTurtle(double turtleX, double turtleY, Enemy enemy)
         {
             _turtleX = turtleX;
             _turtleY = turtleY;
+
+            _enemy = enemy;
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(25);
@@ -101,12 +109,13 @@ namespace TurtleWalk.ClassBulet
                 }
                 else
                 {
-                    Y += 8.5;
+                    Y -= 8.5;
                 }
             }
             else
             {
-                Enemy.AreShooting = false;
+                HasFinished = true;
+                _enemy.IsShooting = false;
             }
         }
     }

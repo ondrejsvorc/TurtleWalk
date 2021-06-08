@@ -21,14 +21,10 @@ namespace TurtleWalk.ClassPiston
 
             foreach (Rect pistonHitBox in _hitBoxes)
             {
-                if (turtle.HitBox.IntersectsWith(pistonHitBox))
+                if (turtle.CheckCollisionWith(pistonHitBox))
                 {
                     result = true;
                     break;
-                }
-                else
-                {
-                    result = false;
                 }
             }
 

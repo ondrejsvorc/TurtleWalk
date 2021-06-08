@@ -60,12 +60,13 @@ namespace TurtleWalk.ClassProfilesManager
                         Profile profile = new Profile()
                         {
                             Name = profileAttributes[0],
-                            LevelsAvailable = Convert.ToInt32(profileAttributes[1]),
+                            LevelsAvailable = Convert.ToInt16(profileAttributes[1]),
                             ScoreList = new List<int>()
                             {
-                                Convert.ToInt32(profileAttributes[2]),
-                                Convert.ToInt32(profileAttributes[3]),
-                                Convert.ToInt32(profileAttributes[4])
+                                Convert.ToInt16(profileAttributes[2]),
+                                Convert.ToInt16(profileAttributes[3]),
+                                Convert.ToInt16(profileAttributes[4]),
+                                Convert.ToInt16(profileAttributes[5])
                             }
                         };
 
@@ -96,7 +97,7 @@ namespace TurtleWalk.ClassProfilesManager
 
             using (_writer = new StreamWriter(Constants.PROFILES_LOCATION, true))
             {
-                string line = $"{profile.Name} {profile.LevelsAvailable} 0 0 0";
+                string line = $"{profile.Name} {profile.LevelsAvailable} 0 0 0 0";
 
                 _writer.WriteLine(line);
             }

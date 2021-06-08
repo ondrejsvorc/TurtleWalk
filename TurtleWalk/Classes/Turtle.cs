@@ -6,12 +6,12 @@ namespace TurtleWalk.ClassTurtle
 {
     class Turtle
     {
-        public Rect HitBox;
-
         public bool IsMoving;
         public bool IsDirectionForward;
 
         public Image Body;
+
+        private Rect _hitBox;
 
         private double _y;
 
@@ -39,7 +39,7 @@ namespace TurtleWalk.ClassTurtle
 
         public Turtle(Rect hitBox, double x, double y)
         {
-            HitBox = hitBox;
+            _hitBox = hitBox;
 
             _x = x;
             _y = y;
@@ -50,15 +50,27 @@ namespace TurtleWalk.ClassTurtle
 
         public void HitBoxUpdate()
         {
-            HitBox = new Rect(_x, _y, Body.Width, Body.Height);
-            HitBox.Inflate(-(Body.Width / 3), -30);
+            _hitBox = new Rect(_x, _y, Body.Width, Body.Height);
+            _hitBox.Inflate(-(Body.Width / 3), -30);
         }
 
         public bool CheckCollisionWith(CollisionElement collisionElement)
         {
             bool result = false;
 
-            if (HitBox.IntersectsWith(collisionElement.HitBox))
+            if (_hitBox.IntersectsWith(collisionElement.HitBox))
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        public bool CheckCollisionWith(Rect hitBox)
+        {
+            bool result = false;
+
+            if (_hitBox.IntersectsWith(hitBox))
             {
                 result = true;
             }

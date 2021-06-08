@@ -69,25 +69,32 @@ namespace TurtleWalk.ClassGround
             bool result1 = false;
             bool result2 = false;
 
-            foreach (Rect staticGround in _staticGroundsHitBoxes)
+            foreach (Rect staticGroundHitBox in _staticGroundsHitBoxes)
             {
-                if (turtle.HitBox.IntersectsWith(staticGround))
+                if (turtle.CheckCollisionWith(staticGroundHitBox))
                 {
                     result1 = true;
                     break;
                 }
             }
 
-            foreach (Ground movableGround in MovableGroundsList)
+            if (result1)
             {
-                if (turtle.HitBox.IntersectsWith(movableGround.HitBox))
-                {
-                    result2 = true;
-                    break;
-                }
+                return result1;
             }
+            else
+            {
+                foreach (Ground movableGroundHitBox in MovableGroundsList)
+                {
+                    if (turtle.CheckCollisionWith(movableGroundHitBox.HitBox))
+                    {
+                        result2 = true;
+                        break;
+                    }
+                }
 
-            return result1 || result2;
+                return result2;
+            }
         }
 
         public static void NullValues()

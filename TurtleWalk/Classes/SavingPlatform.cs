@@ -6,8 +6,8 @@ namespace TurtleWalk.ClassSavingPlatform
 {
     sealed class SavingPlatform
     {
-        public Rect HitBox { get; private set; }
         public Image Body;
+        private Rect _hitBox;
 
         private double _x;
 
@@ -29,12 +29,12 @@ namespace TurtleWalk.ClassSavingPlatform
 
         public void HitBoxUpdate()
         {
-            HitBox = new Rect(_x, Body.Margin.Top, Body.Width, Body.Height);
+            _hitBox = new Rect(_x, Body.Margin.Top, Body.Width, Body.Height);
         }
 
         public bool CheckCollisionWith(LavaDrop lavaDrop)
         {
-            if (HitBox.IntersectsWith(lavaDrop.HitBox))
+            if (_hitBox.IntersectsWith(lavaDrop.HitBox))
             {
                 return true;
             }

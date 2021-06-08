@@ -24,12 +24,9 @@ namespace TurtleWalk.Enemies
     {
         private double _distance;
 
-        private Bullet _bullet;
-
         public FlyingEnemy(Rect hitBox, double distance, Grid grid) : base(hitBox)
         {
             _distance = distance;
-
             _bullet = new Bullet(this, grid);
         }
 
@@ -38,7 +35,10 @@ namespace TurtleWalk.Enemies
             if (turtle.IsMoving)
             {
                 Body.Margin = new Thickness(turtle.X + _distance, Y, 0, 0);
+            }
 
+            if (!IsShooting)
+            {
                 _bullet.X = X;
                 _bullet.Y = Y;
             }
@@ -46,7 +46,10 @@ namespace TurtleWalk.Enemies
 
         public override void ShootBullet(Turtle turtle)
         {
-            _bullet.FlyToTurtle(turtle.X, turtle.Y);
+            if (!_bullet.HasFinished)
+            {
+                _bullet.FlyToTurtle(turtle.X, turtle.Y, this);
+            }
         }
     }
 }

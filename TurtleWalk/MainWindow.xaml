@@ -99,6 +99,7 @@
 
             <Label
                 x:Name="lbProfile"
+                Content="Guest"
                 Width="Auto"
                 Height="50"
                 HorizontalAlignment="Center"

@@ -107,7 +107,7 @@ namespace TurtleWalk
             scoreboardManager = new ScoreboardManager(dataGridScoreboard);
 
             await profilesManager.ProfilesGet();
-            levelsManager.GetAvailableLevels();
+            levelsManager.ReadAvailableLevelsOfGuest();
 
             scoreboardManager.DataGet(profilesManager.Profiles);
             scoreboardManager.DataSet();
@@ -283,15 +283,22 @@ namespace TurtleWalk
             gridLvl.Visibility = Visibility.Visible;
         }
 
-        // Indexy 0 - 6 jsou vždy na gridu --> overlay 
-        // Z gridu odebíráme všechny potomky do té doby, než tam nezůstane pouze overlay, jehož odstranění je nežádoucí
+        // DOESN'T QUITE WORK
 
         private void LevelFinish()
         {
             LevelResetValues();
 
-            levelsManager.SetAvailableLevels(lvl);
-            levelsManager.GetAvailableLevels();
+            if (profilesManager.CurrentProfile != null)
+            {
+                levelsManager.UpdateAvailableLevelsOfProfile(lvl, profilesManager.CurrentProfile);
+                levelsManager.SaveAvailableLevelsForProfiles(lvl, profilesManager.Profiles);
+            }
+            else
+            {
+                levelsManager.SaveAvailableLevelsForGuest(lvl);
+                levelsManager.ReadAvailableLevelsOfGuest();
+            }
 
             gridLvl.Visibility = Visibility.Hidden;
             gridMenu.Visibility = Visibility.Visible;
@@ -689,6 +696,11 @@ namespace TurtleWalk
 
         private void Play(object sender, RoutedEventArgs e)
         {
+            if (profilesManager.CurrentProfile != null)
+            {
+                levelsManager.SetAvailableLevelsByProfile(profilesManager.CurrentProfile);
+            }
+
             gridButtons.Visibility = Visibility.Hidden;
             uniformGridLevels.Visibility = Visibility.Visible;
             btnBack.Visibility = Visibility.Visible;

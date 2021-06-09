@@ -30,10 +30,6 @@ namespace TurtleWalk.ClassProfilesManager
         public Profile CurrentProfile
         {
             get => _currentProfile;
-            set
-            {
-                _currentProfile = value;
-            }
         }
 
         public ProfilesManager(Grid profilesGrid, Grid gridMenu, UniformGrid profilesUniformGrid, Button btnBack, Label lbProfile)
@@ -107,7 +103,6 @@ namespace TurtleWalk.ClassProfilesManager
 
         private void ProfileChoose(object sender, RoutedEventArgs e)
         {
-            _currentProfile = new Profile();
             _currentProfile = Profiles.First(profile => profile.Name == (string)((Button)sender).Content);
 
             _lbProfile.Content = _currentProfile.Name;

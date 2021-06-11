@@ -21,6 +21,8 @@ namespace TurtleWalk.ClassScoreboardManager
 
         private static DataTable _dataTable;
 
+        private StreamWriter _writer;
+
         public ScoreboardManager(DataGrid scoreboard)
         {
             _scoreboard = scoreboard;
@@ -74,6 +76,24 @@ namespace TurtleWalk.ClassScoreboardManager
             }
 
             _scoreboard.ItemsSource = _dataTable.DefaultView;
+        }
+
+        public void DataSave(List<Profile> profiles)
+        {
+            using (_writer = new StreamWriter(Constants.PROFILES_LOCATION, false))
+            {
+                foreach (Profile profile in profiles)
+                {
+                    string line = profile.Name + " " + profile.LevelsAvailable;
+
+                    foreach (int score in profile.ScoreList)
+                    {
+                        line += " " + score;
+                    }
+
+                    _writer.WriteLine(line);
+                }
+            }
         }
     }
 }

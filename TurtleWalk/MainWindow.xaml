@@ -169,13 +169,13 @@
                     Style="{DynamicResource ButtonStyle}" />
             </StackPanel>
 
-            <UniformGrid Columns="7" x:Name="uniformGridLevels" Visibility="Hidden" Grid.Row="1" Width="800" VerticalAlignment="Center">
+            <UniformGrid Columns="4" x:Name="uniformGridLevels" Visibility="Hidden" Grid.Row="1" Width="450" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Button
                     x:Name="btnLvl1"
                     Width="100"
                     Height="100"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="01"
@@ -191,8 +191,8 @@
                     x:Name="btnLvl2"
                     Width="100"
                     Height="100"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="02"
@@ -208,8 +208,8 @@
                     x:Name="btnLvl3"
                     Width="100"
                     Height="100"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="03"
@@ -225,8 +225,8 @@
                     x:Name="btnLvl4"
                     Width="100"
                     Height="100"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="#FF45BD78"
                     Click="StartLevel"
                     Content="04"
@@ -238,7 +238,7 @@
                     MouseLeave="CursorLeaves"
                     Style="{DynamicResource ButtonStyle}" />
 
-                <Button
+                <!--<Button
                     x:Name="btnLvl5"
                     Width="100"
                     Height="100"
@@ -287,7 +287,7 @@
                     IsEnabled="False"
                     MouseEnter="CursorEnters"
                     MouseLeave="CursorLeaves"
-                    Style="{DynamicResource ButtonStyle}" />
+                    Style="{DynamicResource ButtonStyle}" />-->
             </UniformGrid>
         </Grid>
 

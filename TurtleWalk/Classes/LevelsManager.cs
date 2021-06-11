@@ -16,6 +16,8 @@ namespace TurtleWalk.ClassLevelManager
 
         private UniformGrid _uniformGridLevels;
 
+        private bool _unlockNextLevel = false;
+
         public LevelsManager(UniformGrid uniformGridLevels)
         {
             _uniformGridLevels = uniformGridLevels;
@@ -59,12 +61,23 @@ namespace TurtleWalk.ClassLevelManager
         // AKTUALIZUJE LEVELY DLE VYBRANÉHO PROFILU
         public void UpdateAvailableLevelsOfProfile(string lvl, Profile profile)
         {
-            int lvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
+            int currentLvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
 
-            if (!_uniformGridLevels.Children[lvlIndex + 1].IsEnabled)
+            if (IsThereNextLevel(currentLvlIndex))
             {
-                _uniformGridLevels.Children[lvlIndex + 1].IsEnabled = true;
-                profile.LevelsAvailable++;
+                if (!_uniformGridLevels.Children[currentLvlIndex + 1].IsEnabled)
+                {
+                    _uniformGridLevels.Children[currentLvlIndex + 1].IsEnabled = true;
+                    profile.LevelsAvailable++;
+                    _unlockNextLevel = true;
+                }
+                else
+                {
+                    if (_unlockNextLevel)
+                    {
+                        _unlockNextLevel = false;
+                    }
+                }
             }
         }
 
@@ -74,16 +87,24 @@ namespace TurtleWalk.ClassLevelManager
             // lvl = "01" -> substring(1, 1) -> lvl = "1"
             // index: 1 - 1 = 0
             
-            int lvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
+            int currentLvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
 
-            if (!_uniformGridLevels.Children[lvlIndex + 1].IsEnabled)
+            if (IsThereNextLevel(currentLvlIndex))
             {
-                using (_writer = new StreamWriter(Constants.AVAILABLE_LEVELS, true))
+                if (!_uniformGridLevels.Children[currentLvlIndex + 1].IsEnabled)
                 {
-                    _writer.Write("1" + " ");
-                    _writer.Flush();
+                    using (_writer = new StreamWriter(Constants.AVAILABLE_LEVELS, true))
+                    {
+                        _writer.Write("1" + " ");
+                        _writer.Flush();
+                    }
                 }
             }
+        }
+
+        public bool IsThereNextLevel(int currentLvlIndex)
+        {
+            return _uniformGridLevels.Children.Count >= currentLvlIndex + 2;
         }
 
         public void UpdateAvailableLevelsOfGuest(string lvl)
@@ -92,14 +113,9 @@ namespace TurtleWalk.ClassLevelManager
         }
 
         // ULOŽÍ DO TEXTOVÉHO SOUBORU POČET LEVELŮ PRO PROFIL
-        public void SaveAvailableLevelsForProfiles(string lvl, List<Profile> profiles)
+        public void SaveAvailableLevelsForProfiles(List<Profile> profiles)
         {
-            // lvl = "01" -> substring(1, 1) -> lvl = "1"
-            // index: 1 - 1 = 0
-
-            int lvlIndex = Convert.ToInt16(lvl.Substring(1, 1)) - 1;
-
-            if (!_uniformGridLevels.Children[lvlIndex + 1].IsEnabled)
+            if (_unlockNextLevel)
             {
                 using (_writer = new StreamWriter(Constants.PROFILES_LOCATION, false))
                 {

@@ -103,7 +103,7 @@ namespace TurtleWalk
             collisionElements = new List<CollisionElement>();
 
             levelsManager = new LevelsManager(uniformGridLevels);
-            profilesManager = new ProfilesManager(gridProfiles, gridMenu, uniformGridProfiles, btnBack, lbProfile);
+            profilesManager = new ProfilesManager(gridProfiles, gridMenu, uniformGridProfiles, uniformGridLevels, btnBack, lbProfile);
             scoreboardManager = new ScoreboardManager(dataGridScoreboard);
 
             await profilesManager.ProfilesGet();
@@ -125,117 +125,110 @@ namespace TurtleWalk
 
         private void LevelStart()
         {
-            //if (levelInProgress == "none")
-            //{
-                levelInProgress = lvl;
+            levelInProgress = lvl;
 
-                string currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
+            string currentLevelPath = $"./Resources/Levels/Level{lvl}/Start/start_lvl{lvl}.txt";
 
-                LevelBuilder builder = new LevelBuilder(currentLevelPath, lvl, gridLvl);
-                builder.BuildLevel();
+            LevelBuilder builder = new LevelBuilder(currentLevelPath, lvl, gridLvl);
+            builder.BuildLevel();
 
-                using (StreamReader reader = new StreamReader(currentLevelPath))
+            using (StreamReader reader = new StreamReader(currentLevelPath))
+            {
+                double entityWidth;
+                double entityHeight;
+
+                double entityMarginLeft;
+                double entityMarginTop;
+
+                string[] rowProperties;
+
+                foreach (Image image in builder.Images)
                 {
-                    double entityWidth;
-                    double entityHeight;
+                    rowProperties = reader.ReadLine().Split(' ');
 
-                    double entityMarginLeft;
-                    double entityMarginTop;
+                    entityWidth = Convert.ToDouble(rowProperties[1]);
+                    entityHeight = Convert.ToDouble(rowProperties[2]);
 
-                    string[] rowProperties;
+                    entityMarginLeft = Convert.ToDouble(rowProperties[3]);
+                    entityMarginTop = Convert.ToDouble(rowProperties[4]);
 
-                    foreach (Image image in builder.Images)
+                    CollisionElement collisionElement = new CollisionElement();
+
+                    if (image.Width == entityWidth && image.Height == entityHeight && image.Margin.Left == entityMarginLeft && image.Margin.Top == entityMarginTop)
                     {
-                        rowProperties = reader.ReadLine().Split(' ');
-
-                        entityWidth = Convert.ToDouble(rowProperties[1]);
-                        entityHeight = Convert.ToDouble(rowProperties[2]);
-
-                        entityMarginLeft = Convert.ToDouble(rowProperties[3]);
-                        entityMarginTop = Convert.ToDouble(rowProperties[4]);
-
-                        CollisionElement collisionElement = new CollisionElement();
-
-                        if (image.Width == entityWidth && image.Height == entityHeight && image.Margin.Left == entityMarginLeft && image.Margin.Top == entityMarginTop)
+                        switch (rowProperties[0])
                         {
-                            switch (rowProperties[0])
-                            {
-                                case "Turtle":
-                                    turtle = new Turtle(CollisionElement.GetHitBox(image), entityMarginLeft, entityMarginTop);
-                                    turtle.Body = image;
-                                    break;
+                            case "Turtle":
+                                turtle = new Turtle(CollisionElement.GetHitBox(image), entityMarginLeft, entityMarginTop);
+                                turtle.Body = image;
+                                break;
 
-                                case "SavingPlatform":
-                                    savingPlatform = new SavingPlatform(entityMarginLeft);
-                                    savingPlatform.Body = image;
-                                    break;
+                            case "SavingPlatform":
+                                savingPlatform = new SavingPlatform(entityMarginLeft);
+                                savingPlatform.Body = image;
+                                break;
 
-                                case "Sign":
-                                    finishSign = new Sign(CollisionElement.GetHitBox(image));
-                                    break;
+                            case "Sign":
+                                finishSign = new Sign(CollisionElement.GetHitBox(image));
+                                break;
 
-                                case "Ground":
-                                    Ground ground;
-                                    try
-                                    {
-                                        ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]), Convert.ToBoolean(rowProperties[7]));
-                                        ground.Body = image;
-                                        ground.X = Convert.ToDouble(rowProperties[3]);
-                                        ground.Y = Convert.ToDouble(rowProperties[4]);
-                                    }
-                                    catch
-                                    {
-                                        ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
-                                    }
-                                    break;
+                            case "Ground":
+                                Ground ground;
+                                try
+                                {
+                                    ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]), Convert.ToBoolean(rowProperties[7]));
+                                    ground.Body = image;
+                                    ground.X = Convert.ToDouble(rowProperties[3]);
+                                    ground.Y = Convert.ToDouble(rowProperties[4]);
+                                }
+                                catch
+                                {
+                                    ground = new Ground(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                }
+                                break;
 
-                                case "Leaf":
-                                    collisionElement = new Leaf(CollisionElement.GetHitBox(image));
-                                    break;
+                            case "Leaf":
+                                collisionElement = new Leaf(CollisionElement.GetHitBox(image));
+                                break;
 
-                                case "Piston":
-                                    Piston piston = new Piston(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
-                                    break;
+                            case "Piston":
+                                Piston piston = new Piston(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                break;
 
-                                case "LavaDrop":
-                                    LavaDrop lavaDrop = new LavaDrop(CollisionElement.GetHitBox(image), image.Margin.Top);
-                                    lavaDrop.Body = image;
-                                    lavaDrops.Add(lavaDrop);
-                                    break;
+                            case "LavaDrop":
+                                LavaDrop lavaDrop = new LavaDrop(CollisionElement.GetHitBox(image), image.Margin.Top);
+                                lavaDrop.Body = image;
+                                lavaDrops.Add(lavaDrop);
+                                break;
 
-                                case "Lava":
-                                    collisionElement = new Lava(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
-                                    break;
+                            case "Lava":
+                                collisionElement = new Lava(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), Convert.ToDouble(rowProperties[6]));
+                                break;
 
-                                case "Button":
-                                    image.Tag = Convert.ToInt32(rowProperties[7]);
-                                    Btn btn = new Btn(image);
-                                    break;
+                            case "Button":
+                                image.Tag = Convert.ToInt32(rowProperties[7]);
+                                Btn btn = new Btn(image);
+                                break;
 
-                                case "FlyingEnemy":
-                                    Enemy enemy = new FlyingEnemy(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), gridLvl);
-                                    enemy.Body = image;
-                                    enemies.Add(enemy);
-                                    break;
-                            }
-
-                            collisionElement.Body = image;
-                            collisionElements.Add(collisionElement);
+                            case "FlyingEnemy":
+                                Enemy enemy = new FlyingEnemy(CollisionElement.GetHitBox(image), Convert.ToDouble(rowProperties[5]), gridLvl);
+                                enemy.Body = image;
+                                enemies.Add(enemy);
+                                break;
                         }
+
+                        collisionElement.Body = image;
+                        collisionElements.Add(collisionElement);
                     }
                 }
+            }
 
-                timer = new DispatcherTimer();
-                timer.Interval = new TimeSpan(0, 0, 0, 0, 30);
-                timer.Tick += GameUpdate;
-                timer.Start();
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 30);
+            timer.Tick += GameUpdate;
+            timer.Start();
 
-                gridLvl.Visibility = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    LevelResume();
-            //}
+            gridLvl.Visibility = Visibility.Visible;
         }
 
         // TATO METODA SE VOLÁ I PŘI SMRTI ŽELVY, TÍM PÁDEM SE VYKRESLUJE CELEJ LEVEL ZNOVA ZBYTEČNĚ - OŠETŘIT TO TAK, ABY SE DALA ŽELVA A PLOŠINKA NA ZAČÁTEK
@@ -287,18 +280,28 @@ namespace TurtleWalk
 
         private void LevelFinish()
         {
-            LevelResetValues();
-
             if (profilesManager.CurrentProfile != null)
             {
+                int lvlScoreIndex = Convert.ToInt32(lvl.Substring(1, 1)) - 1;
+
+                if (scoreCount > profilesManager.CurrentProfile.ScoreList[lvlScoreIndex])
+                {
+                    profilesManager.CurrentProfile.ScoreList[lvlScoreIndex] = scoreCount;
+                }
+
                 levelsManager.UpdateAvailableLevelsOfProfile(lvl, profilesManager.CurrentProfile);
-                levelsManager.SaveAvailableLevelsForProfiles(lvl, profilesManager.Profiles);
+                levelsManager.SaveAvailableLevelsForProfiles(profilesManager.Profiles);
+
+                scoreboardManager.DataUpdate();
+                scoreboardManager.DataSave(profilesManager.Profiles);
             }
             else
             {
                 levelsManager.SaveAvailableLevelsForGuest(lvl);
                 levelsManager.ReadAvailableLevelsOfGuest();
             }
+
+            LevelResetValues();
 
             gridLvl.Visibility = Visibility.Hidden;
             gridMenu.Visibility = Visibility.Visible;
@@ -761,19 +764,6 @@ namespace TurtleWalk
         private void DisableSpacesInProfileName(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
-        }
-
-        private void WishToDeleteProfile(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                MessageBoxResult result = MessageBox.Show("Do you wish to delete this profile?", "Profile deletion", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    profilesManager.ProfileDelete();
-                }
-            }
         }
 
         private void StartLevel(object sender, RoutedEventArgs e)

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using TurtleWalk.ClassConstants;
 using TurtleWalk.ClassProfile;
+using TurtleWalk.ClassLevelManager;
 
 namespace TurtleWalk.ClassProfilesManager
 {
@@ -19,7 +21,9 @@ namespace TurtleWalk.ClassProfilesManager
         private StreamReader _reader;
         private StreamWriter _writer;
 
-        private UniformGrid _profilesUniformGrid;
+        private UniformGrid _uniformGridProfiles;
+        private UniformGrid _uniformGridLevels;
+
         private Grid _profilesGrid;
         private Button _btnBack;
         private Grid _menuGrid;
@@ -27,16 +31,20 @@ namespace TurtleWalk.ClassProfilesManager
 
         private Profile _currentProfile;
 
+        private LevelsManager _levelManager;
+
         public Profile CurrentProfile
         {
             get => _currentProfile;
         }
 
-        public ProfilesManager(Grid profilesGrid, Grid gridMenu, UniformGrid profilesUniformGrid, Button btnBack, Label lbProfile)
+        public ProfilesManager(Grid profilesGrid, Grid gridMenu, UniformGrid uniformGridProfiles, UniformGrid uniformGridLevels, Button btnBack, Label lbProfile)
         {
             _profilesGrid = profilesGrid;
+            _uniformGridLevels = uniformGridLevels;
+
             _menuGrid = gridMenu;
-            _profilesUniformGrid = profilesUniformGrid;
+            _uniformGridProfiles = uniformGridProfiles;
             _btnBack = btnBack;
             _lbProfile = lbProfile;
         }
@@ -68,9 +76,9 @@ namespace TurtleWalk.ClassProfilesManager
 
                         Profiles.Add(profile);
 
-                        if (_profilesUniformGrid.Children[0].GetType() == new TextBlock().GetType())
+                        if (_uniformGridProfiles.Children[0].GetType() == new TextBlock().GetType())
                         {
-                            _profilesUniformGrid.Children.RemoveAt(0);
+                            _uniformGridProfiles.Children.RemoveAt(0);
                         }
 
                         ProfileButtonVisualize(profile.Name);
@@ -82,12 +90,19 @@ namespace TurtleWalk.ClassProfilesManager
 
         public void ProfileAdd(string newProfileName)
         {
-            if (_profilesUniformGrid.Children[0].GetType() == new TextBlock().GetType())
+            if (_uniformGridProfiles.Children.Count > 0)
             {
-                _profilesUniformGrid.Children.Clear();
+                if (_uniformGridProfiles.Children[0].GetType() == new TextBlock().GetType())
+                {
+                    _uniformGridProfiles.Children.Clear();
+                }
             }
 
-            Profile profile = new Profile() { Name = newProfileName };
+            Profile profile = new Profile() 
+            { 
+                Name = newProfileName, 
+                ScoreList = new List<int>() { 0, 0, 0, 0 } 
+            };
 
             Profiles.Add(profile);
 
@@ -116,7 +131,7 @@ namespace TurtleWalk.ClassProfilesManager
         {
             bool result = false;
 
-            foreach (Button profileButton in _profilesUniformGrid.Children.OfType<Button>())
+            foreach (Button profileButton in _uniformGridProfiles.Children.OfType<Button>())
             {
                 if ((string)profileButton.Content == newProfileName)
                 {
@@ -136,13 +151,48 @@ namespace TurtleWalk.ClassProfilesManager
             };
 
             btnProfile.Click += ProfileChoose;
+            btnProfile.MouseRightButtonUp += ProfileWishToDelete;
 
-            _profilesUniformGrid.Children.Add(btnProfile);
+            _uniformGridProfiles.Children.Add(btnProfile);
         }
 
-        public void ProfileDelete()
+        private void ProfileWishToDelete(object sender, MouseButtonEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Opravdu si tento profil přejete odstranit?", "Vymazání profilu", MessageBoxButton.YesNo);
 
+            if (result == MessageBoxResult.Yes)
+            {
+                ProfileDelete(result, sender as Button);
+            }
+        }
+
+        public void ProfileDelete(MessageBoxResult result, Button profileBtn)
+        {
+            _uniformGridProfiles.Children.Remove(profileBtn);
+
+            Profiles.RemoveAll(profile => profile.Name == (string)profileBtn.Content);
+
+            using (_writer = new StreamWriter(Constants.PROFILES_LOCATION, false))
+            {
+                foreach (Profile profile in Profiles)
+                {
+                    string line = profile.Name + " " + profile.LevelsAvailable;
+
+                    foreach (int score in profile.ScoreList)
+                    {
+                        line += " " + score;
+                    }
+
+                    _writer.WriteLine(line);
+                }
+            }
+
+            _currentProfile = null;
+
+            _levelManager = new LevelsManager(_uniformGridLevels);
+            _levelManager.ReadAvailableLevelsOfGuest();
+            _lbProfile.Content = "Guest";
         }
     }
 }
+

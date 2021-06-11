@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TurtleWalk.ClassCollisionElement;
 using TurtleWalk.ClassConstants;
+using TurtleWalk.ClassSavingPlatform;
+using TurtleWalk.ClassTurtle;
 using TurtleWalk.Enemies;
 
 namespace TurtleWalk.ClassBulet
@@ -41,13 +43,20 @@ namespace TurtleWalk.ClassBulet
             }
         }
 
-        public Rect HitBox;
-
         private Image _imgBullet;
 
         private DispatcherTimer timer;
 
         public bool HasFinished;
+
+        public Rect HitBox;
+
+        public static List<Bullet> BulletsList = new List<Bullet>();
+
+        private double _turtleX;
+        private double _turtleY;
+
+        private Enemy _enemy;
 
         public Bullet(Enemy enemy, Grid grid)
         {
@@ -67,16 +76,47 @@ namespace TurtleWalk.ClassBulet
             };
 
             HitBox = new Rect(_x, _y, _imgBullet.Width, _imgBullet.Height);
+            BulletsList.Add(this);
 
             grid.Children.Add(_imgBullet);
         }
 
-        private double _turtleX;
-        private double _turtleY;
+        public void Stop()
+        {
+            _enemy.IsShooting = false;
+            HasFinished = true;
+            HitBox = Rect.Empty;
+        }
 
-        private Enemy _enemy;
+        public static bool CheckCollisionWith(Turtle turtle)
+        {
+            bool result = false;
 
-        // different approach, this sucks, i guess
+            foreach (Bullet bullet in BulletsList)
+            {
+                if (turtle.CheckCollisionWith(bullet.HitBox))
+                {
+                    bullet.Stop();
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        public static void CheckCollision(SavingPlatform savingPlatform)
+        {
+            foreach (Bullet bullet in BulletsList)
+            {
+                if (savingPlatform.CheckCollisionWith(bullet.HitBox))
+                {
+                    bullet.Stop();
+                    break;
+                }
+            }
+        }
+
         public void FlyToTurtle(double turtleX, double turtleY, Enemy enemy)
         {
             _turtleX = turtleX;
@@ -85,16 +125,16 @@ namespace TurtleWalk.ClassBulet
             _enemy = enemy;
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(25);
+            timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += ShootingAnimation;
             timer.Start();
         }
 
         private void ShootingAnimation(object sender, EventArgs e)
         {
-            if (X != _turtleX && Y != _turtleY)
+            if (_x != _turtleX && _y != _turtleY)
             {
-                if (X < _turtleX)
+                if (_x < _turtleX)
                 {
                     X += 5;
                 }
@@ -111,11 +151,12 @@ namespace TurtleWalk.ClassBulet
                 {
                     Y -= 8.5;
                 }
+
+                HitBox = new Rect(_x, _y, _imgBullet.Width, _imgBullet.Height);
             }
             else
             {
-                HasFinished = true;
-                _enemy.IsShooting = false;
+                Stop();
             }
         }
     }

@@ -242,6 +242,8 @@ namespace TurtleWalk
             Piston.NullHitBoxes();
             Lava.NullHitBoxes();
 
+            Bullet.BulletsList.Clear();
+
             enemies = new List<Enemy>();
             lavaDrops = new List<LavaDrop>();
             collisionElements = new List<CollisionElement>();
@@ -315,14 +317,6 @@ namespace TurtleWalk
 
         private void GameUpdate(object sender, EventArgs e)
         {
-            // NEUSTÁLE SE AKTUALIZUJÍCÍ A MODIFIKOVANÉ HITBOXY ŽELVIČKY A PLATFORMY PRO PŘIROZENOU DETEKCI KOLIZE V REÁLNÉM ČASE
-            turtle.HitBoxUpdate();
-
-            if (savingPlatform != null)
-            {
-                savingPlatform.HitBoxUpdate();
-            }
-
             // POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
             timeElapsed++;
 
@@ -397,6 +391,16 @@ namespace TurtleWalk
                     }
 
                     enemy.StayAheadOfTurtle(turtle);
+                }
+            }
+
+            if (!IsListEmpty(Bullet.BulletsList))
+            {
+                Bullet.CheckCollision(savingPlatform);
+
+                if (Bullet.CheckCollisionWith(turtle))
+                {
+                    LevelRestart();
                 }
             }
 

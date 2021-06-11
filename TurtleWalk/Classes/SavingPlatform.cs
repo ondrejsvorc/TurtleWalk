@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using TurtleWalk.ClassCollisionElement;
 using TurtleWalk.ClassLavaDrop;
 
 namespace TurtleWalk.ClassSavingPlatform
@@ -17,8 +18,8 @@ namespace TurtleWalk.ClassSavingPlatform
             set
             {
                 _x = value;
-
                 Body.Margin = new Thickness(_x, Body.Margin.Top, 0, 0);
+                HitBoxUpdate();
             }
         }
 
@@ -27,14 +28,14 @@ namespace TurtleWalk.ClassSavingPlatform
             _x = x;
         }
 
-        public void HitBoxUpdate()
+        private void HitBoxUpdate()
         {
             _hitBox = new Rect(_x, Body.Margin.Top, Body.Width, Body.Height);
         }
 
-        public bool CheckCollisionWith(LavaDrop lavaDrop)
+        public bool CheckCollisionWith(CollisionElement collisionElement)
         {
-            if (_hitBox.IntersectsWith(lavaDrop.HitBox))
+            if (_hitBox.IntersectsWith(collisionElement.HitBox))
             {
                 return true;
             }
@@ -42,6 +43,18 @@ namespace TurtleWalk.ClassSavingPlatform
             {
                 return false;
             }
+        }
+
+        public bool CheckCollisionWith(Rect hitBox)
+        {
+            bool result = false;
+
+            if (_hitBox.IntersectsWith(hitBox))
+            {
+                result = true;
+            }
+
+            return result;
         }
     }
 }

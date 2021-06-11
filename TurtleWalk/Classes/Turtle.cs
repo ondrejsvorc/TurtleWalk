@@ -22,6 +22,7 @@ namespace TurtleWalk.ClassTurtle
             {
                 _y = value;
                 Body.Margin = new Thickness(_x, _y, 0, 0);
+                HitBoxUpdate();
             }
         }
 
@@ -34,6 +35,7 @@ namespace TurtleWalk.ClassTurtle
             {
                 _x = value;
                 Body.Margin = new Thickness(_x, _y, 0, 0);
+                HitBoxUpdate();
             }
         }
 
@@ -48,7 +50,7 @@ namespace TurtleWalk.ClassTurtle
             IsDirectionForward = true;
         }
 
-        public void HitBoxUpdate()
+        private void HitBoxUpdate()
         {
             _hitBox = new Rect(_x, _y, Body.Width, Body.Height);
             _hitBox.Inflate(-(Body.Width / 3), -30);

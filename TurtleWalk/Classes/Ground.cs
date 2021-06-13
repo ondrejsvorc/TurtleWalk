@@ -16,8 +16,6 @@ namespace TurtleWalk.ClassGround
         private static List<Rect> _staticGroundsHitBoxes = new List<Rect>();
         public static List<Ground> MovableGroundsList { get; private set; } = new List<Ground>();
 
-        private bool _movable;
-
         private double _y;
         public double Y
         {
@@ -54,12 +52,10 @@ namespace TurtleWalk.ClassGround
             _staticGroundsHitBoxes.Add(groundHitBox);
         }
 
-        public Ground(Rect groundHitBox, double inflationWidth, double inflationHeight, bool movable) : base(groundHitBox)
+        public Ground(Rect groundHitBox, double inflationWidth, double inflationHeight, bool movable = true) : base(groundHitBox)
         {
             HitBox = groundHitBox;
             groundHitBox.Inflate(inflationWidth, inflationHeight);   // Pro větší přirozenost HitBoxu
-
-            _movable = movable;
 
             MovableGroundsList.Add(this);
         }

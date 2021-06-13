@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace TurtleWalk.ClassLevelBuilder
 {
-    sealed class LevelBuilder
+    class LevelBuilder
     {
         private StreamReader _reader;
         private Grid _gridLvl;

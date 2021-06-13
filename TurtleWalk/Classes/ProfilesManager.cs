@@ -11,15 +11,13 @@ using System.Windows.Input;
 using TurtleWalk.ClassConstants;
 using TurtleWalk.ClassProfile;
 using TurtleWalk.ClassLevelManager;
+using TurtleWalk.ClassManager;
 
 namespace TurtleWalk.ClassProfilesManager
 {
-    class ProfilesManager
+    class ProfilesManager : Manager
     {
         public List<Profile> Profiles { get; private set; } = new List<Profile>(); 
-
-        private StreamReader _reader;
-        private StreamWriter _writer;
 
         private UniformGrid _uniformGridProfiles;
         private UniformGrid _uniformGridLevels;

@@ -25,7 +25,7 @@ using TurtleWalk.ClassProfilesManager;
 using TurtleWalk.ClassLava;
 using TurtleWalk.ClassBtn;
 using System.Threading.Tasks;
-using TurtleWalk.Classes;
+using TurtleWalk.ClassManager;
 using TurtleWalk.Enemies;
 using TurtleWalk.ClassBulet;
 
@@ -236,7 +236,10 @@ namespace TurtleWalk
         // ALE ABY SE TAM VYKRESLOVALI ZNOVA GROUND APOD. TO JE ZBYTEČNÝ
         private void LevelResetValues()
         {
-            timer.Stop();
+            if (timer != null)
+            {
+                timer.Stop();
+            }
 
             Ground.NullValues();
             Piston.NullHitBoxes();

@@ -64,3 +64,7 @@ C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CoreComp
 C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.csproj.CopyComplete
 C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe
 C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.pdb
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe.manifest
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe.manifest
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.application
+C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.application

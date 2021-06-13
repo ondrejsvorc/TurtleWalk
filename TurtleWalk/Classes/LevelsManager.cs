@@ -6,14 +6,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using TurtleWalk.ClassConstants;
 using TurtleWalk.ClassProfile;
+using TurtleWalk.ClassManager;
 
 namespace TurtleWalk.ClassLevelManager
 {
-    sealed class LevelsManager
+    sealed class LevelsManager : Manager
     {
-        private StreamReader _reader;
-        private StreamWriter _writer;
-
         private UniformGrid _uniformGridLevels;
 
         private bool _unlockNextLevel = false;

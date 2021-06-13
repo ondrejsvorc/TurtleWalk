@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using TurtleWalk.Enemies;
 
-namespace TurtleWalk.Classes
+namespace TurtleWalk.ClassManager
 {
     // budeme předávat instanci Enemy (jinak bychom museli podle mě udělat několik konstruktorů pro každý typ zvlášť
     // (FlyingEnemy enemy, WalkingEnemy enemy, apod.)

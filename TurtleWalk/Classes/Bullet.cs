@@ -26,7 +26,7 @@ namespace TurtleWalk.ClassBulet
             {
                 _x = value;
                 _imgBullet.Margin = new Thickness(_x + (2 * _imgBullet.Width), _y + (2* _imgBullet.Height), 0, 0);
-                HitBox = new Rect(_x, _y, _imgBullet.Width, _imgBullet.Height);
+                HitBox = new Rect(_x + (2 * _imgBullet.Width), _y + (2 * _imgBullet.Height), _imgBullet.Width, _imgBullet.Height);
             }
         }
 
@@ -39,7 +39,7 @@ namespace TurtleWalk.ClassBulet
             {
                 _y = value;
                 _imgBullet.Margin = new Thickness(_x + (2 * _imgBullet.Width), _y + (2 * _imgBullet.Height), 0, 0);
-                HitBox = new Rect(_x, _y, _imgBullet.Width, _imgBullet.Height);
+                HitBox = new Rect(_x + (2 * _imgBullet.Width), _y + (2 * _imgBullet.Height), _imgBullet.Width, _imgBullet.Height);
             }
         }
 

@@ -9,19 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using TurtleWalk.ClassConstants;
+using TurtleWalk.ClassManager;
 using TurtleWalk.ClassProfile;
 
 namespace TurtleWalk.ClassScoreboardManager
 {
-    class ScoreboardManager
+    sealed class ScoreboardManager : Manager
     {
         private static List<Profile> _profiles = new List<Profile>();
 
         private static DataGrid _scoreboard;
 
         private static DataTable _dataTable;
-
-        private StreamWriter _writer;
 
         public ScoreboardManager(DataGrid scoreboard)
         {
@@ -41,7 +40,10 @@ namespace TurtleWalk.ClassScoreboardManager
 
         public void DataUpdate()
         {
-            _dataTable.Clear();
+            if (_dataTable != null)
+            {
+                _dataTable.Clear();
+            }
 
             DataGet(_profiles);
             DataSet();

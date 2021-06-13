@@ -68,3 +68,7 @@ C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe.manifest
 C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe.manifest
 C:\Users\Ondra\source\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.application
 C:\Users\Ondra\source\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.application
+C:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.exe.manifest
+C:\GitHub Projects\TurtleWalk\TurtleWalk\bin\Debug\TurtleWalk.application
+C:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.exe.manifest
+C:\GitHub Projects\TurtleWalk\TurtleWalk\obj\Debug\TurtleWalk.application

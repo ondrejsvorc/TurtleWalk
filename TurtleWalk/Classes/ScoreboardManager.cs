@@ -16,11 +16,11 @@ namespace TurtleWalk.ClassScoreboardManager
 {
     sealed class ScoreboardManager : Manager
     {
-        private static List<Profile> _profiles = new List<Profile>();
+        private List<Profile> _profiles = new List<Profile>();
 
-        private static DataGrid _scoreboard;
+        private DataGrid _scoreboard;
 
-        private static DataTable _dataTable;
+        private DataTable _dataTable;
 
         public ScoreboardManager(DataGrid scoreboard)
         {

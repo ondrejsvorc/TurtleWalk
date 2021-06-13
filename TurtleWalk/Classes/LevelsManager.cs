@@ -105,11 +105,6 @@ namespace TurtleWalk.ClassLevelManager
             return _uniformGridLevels.Children.Count >= currentLvlIndex + 2;
         }
 
-        public void UpdateAvailableLevelsOfGuest(string lvl)
-        {
-
-        }
-
         // ULOŽÍ DO TEXTOVÉHO SOUBORU POČET LEVELŮ PRO PROFIL
         public void SaveAvailableLevelsForProfiles(List<Profile> profiles)
         {

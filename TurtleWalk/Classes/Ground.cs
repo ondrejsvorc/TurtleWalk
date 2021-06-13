@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using TurtleWalk.ClassBtn;
 using TurtleWalk.ClassCollisionElement;
 using TurtleWalk.ClassTurtle;
 
@@ -62,21 +59,20 @@ namespace TurtleWalk.ClassGround
 
         public static bool CheckCollision(Turtle turtle)
         {
-            bool result1 = false;
-            bool result2 = false;
+            bool result = false;
 
             foreach (Rect staticGroundHitBox in _staticGroundsHitBoxes)
             {
                 if (turtle.CheckCollisionWith(staticGroundHitBox))
                 {
-                    result1 = true;
+                    result = true;
                     break;
                 }
             }
 
-            if (result1)
+            if (result)
             {
-                return result1;
+                return result;
             }
             else
             {
@@ -84,12 +80,12 @@ namespace TurtleWalk.ClassGround
                 {
                     if (turtle.CheckCollisionWith(movableGroundHitBox.HitBox))
                     {
-                        result2 = true;
+                        result = true;
                         break;
                     }
                 }
 
-                return result2;
+                return result;
             }
         }
 

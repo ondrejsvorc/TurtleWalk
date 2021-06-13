@@ -1,33 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Collections.Generic;
-using System.IO;
-using WpfAnimatedGif;
+using TurtleWalk.ClassBtn;
+using TurtleWalk.ClassBulet;
 using TurtleWalk.ClassCollisionElement;
 using TurtleWalk.ClassConstants;
 using TurtleWalk.ClassGround;
+using TurtleWalk.ClassLava;
 using TurtleWalk.ClassLavaDrop;
 using TurtleWalk.ClassLeaf;
 using TurtleWalk.ClassLevelBuilder;
+using TurtleWalk.ClassLevelManager;
 using TurtleWalk.ClassPiston;
+using TurtleWalk.ClassProfilesManager;
 using TurtleWalk.ClassSavingPlatform;
+using TurtleWalk.ClassScoreboardManager;
 using TurtleWalk.ClassSign;
 using TurtleWalk.ClassTurtle;
-using TurtleWalk.ClassLevelManager;
-using TurtleWalk.ClassScoreboardManager;
-using TurtleWalk.ClassProfilesManager;
-using TurtleWalk.ClassLava;
-using TurtleWalk.ClassBtn;
-using System.Threading.Tasks;
-using TurtleWalk.ClassManager;
 using TurtleWalk.Enemies;
-using TurtleWalk.ClassBulet;
+using WpfAnimatedGif;
 
 namespace TurtleWalk
 {
@@ -281,8 +280,6 @@ namespace TurtleWalk
             gridLvl.Visibility = Visibility.Visible;
         }
 
-        // DOESN'T QUITE WORK
-
         private void LevelFinish()
         {
             if (profilesManager.CurrentProfile != null)
@@ -320,7 +317,6 @@ namespace TurtleWalk
 
         private void GameUpdate(object sender, EventArgs e)
         {
-            // POČÍTÁNÍ TIKŮ PRO FUNKČNOST ALGORITMU NA AUTOMATICKÉ PADÁNÍ KAPEK
             timeElapsed++;
 
             // ŽELVIČKA JDE POPŘEDU A DOTÝKÁ SE
@@ -385,7 +381,7 @@ namespace TurtleWalk
 
                 foreach (FlyingEnemy enemy in enemies.OfType<FlyingEnemy>())
                 {
-                    if (ticks % 30 == 0)           // každých 300 ms
+                    if (ticks % 30 == 0)
                     {
                         enemy.IsShooting = true;
                         enemy.ShootBullet(turtle);
@@ -672,7 +668,7 @@ namespace TurtleWalk
 
         private void LanguageChange(object sender, MouseButtonEventArgs e)
         {
-            switch (((Image)sender).Name)
+            switch ((sender as Image).Name)
             {
                 case "Czech":
                     btnPlay.Content = "Hrát";

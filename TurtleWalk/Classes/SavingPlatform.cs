@@ -19,18 +19,13 @@ namespace TurtleWalk.ClassSavingPlatform
             {
                 _x = value;
                 Body.Margin = new Thickness(_x, Body.Margin.Top, 0, 0);
-                HitBoxUpdate();
+                _hitBox = new Rect(_x, Body.Margin.Top, Body.Width, Body.Height);
             }
         }
 
         public SavingPlatform(double x)
         {
             _x = x;
-        }
-
-        private void HitBoxUpdate()
-        {
-            _hitBox = new Rect(_x, Body.Margin.Top, Body.Width, Body.Height);
         }
 
         public bool CheckCollisionWith(CollisionElement collisionElement)

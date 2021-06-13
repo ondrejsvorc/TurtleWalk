@@ -19,7 +19,7 @@ namespace TurtleWalk.ClassManager
 
         public Healthbar(Enemy enemy, Grid gridLvl)   // Enemy enemy = new FlyingEnemy();
         {
-            // Vykreslení HealthBaru a přidání na grid
+            // TO-DO: Vykreslení HealthBaru a přidání na grid
 
             _enemy = enemy;
 

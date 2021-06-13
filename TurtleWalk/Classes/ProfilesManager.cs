@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TurtleWalk.ClassConstants;
-using TurtleWalk.ClassProfile;
 using TurtleWalk.ClassLevelManager;
 using TurtleWalk.ClassManager;
+using TurtleWalk.ClassProfile;
 
 namespace TurtleWalk.ClassProfilesManager
 {
@@ -62,13 +61,13 @@ namespace TurtleWalk.ClassProfilesManager
                         Profile profile = new Profile()
                         {
                             Name = profileAttributes[0],
-                            LevelsAvailable = Convert.ToInt16(profileAttributes[1]),
+                            LevelsAvailable = Convert.ToInt32(profileAttributes[1]),
                             ScoreList = new List<int>()
                             {
-                                Convert.ToInt16(profileAttributes[2]),
-                                Convert.ToInt16(profileAttributes[3]),
-                                Convert.ToInt16(profileAttributes[4]),
-                                Convert.ToInt16(profileAttributes[5])
+                                Convert.ToInt32(profileAttributes[2]),
+                                Convert.ToInt32(profileAttributes[3]),
+                                Convert.ToInt32(profileAttributes[4]),
+                                Convert.ToInt32(profileAttributes[5])
                             }
                         };
 

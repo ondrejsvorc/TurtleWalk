@@ -67,12 +67,10 @@ namespace TurtleWalk.ClassLevelBuilder
                         attributes[2] = Convert.ToString(750);
                         break;
 
-                        // zatím jen pro lvl01
                     case "SavingPlatform":
                         source = new Uri($"./Resources/Levels/Level{_lvl}/Platforms/ice_platform_2.png", UriKind.Relative);
                         break;
 
-                        // zatím jen pro lvl01
                     case "Ground":
                         if (attributes[1] == "140" || attributes[1] == "180")
                         {
@@ -153,19 +151,6 @@ namespace TurtleWalk.ClassLevelBuilder
                 {
                     Panel.SetZIndex(Element, -1);
                 }
-
-                //if (attributes[0] != "Background" && attributes[0] != "Piston" && attributes[0] != "Sign" && attributes[0] != "LavaDrop")
-                //{
-                //    Panel.SetZIndex(Element, 1);
-                //}
-                //else if (source.ToString().Contains("rounded_platform.png"))
-                //{
-                //    Panel.SetZIndex(Element, 0);
-                //}
-                //else
-                //{
-                //    Panel.SetZIndex(Element, -1);
-                //}
 
                 _gridLvl.Children.Add(Element);
             }

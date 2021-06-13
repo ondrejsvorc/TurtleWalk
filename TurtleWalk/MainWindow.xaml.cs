@@ -30,23 +30,6 @@ using WpfAnimatedGif;
 
 namespace TurtleWalk
 {
-    // TO-DO
-
-    // - Při dokončení levelu odemknout vždy jen další level (dokončení levelu 1 odekmkne level 2) 
-    //      : HOTOVO
-
-    // - Přepínání na další levely
-    //      : HOTOVO
-
-    // - Design 2. levelu
-    //      :
-
-    // - Scoreboard
-    //      :
-
-    // - Design 3. levelu
-    //      :
-
     public partial class MainWindow : Window
     {
         private Turtle turtle;

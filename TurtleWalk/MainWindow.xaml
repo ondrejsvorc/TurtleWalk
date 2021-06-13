@@ -333,7 +333,7 @@
         </DataGrid>
 
         <Grid x:Name="gridLvl" Visibility="Hidden">
-            <ToggleButton
+            <!--<ToggleButton
                 x:Name="btnSound"
                 Width="100"
                 Height="25"
@@ -343,13 +343,13 @@
                 Panel.ZIndex="1"
                 Content="Sound off"
                 Focusable="False"
-                Style="{DynamicResource ToggleButtonStyle}" />
+                Style="{DynamicResource ToggleButtonStyle}" />-->
 
             <Button
                 x:Name="btnRestart"
                 Width="100"
                 Height="25"
-                Margin="130,15,0,0"
+                Margin="15,15,0,0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
                 Panel.ZIndex="1"

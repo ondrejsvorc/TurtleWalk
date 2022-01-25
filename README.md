@@ -1,4 +1,5 @@
 # TurtleWalk
 
-## Work in progress.
-## Due 13. 6. 2021
+Game inspired by the game of my childhood called Snail Bob.
+
+![](https://ondrejsvorc.github.io/images/Applications/turtlewalk1.jpg)
